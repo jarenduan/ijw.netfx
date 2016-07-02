@@ -1,0 +1,18 @@
+﻿{
+  "version": "1.0.0-rc1",
+
+  "frameworks": {
+    "net35": {},
+    "net40": {},
+    "net45": {
+    },
+    "netstandard1.4": {
+      "imports": "dnxcore50",
+      "dependencies": {
+        "NETStandard.Library": "1.6.0",
+        "System.Net.NameResolution": "4.0.0",
+        "System.Net.Ping": "4.0.0"
+      }
+    }
+  }
+}

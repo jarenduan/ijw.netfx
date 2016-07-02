@@ -11,7 +11,7 @@ namespace ijw.Collection
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public abstract class EnumerableBase<T> : IEnumerable<T>, IEnumerable {
-        internal EnumerableBase() { } 
+        public EnumerableBase() { } 
         public EnumerableBase(T[] data) {
             data.ShouldBeNotNullArgument();
             this._data = data;
