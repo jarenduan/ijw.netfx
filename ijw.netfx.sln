@@ -10,7 +10,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		global.json = global.json
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ijw.netfx", "src\ijw.netfx\ijw.netfx.xproj", "{7FD837A0-F523-4789-84BC-7EE070891BFE}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ijw", "src\ijw\ijw.xproj", "{1A0E0C9E-6C47-4FF3-8B6C-493BD077666D}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ijw.Collection", "src\ijw.Collection\ijw.Collection.xproj", "{F646405F-EC48-4CF9-A0C4-16E61CDFAEC1}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ijw.IO", "src\ijw.IO\ijw.IO.xproj", "{E402E1BA-0D7E-44C7-8DBD-9C2BE70F2877}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,15 +22,25 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7FD837A0-F523-4789-84BC-7EE070891BFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7FD837A0-F523-4789-84BC-7EE070891BFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7FD837A0-F523-4789-84BC-7EE070891BFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7FD837A0-F523-4789-84BC-7EE070891BFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A0E0C9E-6C47-4FF3-8B6C-493BD077666D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A0E0C9E-6C47-4FF3-8B6C-493BD077666D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A0E0C9E-6C47-4FF3-8B6C-493BD077666D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A0E0C9E-6C47-4FF3-8B6C-493BD077666D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F646405F-EC48-4CF9-A0C4-16E61CDFAEC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F646405F-EC48-4CF9-A0C4-16E61CDFAEC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F646405F-EC48-4CF9-A0C4-16E61CDFAEC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F646405F-EC48-4CF9-A0C4-16E61CDFAEC1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E402E1BA-0D7E-44C7-8DBD-9C2BE70F2877}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E402E1BA-0D7E-44C7-8DBD-9C2BE70F2877}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E402E1BA-0D7E-44C7-8DBD-9C2BE70F2877}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E402E1BA-0D7E-44C7-8DBD-9C2BE70F2877}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{7FD837A0-F523-4789-84BC-7EE070891BFE} = {B3A189DD-051D-4F8E-97A4-531F5C5BAC74}
+		{1A0E0C9E-6C47-4FF3-8B6C-493BD077666D} = {B3A189DD-051D-4F8E-97A4-531F5C5BAC74}
+		{F646405F-EC48-4CF9-A0C4-16E61CDFAEC1} = {B3A189DD-051D-4F8E-97A4-531F5C5BAC74}
+		{E402E1BA-0D7E-44C7-8DBD-9C2BE70F2877} = {B3A189DD-051D-4F8E-97A4-531F5C5BAC74}
 	EndGlobalSection
 EndGlobal
