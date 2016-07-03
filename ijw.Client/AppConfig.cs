@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Configuration;
 
-namespace ijw.dotnet.Client {
+namespace ijw.Client {
     public class AppConfig {
         private Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
         public string this[string settingName]
