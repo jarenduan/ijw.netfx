@@ -1,0 +1,14 @@
+﻿{
+  "version": "1.0.0-rc1",
+
+  "dependencies": {
+    "ijw.IO": "1.0.0-rc1",
+    "ijw.Log": "1.0.0-rc1",
+    "ijw.Threading": "1.0.0-rc1",
+    "ijw.Collection": "1.0.0-rc1"
+  },
+
+  "frameworks": {
+    "net45": {}
+  }
+}
