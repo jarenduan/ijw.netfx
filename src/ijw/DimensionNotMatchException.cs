@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ijw.dotnet {
+namespace ijw {
     /// <summary>
     /// 表示集合元素维度不匹配的异常
     /// </summary>

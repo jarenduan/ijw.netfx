@@ -183,6 +183,7 @@ namespace ijw.IO {
 #endregion
 
 #region Object read and write
+        //TODO: support binary for .net standard
 #if NET35 || NET40 || NET45 //for netcore is not support binary formatter now, 2016-06-29
 
         /// <summary>
