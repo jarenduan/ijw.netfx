@@ -51,7 +51,7 @@ namespace ijw.Threading.Tasks {
         /// <returns>封装了循环的Task.</returns>
         public async Task StartAsync() {
             this.cts = new CancellationTokenSource();
-            await System.Threading.Tasks.Task.Run(() => Start(), this.cts.Token);
+            await Task.Run(() => Start(), this.cts.Token);
         }
 
         /// <summary>

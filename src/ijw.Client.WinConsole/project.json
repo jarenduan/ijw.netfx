@@ -1,9 +1,13 @@
 ﻿{
   "version": "1.0.0-rc1",
 
+  "dependencies": {
+   "ijw.Client.Win32": "1.0.0-rc1"
+  },
+
   "frameworks": {
     "net35": {},
-    "net40": {},
+    "net4": {},
     "net45": {}
   }
 }
