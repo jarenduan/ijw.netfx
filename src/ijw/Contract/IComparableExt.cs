@@ -27,7 +27,7 @@ namespace ijw.Contract
         }
 
         public static bool ShouldNotLessThan<T>(this T obj, T other) where T : IComparable<T> {
-            if (obj.CompareTo(other) > 0) {
+            if (obj.CompareTo(other) < 0) {
                 throw new ContractBreakException();
             }
             return true;

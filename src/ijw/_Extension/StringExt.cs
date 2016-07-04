@@ -28,11 +28,28 @@ namespace ijw {
         public static string GetSubStringPythonStyle(this string astring, int? startIndex = null, int? endIndex = null) {
             int startAt, endAt;
             Helper.PythonStartEndCalculator(astring.Length, out startAt, out endAt, startIndex, endIndex);
-            return astring.Substring(startAt, endAt);
-            //var chars = string.GetSubLazyPythonStyle(startIndex, endIndex);
-            //return new String(chars.ToArray());
+            if (endAt < 0) {
+                return string.Empty;
+            }
+            else {
+                return astring.GetSubString(startAt, endAt);
+            }
         }
 
+        public static string GetSubString(this string astring, int startIndex, int endIndex) {
+            startIndex.ShouldBeNotLessThanZero();
+            endIndex.ShouldBeNotLessThanZero();
+            if (endIndex < startIndex) {
+                return string.Empty;
+            }
+            char[] result = new char[endIndex - startIndex + 1];
+            int j = 0;
+            for (int i = startIndex; i <= endIndex; i++) {
+                result[j] = astring[i];
+                j++;
+            }
+            return new string(result);
+        }
         /// <summary>
         /// 重复指定次数. 如"Abc".Repeat(3) 返回 "AbcAbcAbc".
         /// </summary>

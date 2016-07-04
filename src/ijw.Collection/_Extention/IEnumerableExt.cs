@@ -13,6 +13,7 @@ namespace ijw.Collection {
         #region Get Sub Collections
         public static IEnumerable<T> GetSubLazy<T>(this IEnumerable<T> collection, int startIndex, int endIndex) {
             int index = -1;
+            //TODO: 遍历算法可以优化
             foreach (var element in collection) {
                 index++;
                 if (index >= startIndex && index <= endIndex) {
