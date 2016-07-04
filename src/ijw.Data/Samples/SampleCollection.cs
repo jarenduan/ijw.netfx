@@ -27,16 +27,17 @@ namespace ijw.Data.Samples {
             outputDimension.ShouldNotLargerThan(totalDimension);
             fieldNames.Count().ShouldEquals(totalDimension);
 
+            this.FieldNames = fieldNames.ToArray();
+            this.InputDimension = totalDimension - outputDimension;
+            this.OutputDimension = outputDimension;
+
             this._data = new double[samples.Count()][];
             samples.ForEachWithIndex((row, index) => {
                 row.Length.ShouldEquals(totalDimension);
                 _data[index] = row;
                 this._samples.Add(new Sample(row, outputDimension, this.FieldNames));
             });
-
-            this.InputDimension = totalDimension - outputDimension;
-            this.OutputDimension = outputDimension;
-            this.FieldNames = fieldNames.ToArray();
+            initializeDimensionColumns();
         }
 
         /// <summary>
@@ -69,6 +70,13 @@ namespace ijw.Data.Samples {
                 //新建一个样本元素对象，目的是不影响传入的Sample对象
                 this._samples.Add(new Sample(line, OutputDimension, this.FieldNames));
             });
+            initializeDimensionColumns();
+        }
+
+        private void initializeDimensionColumns() {
+            for (int i = 0; i < this.TotalDimension; i++) {
+                this._dimensionColumns.Add(new SampleCollectionDimensionColumn(this._data, i));
+            }
         }
         #endregion
 
@@ -102,7 +110,7 @@ namespace ijw.Data.Samples {
         /// <summary>
         /// 列集合
         /// </summary>
-        public IEnumerable<DimensionColumn> DimensionColumns => this._dimensionColumns;
+        public IEnumerable<SampleCollectionDimensionColumn> DimensionColumns => this._dimensionColumns;
 
         /// <summary>
         /// 按索引访问样本
@@ -116,7 +124,7 @@ namespace ijw.Data.Samples {
         /// </summary>
         /// <param name="fieldname"></param>
         /// <returns></returns>
-        public DimensionColumn this[string fieldname] => _dimensionColumns[getDimensionIndex(fieldname)];
+        public SampleCollectionDimensionColumn this[string fieldname] => _dimensionColumns[getDimensionIndex(fieldname)];
        
         /// <summary>
         /// 字段名称
@@ -134,7 +142,7 @@ namespace ijw.Data.Samples {
         /// <summary>
         /// 列视图集合内部存储
         /// </summary>
-        private List<DimensionColumn> _dimensionColumns = new List<DimensionColumn>();
+        private List<SampleCollectionDimensionColumn> _dimensionColumns = new List<SampleCollectionDimensionColumn>();
 
         /// <summary>
         /// 内部数据实际存储
@@ -213,7 +221,7 @@ namespace ijw.Data.Samples {
         /// </summary>
         /// <param name="index">指定的索引</param>
         /// <returns>维度列</returns>
-        public DimensionColumn GetDimensionColumnByIndex(int index) {
+        public SampleCollectionDimensionColumn GetDimensionColumnByIndex(int index) {
             return this._dimensionColumns[index];
         }
 
@@ -233,7 +241,6 @@ namespace ijw.Data.Samples {
             return new SampleCollection(cloneData, this.OutputDimension, this.FieldNames);
         }
         #endregion
-
 
         #region Static Methods
         /// <summary>
@@ -292,6 +299,7 @@ namespace ijw.Data.Samples {
             return sc;
         }
         #endregion
+
         #region Private Methods
         /// <summary>
         /// 检查字符串是否是样本集中的字段名
@@ -356,6 +364,5 @@ namespace ijw.Data.Samples {
         //    return value.DenormalizeMaxMin(this.Normalizer.MinInput.ElementAt(index), this.Normalizer.MaxOutput.ElementAt(index));
         //}
         //#endregion
-
     }
 }

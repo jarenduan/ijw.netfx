@@ -10,11 +10,11 @@ namespace ijw.Data.Filter {
     public static class SampleFilter {
         #region 限制波动过滤
         /// <summary>
-        /// 限制波动进行样本集过滤。用前一个样本+波动幅度代替。
+        /// 复制样本集，并限制波动进行样本集过滤。用前一个样本+波动幅度代替。
         /// </summary>
         /// <param name="samples">待过滤的样本集</param>
         /// <param name="diffLimitations">波动最大值绝对值的向量.</param>
-        /// <returns></returns>
+        /// <returns>新的样本集</returns>
         public static SampleCollection LimitingDiffFilter(this SampleCollection samples, IEnumerable<double> diffLimitations) {
             samples.ShouldNotBeNullOrEmpty();
             diffLimitations.Count().ShouldEquals(samples.TotalDimension);
@@ -22,10 +22,13 @@ namespace ijw.Data.Filter {
 
             SampleCollection result = samples.Clone();
 
-            foreach (var column in result.DimensionColumns) {
-                var diff = diffLimitations.ElementAt(column.ColumnIndex);
-                LimitingDiffFilter(column, diff);
-            }
+            CollectionHelper.ForEachThree(
+                samples.DimensionColumns,
+                result.DimensionColumns,
+                diffLimitations,
+                (srcCol, resultCol, diff) => {
+                    LimitingDiffFilter(srcCol, resultCol, diff);
+                });
 
             return result;
         }
@@ -35,11 +38,11 @@ namespace ijw.Data.Filter {
         /// </summary>
         /// <param name="values"></param>
         /// <param name="diff"></param>
-        public static void LimitingDiffFilter(IIndexable<double> values, double diff) {
+        public static void LimitingDiffFilter(IIndexable<double> values, IIndexable<double> result, double diff) {
             for (int i = 1; i < values.Count; i++) {
                 var curr = values[i];
                 var prev = values[i - 1];
-                values[i] = limitationByDiff(diff, curr, prev);
+                result[i] = limitationByDiff(diff, curr, prev);
             }
         }
 
@@ -61,19 +64,21 @@ namespace ijw.Data.Filter {
         /// 限幅过滤。放弃掉波动过大的样本，用前一个样本代替。
         /// </summary>
         /// <param name="samples">待过滤的样本集</param>
-        /// <param name="diffLimitations">波动最大值绝对值的向量.</param>
-        /// <returns></returns>
+        /// <param name="diffLimitations">波动最大值绝对值的向量. 都必须大于0</param>
+        /// <returns>新的样本集</returns>
         public static SampleCollection LimitingAmplifyFilter(this SampleCollection samples, IEnumerable<double> diffLimitations) {
             samples.ShouldNotBeNullOrEmpty();
             diffLimitations.Count().ShouldEquals(samples.TotalDimension);
             diffLimitations.ShouldEachSatisfy((item) => item > 0);
 
             SampleCollection result = samples.Clone();
-
-            foreach (var dc in result.DimensionColumns) {
-                var diff = diffLimitations.ElementAt(dc.ColumnIndex);
-                LimitingAmplifyFilter(dc, diff);
-            }
+            CollectionHelper.ForEachThree(
+                samples.DimensionColumns,
+                result.DimensionColumns,
+                diffLimitations,
+                (srcCol, resultCol, diff) => {
+                    LimitingAmplifyFilter(srcCol, resultCol, diff);
+                });
 
             return result;
         }
@@ -84,11 +89,11 @@ namespace ijw.Data.Filter {
         /// <param name="values">待过滤的数组</param>
         /// <param name="diff">波动最大值绝对值</param>
         /// <returns></returns>
-        public static void LimitingAmplifyFilter(IIndexable<double> values, double diff) {
+        public static void LimitingAmplifyFilter(IIndexable<double> values, IIndexable<double> result, double diff) {
             for (int i = 1; i < values.Count; i++) {
                 var curr = values[i];
                 var prev = values[i - 1];
-                values[i] = limitingAmplification(diff, curr, prev);
+                result[i] = limitingAmplification(diff, curr, prev);
             }
         } 
        
@@ -110,7 +115,7 @@ namespace ijw.Data.Filter {
         /// </summary>
         /// <param name="samples">待过滤的样本集</param>
         /// <param name="windowLength">窗口长度</param>
-        /// <returns></returns>
+        /// <returns>新的样本集</returns>
         public static SampleCollection MedianFilter(this SampleCollection samples, int windowLength) {
             samples.ShouldNotBeNullOrEmpty();
             windowLength.ShouldLargerThan(0);
@@ -127,7 +132,7 @@ namespace ijw.Data.Filter {
         /// </summary>
         /// <param name="samples">待过滤的样本集</param>
         /// <param name="windowLengths">各维度的窗口长度</param>
-        /// <returns></returns>
+        /// <returns>新的样本集</returns>
         public static SampleCollection MedianFilter(this SampleCollection samples, int[] windowLengths) {
             samples.ShouldNotBeNullOrEmpty();
             windowLengths.ShouldEachSatisfy((m) => m.ShouldLargerThan(0));
@@ -135,22 +140,23 @@ namespace ijw.Data.Filter {
             windowLengths.Length.ShouldNotLargerThan(samples.Count());
 
             SampleCollection result = samples.Clone();
-
-            foreach (var dc in result.DimensionColumns) {
-
-                int windowLength = windowLengths[dc.ColumnIndex] / 2;
-                MedianFilter(dc, windowLength);
-            }
+            CollectionHelper.ForEachThree(
+                samples.DimensionColumns,
+                result.DimensionColumns,
+                windowLengths,
+                (srcCol, resultCol, winlength) => {
+                    LimitingAmplifyFilter(srcCol, resultCol, winlength);
+                });
 
             return result;
         }
 
 
-        public static void MedianFilter(IIndexable<double> values, int windowLength) {
-            int half = windowLength;
+        public static void MedianFilter(IIndexable<double> values, IIndexable<double> result, int windowLength) {
+            int half = windowLength / 2;
             for (int i = half; i < values.Count - half; i++) {
                 double[] window = values.GetSubLazyPythonStyle(i - half, i + half + 1).OrderBy((e) => e).ToArray();
-                values[i] = window[half + 1];
+                result[i] = window[half + 1];
             }
         }
         #endregion
@@ -161,7 +167,7 @@ namespace ijw.Data.Filter {
         /// </summary>
         /// <param name="samples">待过滤的样本集</param>
         /// <param name="windowLength">窗口长度</param>
-        /// <returns></returns>
+        /// <returns>新的样本集</returns>
         public static SampleCollection MeanFilter(this SampleCollection samples, int windowLength) {
             samples.ShouldNotBeNullOrEmpty();
             windowLength.ShouldBeNotLessThanZero();
@@ -177,27 +183,27 @@ namespace ijw.Data.Filter {
         /// </summary>
         /// <param name="samples">待过滤的样本集</param>
         /// <param name="windowLengths">各维度的窗口长度</param>
-        /// <returns></returns>
+        /// <returns>新的样本集</returns>
         public static SampleCollection MeanFilter(this SampleCollection samples, int[] windowLengths) {
             samples.ShouldNotBeNullOrEmpty();
             windowLengths.ShouldEachSatisfy((m) => m.ShouldLargerThan(0) && m.ShouldNotLargerThan(samples.Count()));
             windowLengths.Length.ShouldEquals(samples.TotalDimension);
 
             SampleCollection result = samples.Clone();
-
-            foreach (var column in result.DimensionColumns) {
-                int windowLength = windowLengths[column.ColumnIndex] / 2;
-
-                MeanFilter(column, windowLength);
-            }
-
+            CollectionHelper.ForEachThree(
+               samples.DimensionColumns,
+               result.DimensionColumns,
+               windowLengths,
+               (srcCol, resultCol, winlength) => {
+                   LimitingAmplifyFilter(srcCol, resultCol, winlength);
+               });
             return result;
         }
 
-        private static void MeanFilter(IIndexable<double> values, int windowLength) {
-            int half = windowLength;
+        private static void MeanFilter(IIndexable<double> values, IIndexable<double> result, int windowLength) {
+            int half = windowLength / 2;
             for (int i = half; i < values.Count - half; i++) {
-                values[i] = values.GetSubLazyPythonStyle(i - half, i + half + 1)
+                result[i] = values.GetSubLazyPythonStyle(i - half, i + half + 1)
                           .ToArray()
                           .Sum((e) => e) / windowLength;
             }

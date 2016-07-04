@@ -46,7 +46,7 @@ namespace ijw.Contract {
         }
 
         public static bool ShouldNotEquals<T>(this T obj, T other) {
-            if (!obj.Equals(other)) {
+            if (obj.Equals(other)) {
                 throw new ContractBreakException();
             }
             return true;
