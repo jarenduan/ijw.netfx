@@ -4,7 +4,7 @@
     "ijw": "1.0.0-rc1",
     "ijw.Maths": "1.0.0-rc1",
     "ijw.Data": "1.0.0-rc1",
-    "ijw.AI.ANN": "1.0.0-rc1" 
+    "ijw.AI.ANN": "1.0.0-rc1"
   },
   "frameworks": {
     "net45": {},
