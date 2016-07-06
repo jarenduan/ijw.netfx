@@ -4,7 +4,8 @@
   "dependencies": {
     "ijw": "1.0.0-rc1",
     "ijw.Collection": "1.0.0-rc1",
-    "ijw.IO": "1.0.0-rc1"
+    "ijw.IO": "1.0.0-rc1",
+    "ijw.Serialization" :  "1.0.0-rc1"
   },
 
   "frameworks": {

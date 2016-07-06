@@ -1,7 +1,4 @@
 ﻿using ijw.Diagnostic;
-#if NET35 || NET40 || NET45 //for netcore is not support binary formatter now, 2016-06-29
-using ijw.Serialization.Binary;
-#endif
 using System;
 using System.IO;
 using System.Collections.Generic;

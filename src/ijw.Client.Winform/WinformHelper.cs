@@ -23,7 +23,7 @@ namespace ijw.Winform {
                     Stream myStream = null;
                     if ((myStream = ofd.OpenFile()) != null) {
                         using (myStream) {
-                           return BinarySerializationIOHelper.Deserialize<T>(myStream);
+                           return BinarySerializationHelper.Deserialize<T>(myStream);
                         }
                     }
                 }
@@ -102,7 +102,7 @@ namespace ijw.Winform {
             setFilter(FilterRemark, FilterExtensionName, sfd);
             if (sfd.ShowDialog() == DialogResult.OK) {
                 try {
-                    BinarySerializationIOHelper.Serialize(fileObject, sfd.FileName);
+                    BinarySerializationHelper.Serialize(fileObject, sfd.FileName);
                     return true;
                     //Stream myStream = null;
                     //if ((myStream = sfd.OpenFile()) != null) {

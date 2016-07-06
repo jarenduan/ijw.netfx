@@ -1,8 +1,8 @@
 ﻿//TODO: support netstandard when netcore support binaryserialization
 using ijw.Collection;
 using ijw.Diagnostic;
-using ijw.IO;
 using ijw.Log;
+using ijw.Serialization.Binary;
 using ijw.Threading.Tasks; 
 using System;
 using System.Net.Sockets;
