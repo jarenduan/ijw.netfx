@@ -1,14 +1,39 @@
-﻿//TODO: support binary for .net standard
-#if NET35 || NET40 || NET45 //for netcore is not support binary formatter now, 2016-06-29
+﻿#if NET35 || NET40 || NET45 //for netcore is not support binary formatter now, 2016-06-29
 using ijw.Diagnostic;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace ijw.IO
-{
-    public class BinarySerializationIOHelper
+
+namespace ijw.Serialization.Binary {
+    public class BinarySerializationHelper
     {
+        /// <summary>
+        /// 把对象序列化成字节数组
+        /// </summary>
+        /// <param name="objToSave"></param>
+        /// <returns>序列化后的数组</returns>
+        public static byte[] Serialize(object objToSave) {
+            using (MemoryStream stream = new MemoryStream()) {
+                Serialize(objToSave, stream);
+                return stream.ToArray();
+            }
+        }
+
+        /// <summary>
+        /// 把二进制数组反序列化对象
+        /// </summary>
+        /// <typeparam name="T">对象类型</typeparam>
+        /// <param name="bytes">存储对象的字节数组</param>
+        /// <returns>反序列化后的对象</returns>
+        public static T Deserialize<T>(Byte[] bytes) {
+            using (MemoryStream mem = new MemoryStream(bytes)) {
+                return Deserialize<T>(mem);
+            }
+        }
+
         /// <summary>
         /// 把对象序列化到二进制文件中
         /// </summary>
@@ -16,7 +41,7 @@ namespace ijw.IO
         /// <param name="filename">包含路径的文件名</param>
         public static void Serialize(object objToSave, string filename) {
             using (FileStream fs = new FileStream(filename, FileMode.Create)) {
-                BinarySerializationIOHelper.Serialize(objToSave, fs);
+                BinarySerializationHelper.Serialize(objToSave, fs);
                 DebugHelper.WriteLine("into binary file: " + filename);
             }
         }
@@ -42,7 +67,7 @@ namespace ijw.IO
         /// <returns>反序列化后的对象</returns>
         public static T Deserialize<T>(string filename) {
             using (FileStream fs = File.Open(filename, FileMode.Open)) {
-                var obj = BinarySerializationIOHelper.Deserialize<T>(fs);
+                var obj = BinarySerializationHelper.Deserialize<T>(fs);
                 DebugHelper.WriteLine("from binary file: " + filename);
                 return obj;
             }
