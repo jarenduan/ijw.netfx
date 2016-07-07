@@ -10,5 +10,13 @@ namespace ijw.Contract {
             }
             return true;
         }
+
+        public static bool ShouldBeValidAbsoluteName(this string path) {
+            var result = path.Length > 3 && path[1] == ':' && path[2] == '\\';
+            if (!result) {
+                throw new ContractBreakException($"{path} is not an absolute path.");
+            }
+            return path.ShouldExistSuchFile();
+        }
     }
 }
