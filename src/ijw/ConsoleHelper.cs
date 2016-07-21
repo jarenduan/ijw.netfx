@@ -79,7 +79,7 @@ namespace ijw {
         /// 当控制台有输入法行时，倒计时信息可能会出现重行的信息，这是因为输入法行占据了一行的console缓冲区，将导致计算行数不同于无输入法的状态；
         /// 由于目前无法实时识别控制台是否存在输入法行，此bug目前无解。
         /// </remarks>
-        public static bool ReadEnterInSeconds(string msgBeforeSeconds, int seconds, string msgAfterSeconds = "", bool defaultResult = true, bool isShowTimeCountDown = true) {
+        public static bool ReadEnterInSecondsWithThread(string msgBeforeSeconds, int seconds, string msgAfterSeconds = "", bool defaultResult = true, bool isShowTimeCountDown = true) {
             //Text before time count down
             Write(msgBeforeSeconds);
 
@@ -108,12 +108,8 @@ namespace ijw {
 
             //Count down seconds
             while (!stop && seconds > 0) {
-                //print the second string
-                if (isShowTimeCountDown) {
-                    Write(seconds.ToString());
-                }
-                //print message after seconds.
-                Write(msgAfterSeconds);
+                WriteSecondAndAfterMsg(seconds, msgAfterSeconds, isShowTimeCountDown);
+
 
                 //count down 1s within many little loops, so that key pressing could get in
                 int i = 0;
@@ -140,12 +136,7 @@ namespace ijw {
 
             t.Abort();
 
-            //print the second string
-            if (isShowTimeCountDown) {
-                Write(seconds.ToString());
-            }
-            //print message after seconds.
-            Write(msgAfterSeconds);
+            WriteSecondAndAfterMsg(seconds, msgAfterSeconds, isShowTimeCountDown);
 
             if (stop) {
                 WriteLine();
@@ -154,8 +145,8 @@ namespace ijw {
 
             return defaultResult;
         }
+#endif
 
-#else
         /// <summary>
         /// 在指定的超时时间内读取回车键
         /// </summary>
@@ -232,9 +223,6 @@ namespace ijw {
                 return defaultResult;
             }
         }
-
-
-#endif
         private static void WriteSecondAndAfterMsg(int seconds, string msgAfterSeconds, bool isShowTimeCountDown) {
             //print the second string
             if (isShowTimeCountDown) {

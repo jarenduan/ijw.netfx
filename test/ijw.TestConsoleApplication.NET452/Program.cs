@@ -2,9 +2,8 @@
 using static ijw.ConsoleHelper;
 using static System.Console;
 
-namespace ijw.TestConsoleApp {
-    public class Program
-    {
+namespace ijw.TestConsoleApplication.NET452 {
+    class Program {
         public static void Main(string[] args) {
             int testNum = 0;
             do {
@@ -40,10 +39,8 @@ namespace ijw.TestConsoleApp {
         private static void ReadKeyInSecondsTest() {
             WriteLineInColor("ReadKeyInSeconds() test begin:");
 
-            var bh = BufferHeight;
-            BufferHeight = 25;
-            CursorTop = 22;
-            WriteLineInColor($"Set BufferHeight to {BufferHeight.ToString()}, CursorTop to {CursorTop.ToString()}.", ConsoleColor.Green);
+            CursorTop = WindowTop + WindowHeight - 3;
+            WriteLineInColor($"Set CursorTop to {CursorTop.ToString()}.", ConsoleColor.Green);
 
             WriteLineInfo();
             WriteCurrentLineInfo();
@@ -76,8 +73,8 @@ namespace ijw.TestConsoleApp {
             WriteLineInfo();
             WriteLineInColor("2nd test done.\n\n");
 
-            WriteLineInColor($"Set BufferHeight back to {bh.ToString()}.", ConsoleColor.Green);
-            BufferHeight = bh;
+            //WriteLineInColor($"Set BufferHeight back to {bh.ToString()}.", ConsoleColor.Green);
+            //BufferHeight = bh;
 
             ExitTest();
         }
@@ -85,28 +82,23 @@ namespace ijw.TestConsoleApp {
         private static void ReadEnterInSecondsTest() {
             WriteLineInColor("ReadEnterInSeconds() test begin:");
 
-            var bh = BufferHeight;
-            BufferHeight = 25;
-            CursorTop = 22;
-            WriteLineInColor($"Set BufferHeight to {BufferHeight.ToString()}, CursorTop to {CursorTop.ToString()}.", ConsoleColor.Green);
+            CursorTop = WindowTop + WindowHeight - 3;
+            WriteLineInColor($"Set CursorTop to {CursorTop.ToString()}.", ConsoleColor.Green);
 
             WriteLineInfo();
             WriteCurrentLineInfo();
             WriteLineInColor("1st test begin...");
             WriteCurrentLineInfo();
-            var key = ReadEnterInSeconds("press enter to continue in ", 12, "s, and of course I had to write a lot of string to test it if there's too many characters in one line, and to see if the count down part work still fine.");
+            var key = ReadEnterInSecondsWithThread("press enter to continue in ", 12, "s, and of course I had to write a lot of string to test it if there's too many characters in one line, and to see if the count down part work still fine.");
             WriteLineInfo();
             WriteLineInColor("1st test done.\n\n");
 
             WriteCurrentLineInfo();
             WriteLineInColor("2nd test begin...");
             WriteCurrentLineInfo();
-            key = ReadEnterInSeconds("press enter to continue in ", 20, "s...");
+            key = ReadEnterInSecondsWithThread("press enter to continue in ", 20, "s...");
             WriteLineInfo();
             WriteLineInColor("2nd test done.\n\n");
-
-            WriteLineInColor($"Set BufferHeight back to {bh.ToString()}.", ConsoleColor.Green);
-            BufferHeight = bh;
 
             ExitTest();
         }
@@ -116,7 +108,7 @@ namespace ijw.TestConsoleApp {
         }
 
         private static void WriteCurrentLineInfo() {
-            WriteInColor("[CursorTop " + CursorTop.ToString() + ", Line " + (CursorTop + 1).ToString() + "] ",ConsoleColor.Green);
+            WriteInColor("[CursorTop " + CursorTop.ToString() + ", Line " + (CursorTop + 1).ToString() + "] ", ConsoleColor.Green);
         }
 
         private static void WriteLineInfo() {

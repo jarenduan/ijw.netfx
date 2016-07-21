@@ -66,7 +66,9 @@ Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ijw.xTest", "test\ijw.xTest
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "ijw.TestConsoleApp", "test\ijw.TestConsoleApp\ijw.TestConsoleApp.xproj", "{731FA16A-86DE-405B-8682-B89DA221540C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ijw.Client.WinConsole.TestConsoleApp", "test\ijw.Client.WinConsole.TestConsoleApp\ijw.Client.WinConsole.TestConsoleApp.csproj", "{62B230A0-1F57-4C00-A9DB-6C853076DA69}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ijw.Client.WinConsole.TestConsoleApplication.NET452", "test\ijw.Client.WinConsole.TestConsoleApplication.NET452\ijw.Client.WinConsole.TestConsoleApplication.NET452.csproj", "{1D06AFCA-6957-4361-AA86-F2FEC2D19C05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ijw.TestConsoleApplication.NET452", "test\ijw.TestConsoleApplication.NET452\ijw.TestConsoleApplication.NET452.csproj", "{A70AC8FA-1F01-4F14-83E0-009C742739B8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -170,10 +172,14 @@ Global
 		{731FA16A-86DE-405B-8682-B89DA221540C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{731FA16A-86DE-405B-8682-B89DA221540C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{731FA16A-86DE-405B-8682-B89DA221540C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{62B230A0-1F57-4C00-A9DB-6C853076DA69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{62B230A0-1F57-4C00-A9DB-6C853076DA69}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{62B230A0-1F57-4C00-A9DB-6C853076DA69}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{62B230A0-1F57-4C00-A9DB-6C853076DA69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D06AFCA-6957-4361-AA86-F2FEC2D19C05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D06AFCA-6957-4361-AA86-F2FEC2D19C05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D06AFCA-6957-4361-AA86-F2FEC2D19C05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D06AFCA-6957-4361-AA86-F2FEC2D19C05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A70AC8FA-1F01-4F14-83E0-009C742739B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A70AC8FA-1F01-4F14-83E0-009C742739B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A70AC8FA-1F01-4F14-83E0-009C742739B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A70AC8FA-1F01-4F14-83E0-009C742739B8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -206,6 +212,7 @@ Global
 		{0960B171-AEA3-4B19-8819-EF6D69B0DA49} = {041F0D95-3266-4EEE-8B00-1285C4741F13}
 		{43F47513-0B56-4A98-8604-A63FE5F4B1CC} = {041F0D95-3266-4EEE-8B00-1285C4741F13}
 		{731FA16A-86DE-405B-8682-B89DA221540C} = {041F0D95-3266-4EEE-8B00-1285C4741F13}
-		{62B230A0-1F57-4C00-A9DB-6C853076DA69} = {041F0D95-3266-4EEE-8B00-1285C4741F13}
+		{1D06AFCA-6957-4361-AA86-F2FEC2D19C05} = {041F0D95-3266-4EEE-8B00-1285C4741F13}
+		{A70AC8FA-1F01-4F14-83E0-009C742739B8} = {041F0D95-3266-4EEE-8B00-1285C4741F13}
 	EndGlobalSection
 EndGlobal
