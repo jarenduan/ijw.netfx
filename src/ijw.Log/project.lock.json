@@ -13,17 +13,45 @@
           "net35/ijw.dll": {}
         }
       },
-      "ijw.IO/1.0.0-rc1": {
+      "ijw.Collection/1.0.0-rc1": {
         "type": "project",
         "framework": ".NETFramework,Version=v3.5",
         "dependencies": {
           "ijw": "1.0.0-rc1"
         },
         "compile": {
+          "net35/ijw.Collection.dll": {}
+        },
+        "runtime": {
+          "net35/ijw.Collection.dll": {}
+        }
+      },
+      "ijw.IO/1.0.0-rc1": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v3.5",
+        "dependencies": {
+          "ijw": "1.0.0-rc1",
+          "ijw.Reflection": "1.0.0-rc1"
+        },
+        "compile": {
           "net35/ijw.IO.dll": {}
         },
         "runtime": {
           "net35/ijw.IO.dll": {}
+        }
+      },
+      "ijw.Reflection/1.0.0-rc1": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v3.5",
+        "dependencies": {
+          "ijw": "1.0.0-rc1",
+          "ijw.Collection": "1.0.0-rc1"
+        },
+        "compile": {
+          "net35/ijw.Reflection.dll": {}
+        },
+        "runtime": {
+          "net35/ijw.Reflection.dll": {}
         }
       }
     },
@@ -38,17 +66,45 @@
           "net40/ijw.dll": {}
         }
       },
-      "ijw.IO/1.0.0-rc1": {
+      "ijw.Collection/1.0.0-rc1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.0",
         "dependencies": {
           "ijw": "1.0.0-rc1"
         },
         "compile": {
+          "net40/ijw.Collection.dll": {}
+        },
+        "runtime": {
+          "net40/ijw.Collection.dll": {}
+        }
+      },
+      "ijw.IO/1.0.0-rc1": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.0",
+        "dependencies": {
+          "ijw": "1.0.0-rc1",
+          "ijw.Reflection": "1.0.0-rc1"
+        },
+        "compile": {
           "net40/ijw.IO.dll": {}
         },
         "runtime": {
           "net40/ijw.IO.dll": {}
+        }
+      },
+      "ijw.Reflection/1.0.0-rc1": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.0",
+        "dependencies": {
+          "ijw": "1.0.0-rc1",
+          "ijw.Collection": "1.0.0-rc1"
+        },
+        "compile": {
+          "net40/ijw.Reflection.dll": {}
+        },
+        "runtime": {
+          "net40/ijw.Reflection.dll": {}
         }
       }
     },
@@ -63,17 +119,45 @@
           "net45/ijw.dll": {}
         }
       },
-      "ijw.IO/1.0.0-rc1": {
+      "ijw.Collection/1.0.0-rc1": {
         "type": "project",
         "framework": ".NETFramework,Version=v4.5",
         "dependencies": {
           "ijw": "1.0.0-rc1"
         },
         "compile": {
+          "net45/ijw.Collection.dll": {}
+        },
+        "runtime": {
+          "net45/ijw.Collection.dll": {}
+        }
+      },
+      "ijw.IO/1.0.0-rc1": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5",
+        "dependencies": {
+          "ijw": "1.0.0-rc1",
+          "ijw.Reflection": "1.0.0-rc1"
+        },
+        "compile": {
           "net45/ijw.IO.dll": {}
         },
         "runtime": {
           "net45/ijw.IO.dll": {}
+        }
+      },
+      "ijw.Reflection/1.0.0-rc1": {
+        "type": "project",
+        "framework": ".NETFramework,Version=v4.5",
+        "dependencies": {
+          "ijw": "1.0.0-rc1",
+          "ijw.Collection": "1.0.0-rc1"
+        },
+        "compile": {
+          "net45/ijw.Reflection.dll": {}
+        },
+        "runtime": {
+          "net45/ijw.Reflection.dll": {}
         }
       }
     },
@@ -1039,6 +1123,20 @@
           "netstandard1.4/ijw.dll": {}
         }
       },
+      "ijw.Collection/1.0.0-rc1": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v1.4",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0",
+          "ijw": "1.0.0-rc1"
+        },
+        "compile": {
+          "netstandard1.4/ijw.Collection.dll": {}
+        },
+        "runtime": {
+          "netstandard1.4/ijw.Collection.dll": {}
+        }
+      },
       "ijw.IO/1.0.0-rc1": {
         "type": "project",
         "framework": ".NETStandard,Version=v1.4",
@@ -1046,13 +1144,31 @@
           "NETStandard.Library": "1.6.0",
           "System.IO.FileSystem.Watcher": "4.0.0",
           "System.Runtime.Serialization.Formatters": "4.0.0-rc3-24212-01",
-          "ijw": "1.0.0-rc1"
+          "ijw": "1.0.0-rc1",
+          "ijw.Reflection": "1.0.0-rc1"
         },
         "compile": {
           "netstandard1.4/ijw.IO.dll": {}
         },
         "runtime": {
           "netstandard1.4/ijw.IO.dll": {}
+        }
+      },
+      "ijw.Reflection/1.0.0-rc1": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v1.4",
+        "dependencies": {
+          "NETStandard.Library": "1.6.0",
+          "System.Diagnostics.StackTrace": "4.0.1",
+          "System.Threading.Thread": "4.0.0",
+          "ijw": "1.0.0-rc1",
+          "ijw.Collection": "1.0.0-rc1"
+        },
+        "compile": {
+          "netstandard1.4/ijw.Reflection.dll": {}
+        },
+        "runtime": {
+          "netstandard1.4/ijw.Reflection.dll": {}
         }
       }
     }
@@ -4014,10 +4130,20 @@
       "path": "../ijw/project.json",
       "msbuildProject": "../ijw/ijw.xproj"
     },
+    "ijw.Collection/1.0.0-rc1": {
+      "type": "project",
+      "path": "../ijw.Collection/project.json",
+      "msbuildProject": "../ijw.Collection/ijw.Collection.xproj"
+    },
     "ijw.IO/1.0.0-rc1": {
       "type": "project",
       "path": "../ijw.IO/project.json",
       "msbuildProject": "../ijw.IO/ijw.IO.xproj"
+    },
+    "ijw.Reflection/1.0.0-rc1": {
+      "type": "project",
+      "path": "../ijw.Reflection/project.json",
+      "msbuildProject": "../ijw.Reflection/ijw.Reflection.xproj"
     }
   },
   "projectFileDependencyGroups": {
