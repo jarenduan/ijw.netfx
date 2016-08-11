@@ -1,0 +1,20 @@
+﻿{
+  "version": "1.0.0-rc1",
+  "dependencies": {
+    "ijw": "1.0.0-rc1",
+    "ijw.Collection": "1.0.0-rc1"
+  },
+  "frameworks": {
+    "net35": {},
+    "net40": {},
+    "net45": {},
+    "netstandard1.4": {
+      "imports": "dnxcore50",
+      "dependencies": {
+        "NETStandard.Library": "1.6.0",
+        "System.Diagnostics.StackTrace": "4.0.1",
+        "System.Threading.Thread": "4.0.0"
+      }
+    }
+  }
+}
