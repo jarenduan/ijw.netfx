@@ -8,8 +8,8 @@ namespace ijw.IO {
         /// </summary>
         /// <param name="reader"></param>
         /// <returns>行集合</returns>
-        public static IEnumerable<string> ReadLines(this StreamReader reader) {
-            return (reader as TextReader).ReadLines();
-        }
+        //public static IEnumerable<string> ReadLines(this StreamReader reader) {
+        //    return (reader as TextReader).ReadLines();
+        //}
     }
 }

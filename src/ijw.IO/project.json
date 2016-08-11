@@ -1,7 +1,8 @@
 ﻿{
   "version": "1.0.0-rc1",
   "dependencies": {
-    "ijw": "1.0.0-rc1"
+    "ijw": "1.0.0-rc1",
+    "ijw.Reflection": "1.0.0-rc1"
   },
   "frameworks": {
     "net35": {},
