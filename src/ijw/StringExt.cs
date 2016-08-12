@@ -36,9 +36,17 @@ namespace ijw {
             }
         }
 
+        /// <summary>
+        /// 获取子串
+        /// </summary>
+        /// <param name="astring"></param>
+        /// <param name="startIndex">起始索引（该位置字符也包括在字串中）</param>
+        /// <param name="endIndex">结束索引（该位置字符也包括在字串中）</param>
+        /// <returns></returns>
         public static string GetSubString(this string astring, int startIndex, int endIndex) {
             startIndex.ShouldBeNotLessThanZero();
             endIndex.ShouldBeNotLessThanZero();
+            endIndex.ShouldLessThan(astring.Length);
             if (endIndex < startIndex) {
                 return string.Empty;
             }
@@ -50,6 +58,7 @@ namespace ijw {
             }
             return new string(result);
         }
+
         /// <summary>
         /// 重复指定次数. 如"Abc".Repeat(3) 返回 "AbcAbcAbc".
         /// </summary>
@@ -183,8 +192,8 @@ namespace ijw {
         /// 删除指定的字符串
         /// </summary>
         /// <param name="theString"></param>
-        /// <param name="toRemove">欲删除的字符串</param>
-        /// <returns></returns>
+        /// <param name="toRemove">欲删除的子串</param>
+        /// <returns>如果存在字串，将字串用空替换后返回；反之，返回原字符串</returns>
         public static string Remove(this string theString, string toRemove) {
             return theString.Replace(toRemove, string.Empty);
         }
@@ -194,7 +203,7 @@ namespace ijw {
         /// </summary>
         /// <param name="theString"></param>
         /// <param name="toRemove">一系列欲移除的字符串</param>
-        /// <returns></returns>
+        /// <returns>如果存在字串，将字串用空替换后返回；反之，返回原字符串</returns>
         public static string Remove(this string theString, params string[] toRemove) {
             string result = theString;
             foreach (var s in toRemove) {

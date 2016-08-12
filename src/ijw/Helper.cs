@@ -3,9 +3,7 @@ using ijw.Contract;
 
 namespace ijw
 {
-    public static class Helper
-       
-    {
+    public static class Helper{
         /// <summary>
         /// 获取python风格的起止索引值
         /// </summary>
