@@ -4,101 +4,60 @@ using ijw.Collection;
 
 namespace ijw.Reflection {
     public static class ObjectExt {
+        /// <summary>
+        /// 设置指定的属性值
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <param name="propertyName">属性的名字</param>
+        /// <param name="value">属性值</param>
+        /// <remarks>
+        /// 属性值运行时类型如果不符合，将会抛出异常
+        /// </remarks>
+        public static void SetPropertyValue<T>(this T obj, string propertyName, object value) {
 #if NETSTANDARD1_4
-        public static void SetPropertyValue<T>(this T obj, string propertyName, object value) {
             PropertyInfo p = typeof(T).GetTypeInfo().GetDeclaredProperty(propertyName);
-            if (p != null) {
-                setPropertyValue(obj, value, p);
-            }
-        }
 #else
-        public static void SetPropertyValue<T>(this T obj, string propertyName, object value) {
             PropertyInfo p = obj.GetType().GetProperty(propertyName);
+#endif
+            if (p != null) {
+                p.SetValue(obj, value, null);
+            }
+        }
+
+        /// <summary>
+        /// 将字符串尝试转型成属性的类型（用默认的FormatProvider），并把成功转型后的值设置给指定的属性。多用于从文本文件中构建对象。
+        /// 转型失败将抛出异常
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="obj"></param>
+        /// <param name="propertyName">属性的名字，必须存在</param>
+        /// <param name="value">属性值</param>
+        public static void SetPropertyValue<T>(this T obj, string propertyName, string value) {
+#if NETSTANDARD1_4
+            PropertyInfo p = typeof(T).GetTypeInfo().GetDeclaredProperty(propertyName);
+#else
+            PropertyInfo p = obj.GetType().GetProperty(propertyName);
+#endif
             if (p != null) {
                 setPropertyValue(obj, value, p);
             }
         }
-#endif
-        private static void setPropertyValue<T>(T obj, object value, PropertyInfo p) {
+
+        private static void setPropertyValue<T>(T obj, string value, PropertyInfo p) {
             Type propertyType = p.PropertyType;
             Type valueType = value.GetType();
-            if (p.Name != valueType.Name) {
-                value = convert(value, propertyType);
-            }
-            p.SetValue(obj, value, null);
-        }
-        private static object convert(object value, Type propertyType) {
-
+            object typedValue = value;
+            if (propertyType.GetTypeName() != "System.String") {
+                MethodInfo mi = null;
 #if NETSTANDARD1_4
-            switch (propertyType.ToString()) {
+                mi = typeof(StringExt).GetTypeInfo().GetDeclaredMethod("To");
 #else
-            string typeName = $"{propertyType.Namespace}.{propertyType.Name}";
-            if (propertyType.IsGenericType) {
-                typeName = typeName + propertyType.GetGenericArguments().ToAllEnumStrings(",");
-            }
-            switch (typeName) {
+                mi = typeof(StringExt).GetMethod("To");
 #endif
-                case "System.DateTime":
-                    return value is DateTime ? (DateTime)value : DateTime.Parse(value.ToString());
-                case "System.String":
-                    return value.ToString();
-                case "System.Single":
-                    return value is Single ? (Single)value : Single.Parse(value.ToString());
-                case "System.Double":
-                    return value is Double ? (Double)value : Double.Parse(value.ToString());
-                case "System.Int16":
-                    return value is Int16 ? (Int16)value : Int16.Parse(value.ToString());
-                case "System.Int32":
-                    return value is Int32 ? (Int32)value : Int32.Parse(value.ToString());
-                case "System.Int64":
-                    return value is Int64 ? (Int64)value : Int64.Parse(value.ToString());
-                case "System.Decimal":
-                    return value is Decimal ? (Decimal)value : Decimal.Parse(value.ToString());
-                case "System.Nullable`1[System.Double]":
-                    if (value.ToString().Length == 0) {
-                        return null;
-                    }
-                    else {
-                        return value is double ? (double)value : double.Parse(value.ToString());
-                    }
-                case "System.Nullable`1[System.Single]":
-                    if (value.ToString().Length == 0) {
-                        return null;
-                    }
-                    else {
-                        return value is Single ? (Single)value : Single.Parse(value.ToString());
-                    }
-                case "System.Nullable`1[System.Int16]":
-                    if (value.ToString().Length == 0) {
-                        return null;
-                    }
-                    else {
-                        return value is Int16 ? (Int16)value : Int16.Parse(value.ToString());
-                    }
-                case "System.Nullable`1[System.Int32]":
-                    if (value.ToString().Length == 0) {
-                        return null;
-                    }
-                    else {
-                        return value is Int32 ? (Int32)value : Int32.Parse(value.ToString());
-                    }
-                case "System.Nullable`1[System.Int64]":
-                    if (value.ToString().Length == 0) {
-                        return null;
-                    }
-                    else {
-                        return value is Int64 ? (Int64)value : Int64.Parse(value.ToString());
-                    }
-                case "System.Nullable`1[System.Decimal]":
-                    if (value.ToString().Length == 0) {
-                        return null;
-                    }
-                    else {
-                        return value is Decimal ? (Decimal)value : Decimal.Parse(value.ToString());
-                    }
-                default:
-                    throw new NotSupportedException($"{propertyType.Name} is not supported currently.");
+                typedValue = mi.MakeGenericMethod(propertyType).Invoke(null, new object[] { value });
             }
+            p.SetValue(obj, typedValue, null);
         }
     }
 }

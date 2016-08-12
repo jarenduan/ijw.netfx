@@ -253,15 +253,15 @@ namespace ijw.Collection {
         }
 
         /// <summary>
-        /// 输出包含所有元素的字符串，默认形如[a1,a2,a3,[a41,a42,a43],a5]
+        /// 输出包含所有元素的字符串，默认形如[a1, a2, a3, [a41, a42, a43], a5]
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="collection"></param>
-        /// <param name="separator">元素之间的分隔符，默认是","</param>
+        /// <param name="separator">元素之间的分隔符，默认是", "</param>
         /// <param name="prefix">第一个元素之前的字符串，默认是"["</param>
         /// <param name="postfix">最后一个元素之后的字符串，默认是"]"</param>
         /// <returns></returns>
-        public static string ToAllEnumStrings<T>(this IEnumerable<T> collection, string separator = ", ", string prefix = "[", string postfix = "]") {
+        public static string ToAllEnumStrings<T>(this IEnumerable<T> collection, string separator = ", ", string prefix = "[", string postfix = "]", Func<T, string> transform = null) {
             StringBuilder sb = new StringBuilder(prefix);
             foreach(var item in collection) {
                 IEnumerable<T> ienum = item as IEnumerable<T>;
@@ -269,7 +269,8 @@ namespace ijw.Collection {
                     sb.Append(ienum.ToAllEnumStrings(separator, prefix, postfix));
                 }
                 else {
-                    sb.Append(item.ToString());
+                    string s = transform == null ? item.ToString(): transform(item) ;
+                    sb.Append(s);
                 }
                 sb.Append(separator);
             }
