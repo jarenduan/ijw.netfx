@@ -9,7 +9,7 @@ namespace ijw.Reflection.xTest {
         [Fact]
         public void UnitTestCreateNewInstance() {
             string[] propertyName = {
-                "PropDatetime",  "PropDateTimeNullable",
+                "PropDateTime",  "PropDateTimeNullable",
                 "PropInt32",     "PropInt32Nullable",
                 "PropInt16",     "PropInt16Nullable",
                 "PropInt64",     "PropInt64Nullable",
@@ -35,8 +35,8 @@ namespace ijw.Reflection.xTest {
                 "just a string"
             };
             testClass t = ReflectionHelper.CreateNewInstance<testClass>(propertyName, values);
-            Assert.Equal(new DateTime(2016, 8, 8, 16, 44, 33), t.PropDatetime);
-            Assert.Equal(null, t.PropDatetimeNullable);
+            Assert.Equal(new DateTime(2016, 8, 8, 16, 44, 33), t.PropDateTime);
+            Assert.Equal(null, t.PropDateTimeNullable);
             Assert.Equal(32, t.PropInt32); Assert.Equal(32, t.PropInt32Nullable);
             Assert.Equal(16, t.PropInt16); Assert.Equal(null, t.PropInt16Nullable);
             Assert.Equal(64, t.PropInt64); Assert.Equal(64, t.PropInt64Nullable);
@@ -51,8 +51,8 @@ namespace ijw.Reflection.xTest {
         }
 
         private class testClass {
-            public DateTime PropDatetime { get; set; }
-            public DateTime? PropDatetimeNullable { get; set; }
+            public DateTime PropDateTime { get; set; }
+            public DateTime? PropDateTimeNullable { get; set; }
             public int PropInt32 { get; set; }
             public int? PropInt32Nullable { get; set; }
             public Int16 PropInt16 { get; set; }

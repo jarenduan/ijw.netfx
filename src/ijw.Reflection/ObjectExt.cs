@@ -15,14 +15,11 @@ namespace ijw.Reflection {
         /// 属性值运行时类型如果不符合，将会抛出异常
         /// </remarks>
         public static void SetPropertyValue<T>(this T obj, string propertyName, object value) {
-#if NETSTANDARD1_4
-            PropertyInfo p = typeof(T).GetTypeInfo().GetDeclaredProperty(propertyName);
-#else
-            PropertyInfo p = obj.GetType().GetProperty(propertyName);
-#endif
-            if (p != null) {
-                p.SetValue(obj, value, null);
+            PropertyInfo pi = typeof(T).GetPropertyInfo(propertyName);
+            if (pi == null) {
+                throw new ArgumentOutOfRangeException(propertyName);
             }
+            pi.SetValue(obj, value, null);
         }
 
         /// <summary>
@@ -34,30 +31,12 @@ namespace ijw.Reflection {
         /// <param name="propertyName">属性的名字，必须存在</param>
         /// <param name="value">属性值</param>
         public static void SetPropertyValue<T>(this T obj, string propertyName, string value) {
-#if NETSTANDARD1_4
-            PropertyInfo p = typeof(T).GetTypeInfo().GetDeclaredProperty(propertyName);
-#else
-            PropertyInfo p = obj.GetType().GetProperty(propertyName);
-#endif
-            if (p != null) {
-                setPropertyValue(obj, value, p);
+            PropertyInfo pi = typeof(T).GetPropertyInfo(propertyName);
+            if (pi == null) {
+                throw new ArgumentOutOfRangeException(propertyName);
             }
-        }
-
-        private static void setPropertyValue<T>(T obj, string value, PropertyInfo p) {
-            Type propertyType = p.PropertyType;
-            Type valueType = value.GetType();
-            object typedValue = value;
-            if (propertyType.GetTypeName() != "System.String") {
-                MethodInfo mi = null;
-#if NETSTANDARD1_4
-                mi = typeof(StringExt).GetTypeInfo().GetDeclaredMethod("To");
-#else
-                mi = typeof(StringExt).GetMethod("To");
-#endif
-                typedValue = mi.MakeGenericMethod(propertyType).Invoke(null, new object[] { value });
-            }
-            p.SetValue(obj, typedValue, null);
+            object typedValue = value.To(pi.PropertyType);
+            pi.SetValue(obj, typedValue, null);
         }
     }
 }

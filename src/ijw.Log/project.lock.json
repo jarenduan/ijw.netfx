@@ -148,16 +148,16 @@
       },
       "ijw.Reflection/1.0.0-rc1": {
         "type": "project",
-        "framework": ".NETFramework,Version=v4.5",
+        "framework": ".NETFramework,Version=v4.0",
         "dependencies": {
           "ijw": "1.0.0-rc1",
           "ijw.Collection": "1.0.0-rc1"
         },
         "compile": {
-          "net45/ijw.Reflection.dll": {}
+          "net40/ijw.Reflection.dll": {}
         },
         "runtime": {
-          "net45/ijw.Reflection.dll": {}
+          "net40/ijw.Reflection.dll": {}
         }
       }
     },
