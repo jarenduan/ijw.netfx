@@ -29,13 +29,13 @@ namespace ijw.Reflection {
         /// <typeparam name="T"></typeparam>
         /// <param name="obj"></param>
         /// <param name="propertyName">属性的名字，必须存在</param>
-        /// <param name="value">属性值</param>
-        public static void SetPropertyValue<T>(this T obj, string propertyName, string value) {
+        /// <param name="stringvalue">属性值</param>
+        public static void SetPropertyValue<T>(this T obj, string propertyName, string stringvalue) {
             PropertyInfo pi = typeof(T).GetPropertyInfo(propertyName);
             if (pi == null) {
                 throw new ArgumentOutOfRangeException(propertyName);
             }
-            object typedValue = value.To(pi.PropertyType);
+            object typedValue = stringvalue.To(pi.PropertyType);
             pi.SetValue(obj, typedValue, null);
         }
     }

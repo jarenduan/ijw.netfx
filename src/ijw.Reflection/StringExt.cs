@@ -5,7 +5,7 @@ namespace ijw.Reflection {
     public static class StringExt {
         /// <summary>
         /// 将字符串尝试转型成指定类型（用默认的FormatProvider）
-        /// 支持属性类型目前包括string、Boolean/Char/Byte/DateTime/Int16/32/64/Float/Double/Decimal及相应可空类型
+        /// 支持属性类型目前包括string、Boolean/Char/Byte/DateTime/(U)Int16/32/64/Float/Double/Decimal及相应可空类型
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
@@ -55,6 +55,15 @@ namespace ijw.Reflection {
                     case "System.Decimal":
                     case "System.Nullable`1[System.Decimal]":
                         return Decimal.Parse(value);
+                    case "System.UInt16":
+                    case "System.Nullable`1[System.UInt16]":
+                        return UInt16.Parse(value);
+                    case "System.UInt32":
+                    case "System.Nullable`1[System.UInt32]":
+                        return UInt32.Parse(value);
+                    case "System.UInt64":
+                    case "System.Nullable`1[System.UInt64]":
+                        return UInt64.Parse(value);
                     #endregion
                     default:
                         throw new NotSupportedException($"{typeName} is not supported currently.");

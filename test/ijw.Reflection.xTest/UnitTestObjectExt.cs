@@ -19,7 +19,10 @@ namespace ijw.Reflection.xTest {
                 "PropChar",      "PropCharNullable",
                 "PropByte",      "PropByteNullable",
                 "PropBoolean",   "PropBooleanNullable",
-                "PropString"
+                "PropString",
+                "PropUInt16",    "PropUInt16Nullable",
+                "PropUInt32",    "PropUInt32Nullable",
+                "PropUInt64",    "PropUInt64Nullable"
             };
             string[] values = {
                 "2016/08/08 16:44:33", "",
@@ -32,7 +35,10 @@ namespace ijw.Reflection.xTest {
                 "C",        "",
                 "65",        "65",
                 "False",    "",
-                "just a string"
+                "just a string",
+                "16",       "",
+                "32",       "32",
+                "64",       ""
             };
             testClass t = ReflectionHelper.CreateNewInstance<testClass>(propertyName, values);
             Assert.Equal(new DateTime(2016, 8, 8, 16, 44, 33), t.PropDateTime);
@@ -46,8 +52,10 @@ namespace ijw.Reflection.xTest {
             Assert.Equal('C', t.PropChar); Assert.Equal(null, t.PropCharNullable);
             Assert.Equal((byte)65, t.PropByte); Assert.Equal((byte)65, t.PropByteNullable);
             Assert.Equal(false, t.PropBoolean); Assert.Equal(null, t.PropBooleanNullable);
-
             Assert.Equal("just a string", t.PropString);
+            Assert.Equal(32u, t.PropUInt32); Assert.Equal(32u, t.PropUInt32Nullable);
+            Assert.Equal(16u, t.PropUInt16); Assert.Equal(null, t.PropUInt16Nullable);
+            Assert.Equal(64u, t.PropUInt64); Assert.Equal(null, t.PropUInt64Nullable);
         }
 
         private class testClass {
@@ -72,6 +80,13 @@ namespace ijw.Reflection.xTest {
             public bool PropBoolean { get; set; }
             public bool? PropBooleanNullable { get; set; }
             public string PropString { get; set; }
+
+            public UInt16 PropUInt16 { get; set; }
+            public UInt32 PropUInt32 { get; set; }
+            public UInt64 PropUInt64 { get; set; }
+            public UInt16? PropUInt16Nullable { get; set; }
+            public UInt32? PropUInt32Nullable { get; set; }
+            public UInt64? PropUInt64Nullable { get; set; }
         }
     }
 }
