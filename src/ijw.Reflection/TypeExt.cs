@@ -66,5 +66,13 @@ namespace ijw.Reflection
 #endif
             return t.IsValueType ? Activator.CreateInstance(type) : null;
         }
+
+        public static bool IsEnumType(this Type type) {
+#if NETSTANDARD1_4
+            return type.GetTypeInfo().IsEnum;
+#else
+            return type.IsEnum;
+#endif
+        }
     }
 }

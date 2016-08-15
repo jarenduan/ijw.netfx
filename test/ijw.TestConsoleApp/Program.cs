@@ -15,7 +15,7 @@ namespace ijw.TestConsoleApp {
                 WriteLine("   0: Exit.                     ");
                 WriteLine("--------------------------------");
 
-                testNum = ReadLine("Please input a number and enter:").ToInt(-1);
+                testNum = ReadLine("Please input a number and enter:").ToIntAnyway(-1);
                 switch (testNum) {
                     case -1:
                         WriteLineInColor("not a valid number, please try again.");

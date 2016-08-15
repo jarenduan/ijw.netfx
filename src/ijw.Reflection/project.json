@@ -7,13 +7,14 @@
   "frameworks": {
     "net35": {},
     "net40": {},
-    "net451": {},
+    "net45": {},
     "netstandard1.4": {
       "imports": "dnxcore50",
       "dependencies": {
         "NETStandard.Library": "1.6.0",
         "System.Diagnostics.StackTrace": "4.0.1",
-        "System.Threading.Thread": "4.0.0"
+        "System.Threading.Thread": "4.0.0",
+        "System.Data.Common": "4.1.0"
       }
     }
   }

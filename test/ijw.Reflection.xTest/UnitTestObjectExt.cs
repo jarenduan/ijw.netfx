@@ -22,7 +22,9 @@ namespace ijw.Reflection.xTest {
                 "PropString",
                 "PropUInt16",    "PropUInt16Nullable",
                 "PropUInt32",    "PropUInt32Nullable",
-                "PropUInt64",    "PropUInt64Nullable"
+                "PropUInt64",    "PropUInt64Nullable",
+                "PropEnum",     "PropEnumNullable",
+                "PropDBNull"
             };
             string[] values = {
                 "2016/08/08 16:44:33", "",
@@ -38,7 +40,9 @@ namespace ijw.Reflection.xTest {
                 "just a string",
                 "16",       "",
                 "32",       "32",
-                "64",       ""
+                "64",       "",
+                "First",    "",
+                ""
             };
             testClass t = ReflectionHelper.CreateNewInstance<testClass>(propertyName, values);
             Assert.Equal(new DateTime(2016, 8, 8, 16, 44, 33), t.PropDateTime);
@@ -56,6 +60,8 @@ namespace ijw.Reflection.xTest {
             Assert.Equal(32u, t.PropUInt32); Assert.Equal(32u, t.PropUInt32Nullable);
             Assert.Equal(16u, t.PropUInt16); Assert.Equal(null, t.PropUInt16Nullable);
             Assert.Equal(64u, t.PropUInt64); Assert.Equal(null, t.PropUInt64Nullable);
+            Assert.Equal(testEnum.First, t.PropEnum); Assert.Equal(null, t.PropEnumNullable);
+            Assert.Equal(DBNull.Value, t.PropDBNull);
         }
 
         private class testClass {
@@ -87,6 +93,11 @@ namespace ijw.Reflection.xTest {
             public UInt16? PropUInt16Nullable { get; set; }
             public UInt32? PropUInt32Nullable { get; set; }
             public UInt64? PropUInt64Nullable { get; set; }
+            public testEnum PropEnum { get; set; }
+            public testEnum? PropEnumNullable { get; set; }
+            public DBNull PropDBNull { get; set; }
         }
+
+        public enum testEnum { None = 0, First, Second, Last}
     }
 }
