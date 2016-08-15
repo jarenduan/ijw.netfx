@@ -236,13 +236,15 @@ namespace ijw {
             return aString.Remove(aString.Length - number, number);
         }
 
+        #region To Other Type Anyway
+
         /// <summary>
         /// 尝试转换成int. 如果失败将返回defaultNumer
         /// </summary>
         /// <param name="s"></param>
         /// <param name="defaultNumer">转换失败时返回的值, 默认是0</param>
         /// <returns></returns>
-        public static int ToInt(this string s, int defaultNumer = 0) {
+        public static int ToIntAnyway(this string s, int defaultNumer = 0) {
             int i;
             if (int.TryParse(s, out i)) {
                 return i;
@@ -251,17 +253,47 @@ namespace ijw {
                 return defaultNumer;
             }
         }
-
         /// <summary>
-        /// 对每个字符串进行Trim操作.
+        /// 把字符串转换成指定的枚举, 如果转换失败返回指定的缺省值.
         /// </summary>
-        /// <param name="stringArray"></param>
-        /// <returns></returns>
-        public static IEnumerable<string> TrimEach(this IEnumerable<string> stringArray) {
-            foreach (var s in stringArray) {
-                yield return s.Trim();
+        /// <typeparam name="T">转换的枚举类型</typeparam>
+        /// <param name="aString">此字符串</param>
+        /// <param name="ignoreCase">转换时是否忽略大小写，默认不忽略</param>
+        /// <param name="defaultValue">可选参数, 表示转换失败的时候所取的缺省值, 默认是枚举的0值</param>
+        /// <returns>转换后的枚举值</returns>
+        /// <exception cref="ArgumentException">
+        /// 指定的类型不是枚举类型时, 将抛出此异常. (Wish C# support "where T: Enum", to kill it at compilation)
+        /// </exception>
+        public static T ToEnumAnyway<T>(this string aString, bool ignoreCase = false, T defaultValue = default(T)) where T : struct {
+            T result = defaultValue;
+#if (NET35)
+            Type t = typeof(T);
+            if (!t.IsEnum) {
+                throw new ArgumentException($"{t.Name} is not a enumeration type.");
             }
+            try {
+                result = (T)Enum.Parse(typeof(T), aString);
+            }
+            catch {
+                result = defaultValue;
+            }
+#else
+            T e;
+            if (Enum.TryParse<T>(aString, out e)) {
+                result = e;
+            }
+#endif
+            return result;
         }
+
+        #endregion
+
+        #region  Is other type
+        public static bool IsInteger32(this string aString) {
+            int i;
+            return int.TryParse(aString, out i);
+        }
+        #endregion
 
         internal static string AppendOrdinalPostfix(this string s) {
             switch(s) {
@@ -353,44 +385,5 @@ namespace ijw {
             return count;
         }
 
-        public static bool IsInteger32(this string aString) {
-            int i;
-            return int.TryParse(aString, out i);
-        }
-
-        /// <summary>
-        /// 把字符串转换成指定的枚举, 如果转换失败返回指定的缺省值.
-        /// </summary>
-        /// <typeparam name="T">转换的枚举类型</typeparam>
-        /// <param name="aString">此字符串</param>
-        /// <param name="ignoreCase">转换时是否忽略大小写，默认忽略</param>
-        /// <param name="defaultValue">可选参数, 表示转换失败的时候所取的缺省值, 默认是枚举的0值</param>
-        /// <returns>转换后的枚举值</returns>
-        /// <exception cref="ArgumentException">
-        /// 指定的类型不是枚举类型时, 将抛出此异常. (Wish C# support "where T: Enum", to kill it at compilation)
-        /// </exception>
-        public static T ToEnum<T>(this string aString, bool ignoreCase = false, T defaultValue = default(T)) where T : struct {
-            T result = defaultValue;
-#if (NET35)
-            Type t = typeof(T);
-            if (!t.IsEnum) {
-                throw new ArgumentException($"{t.Name} is not a enumeration type.");
-            }
-            try {
-                result = (T)Enum.Parse(typeof(T), aString);
-            }
-            catch (ArgumentException) {
-                result = defaultValue;
-            }
-#else
-            T e;
-            if (Enum.TryParse<T>(aString, out e))
-            {
-                result = e;
-            }
-
-#endif
-            return result;
-        }
-    }
+       }
 }
