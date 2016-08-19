@@ -11,4 +11,4 @@ there're 3 folders in the repro:
   3. `test`: all test projects.
 
 # pkg
-use src/packall.bat to build all the projects into nuget packages
+Use `src/packall.bat` to build all the projects into nuget packages
