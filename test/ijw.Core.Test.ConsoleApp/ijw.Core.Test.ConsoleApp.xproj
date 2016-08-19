@@ -7,8 +7,8 @@
 
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>1a0e0c9e-6c47-4ff3-8b6c-493bd077666d</ProjectGuid>
-    <RootNamespace>ijw</RootNamespace>
+    <ProjectGuid>2b5f5b3c-3a82-49a5-896f-725092124ad9</ProjectGuid>
+    <RootNamespace>ijw.Core.Test.ConsoleApp</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>

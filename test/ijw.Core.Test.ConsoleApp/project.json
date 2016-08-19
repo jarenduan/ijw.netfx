@@ -9,7 +9,7 @@
       "type": "platform",
       "version": "1.0.0"
     },
-    "ijw": "1.0.0-rc1"
+    "ijw.Core": "1.0.0-rc1"
   },
 
   "frameworks": {

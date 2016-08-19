@@ -2,7 +2,7 @@
   "version": "1.0.0-*",
 
   "dependencies": {
-    "ijw": "1.0.0-rc1",
+    "ijw.Core": "1.0.0-rc1",
     "ijw.Log": "1.0.0-rc1",
     "EntityFramework": "6.1.3"
   },

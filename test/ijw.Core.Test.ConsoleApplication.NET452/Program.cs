@@ -2,7 +2,7 @@
 using static ijw.ConsoleHelper;
 using static System.Console;
 
-namespace ijw.TestConsoleApplication.NET452 {
+namespace ijw.Core.Test.ConsoleApplication.NET452 {
     class Program {
         public static void Main(string[] args) {
             int testNum = 0;
@@ -14,7 +14,7 @@ namespace ijw.TestConsoleApplication.NET452 {
                 WriteLine("   0: Exit.                     ");
                 WriteLine("--------------------------------");
 
-                testNum = ReadLine("Please input a number and enter:").ToInt(-1);
+                testNum = ReadLine("Please input a number and enter:").ToIntAnyway(-1);
                 switch (testNum) {
                     case -1:
                         WriteLineInColor("not a valid number, please try again.");

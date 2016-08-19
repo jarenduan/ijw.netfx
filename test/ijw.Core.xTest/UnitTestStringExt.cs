@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Xunit;
 
-namespace ijw.xTest {
+namespace ijw.Core.xTest {
     public class UnitTestStringExt {
 
         [Fact]

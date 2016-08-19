@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.Serialization;
 
 namespace ijw.Maths.Functions {
     public class LinearFunction : IMathFunctionWithDerivative {

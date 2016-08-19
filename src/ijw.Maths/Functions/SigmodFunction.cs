@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Runtime.Serialization;
-//TODO: support .net standard binary
 
 namespace ijw.Maths.Functions {
     public class SigmodFunction  : IMathFunctionWithDerivative{

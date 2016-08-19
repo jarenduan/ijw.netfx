@@ -1,7 +1,7 @@
 ﻿{
   "version": "1.0.0-rc1",
   "dependencies": {
-    "ijw": "1.0.0-rc1",
+    "ijw.Core": "1.0.0-rc1",
     "ijw.IO": "1.0.0-rc1",
     "Newtonsoft.Json": "9.0.1"
   },

@@ -1,7 +1,7 @@
 ﻿{
   "version": "1.0.0-rc1",
   "dependencies": {
-    "ijw": "1.0.0-rc1"
+    "ijw.Core": "1.0.0-rc1"
   },
   "frameworks": {
     "net45": {},

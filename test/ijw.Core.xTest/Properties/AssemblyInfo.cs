@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ijw")]
+[assembly: AssemblyProduct("ijw.Core.xTest")]
 [assembly: AssemblyTrademark("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
@@ -16,4 +16,4 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("1a0e0c9e-6c47-4ff3-8b6c-493bd077666d")]
+[assembly: Guid("5a73be2c-88bb-4287-b3ad-003e2f29e4b3")]

@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading;
+#if !(NET35 || NET40)
+    using System.Runtime.CompilerServices;
+#endif
 
 namespace ijw.Diagnostic {
     /// <summary>
@@ -27,19 +30,19 @@ namespace ijw.Diagnostic {
             Debug.WriteLine(GetFormattedMessage(message));
         }
 
-        private static string GetFormattedMessage(string message) {
-#if NET35 || NET40 || NET45
-            StackTrace st = new StackTrace();
-            var sf = st.GetFrame(2);
-            //Debug.WriteLine(sf.GetMethod());
-            Type t = sf.GetMethod().DeclaringType;
-            string typeName = t.Name;
-            string formatted = string.Format("[{3}][ThreadId: {0}][{1}]: {2}", Thread.CurrentThread.ManagedThreadId, typeName, message, DateTime.Now.ToLocalTime());
+#if !(NET35 || NET40)
+        private static string GetFormattedMessage(string message, [CallerMemberName] string methodName = "") {
+            return getFormattedMessage(methodName, message);  
+        } 
 #else
-            string formatted = message;
+        private static string GetFormattedMessage(string message) {
+            var name = new StackTrace().GetFrame(2).GetMethod().DeclaringType.Name;
+            return getFormattedMessage(name, message);
+        }
 #endif
+        private static string getFormattedMessage(string name, string message) {
+            string formatted = string.Format("[{3}][ThreadId: {0}][{1}]: {2}", Thread.CurrentThread.ManagedThreadId, name, message, DateTime.Now.ToLocalTime());
             return formatted;
         }
-
     }
 }
