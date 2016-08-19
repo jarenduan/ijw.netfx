@@ -1,5 +1,5 @@
 # ijw.netfx
-A few nuget packages provide extensions and helpers for .Net Core and .Net Frameworks. 
+A few nuget packages providing extensions and helpers for .Net Core and .Net Frameworks. 
 
 # Repro structure
 there're 3 folders in the repro:
