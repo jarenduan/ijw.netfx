@@ -13,27 +13,11 @@ namespace ijw.Threading.Tasks {
         /// </summary>
         public Action LoopAction { get; set; }
 
-        /// <summary>
-        /// 循环体
-        /// </summary>
         protected override void LoopBody() {
             if(this.LoopAction != null) {
                 DebugHelper.WriteLine("Loop body started.");
                 this.LoopAction();
                 DebugHelper.WriteLine("Loop body ended.");
-            }
-        }
-
-        /// <summary>
-        /// 检查循环体是否存在
-        /// </summary>
-        /// <returns></returns>
-        protected override bool CheckLoopBody() {
-            if(this.LoopAction == null) {
-                return false;
-            }
-            else {
-                return true;
             }
         }
     }

@@ -6,12 +6,11 @@ namespace ijw.Threading.Tasks {
     /// 封装带有进度通知的异步执行循环任务通用类, 提供启动, 暂停, 进度报告和退出的功能. 
     /// 可以执行指定的循环体, 循环体的每次迭代会检查指定的停止条件和暂停条件.
     /// </summary>
-    public class BackgroundLooperWithReport<TReport> : BackgroundLooperBase
-    {
+    public class BackgroundLooperWithReport<TReport> : BackgroundLooperBase {
         /// <summary>
         /// 设置进度报告的回调函数
         /// </summary>
-        public IProgress<TReport> Progress { get; set; } 
+        public IProgress<TReport> Progress { get; set; }
 
         /// <summary>
         /// 循环体, 返回一个值, 用作每次迭代的进度报告参数
@@ -21,32 +20,12 @@ namespace ijw.Threading.Tasks {
         /// <summary>
         /// 循环体
         /// </summary>
-        protected override void LoopBody()
-        {
-            if (this.LoopFunction != null)
-            {
+        protected override void LoopBody() {
+            if (this.LoopFunction != null) {
                 TReport r = this.LoopFunction();
-                if (this.Progress != null)
-                {
+                if (this.Progress != null) {
                     this.Progress.Report(r);
                 }
-            }
-        }
-
-        /// <summary>
-        /// 检查循环体是否存在
-        /// </summary>
-        /// <returns></returns>
-        protected override bool CheckLoopBody()
-        {
-            if (this.LoopFunction == null)
-            {
-                DebugHelper.WriteLine("No loop action.");
-                return false;
-            }
-            else
-            {
-                return true;
             }
         }
     }

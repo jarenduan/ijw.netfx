@@ -28,11 +28,6 @@ namespace ijw.Threading.Tasks {
         /// 循环体, 必须实现.
         /// </summary>
         protected abstract void LoopBody();
-        /// <summary>
-        /// 检查是否存在循环体, 必须实现.
-        /// </summary>
-        /// <returns>存在返回真, 不存在返回否</returns>
-        protected abstract bool CheckLoopBody();
 
         /// <summary>
         /// 停止循环的条件, 为真则停止循环.
@@ -58,10 +53,6 @@ namespace ijw.Threading.Tasks {
         /// 开始执行Loop
         /// </summary>
         protected void Start() {
-            if(!CheckLoopBody()) {
-                DebugHelper.WriteLine("No loop action.");
-                return;
-            }
             DebugHelper.WriteLine("Loop started.");
             while(this.StopCondition == null ? true : this.StopCondition() == false) {
                 if(this.cts.Token.IsCancellationRequested) {
