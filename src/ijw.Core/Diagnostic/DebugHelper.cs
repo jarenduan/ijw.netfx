@@ -11,8 +11,7 @@ namespace ijw.Diagnostic {
     /// </summary>
     public static class DebugHelper {
         /// <summary>
-        /// 对于NET35及以上的桌面平台，向输出窗口写入包含时间/线程id/调用类/指定字符串的debug信息
-        /// 对于其他平台，相当于Debug.Write.
+        /// 向输出窗口写入包含时间/线程id/调用类(或方法名)/指定消息的debug信息, 并换行.
         /// </summary>
         /// <param name="message">输出信息</param>
         [Conditional("DEBUG")]
@@ -21,8 +20,7 @@ namespace ijw.Diagnostic {
         }
 
         /// <summary>
-        /// 对于NET35及以上的桌面平台，向输出窗口写入包含时间/线程id/调用类/指定消息的debug信息, 并换行.
-        /// 对于其他平台，相当于Debug.WriteLine.
+        /// 向输出窗口写入包含时间/线程id/调用类(或方法名)/指定消息的debug信息, 并换行.
         /// </summary>
         /// <param name="message">输出信息</param>
         [Conditional("DEBUG")]
