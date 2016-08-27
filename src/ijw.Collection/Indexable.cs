@@ -8,11 +8,9 @@ namespace ijw.Collection {
     public class Indexable<T> : EnumerableBase<T>, IIndexable<T>{
         public Indexable(T[] data)
             : base(data) {
-            
         }
         public Indexable(IEnumerable<T> data)
             : base(data) {
-            
         }
         public T this[int index] {
             get { return this._data[index]; }
