@@ -1,8 +1,6 @@
-﻿using Newtonsoft.Json;
-using ijw.IO;
-using System;
+﻿using ijw.IO;
+using Newtonsoft.Json;
 using System.IO;
-using System.Text;
 
 namespace ijw.Serialization.Json {
     /// <summary>
