@@ -1,4 +1,5 @@
 ﻿using System;
+using ijw.Contract;
 
 namespace ijw.Grid {
 	/// <summary>
@@ -45,12 +46,10 @@ namespace ijw.Grid {
 		/// <param name="rowCount">行数, 需为正整数</param>
 		/// <param name="columnCount">列数, 需为正整数</param>
 		public Grid(int rowCount, int columnCount) {
-			if (rowCount <= 0 || columnCount <= 0) {
-				throw new ArgumentException("rowCount and columnCount should be both larger than zero.");
-			}
+			rowCount.ShouldLargerThan(0);
+			columnCount.ShouldLargerThan(0);
 			this._cells  = new T[rowCount][];
-			for (int i = 0; i < rowCount; i++)
-			{
+			for (int i = 0; i < rowCount; i++) {
 				this._cells[i] = new T[columnCount];
 			}
 			this.Rows = new RowCollection<T>(this);
@@ -62,14 +61,12 @@ namespace ijw.Grid {
 		/// </summary>
 		/// <param name="array"></param>
 		public Grid(T[,] array) {
-			if (array == null) {
-				throw new ArgumentNullException();
-			}
-			if (array.GetLength(0) == 0 || array.GetLength(1) == 0) {
-				throw new ArgumentException("rowCount and columnCount should be both larger than zero.");
-			}
+			array.ShouldBeNotNullArgument();
 			int rowCount = array.GetLength(0);
 			int columnCount = array.GetLength(1);
+			rowCount.ShouldLargerThan(0);
+			columnCount.ShouldLargerThan(0);
+
 			this._cells = new T[rowCount][];
 			for (int i = 0; i < rowCount; i++) {
 				this._cells[i] = new T[columnCount];
@@ -80,7 +77,18 @@ namespace ijw.Grid {
 			this.Rows = new RowCollection<T>(this);
 			this.Columns = new ColumnCollection<T>(this);
 		}
-		
+
+		public Grid(T[][] array) {
+			array.ShouldBeNotNullArgument();
+			array.Length.ShouldLargerThan(0);
+			array[0].Length.ShouldLargerThan(0);
+
+			this._cells = array;
+
+			this.Rows = new RowCollection<T>(this);
+			this.Columns = new ColumnCollection<T>(this);
+		}
+
 		/// <summary>
 		/// 内部使用了二维数组进行存储
 		/// </summary>

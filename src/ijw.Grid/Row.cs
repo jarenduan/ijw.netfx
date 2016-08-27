@@ -10,27 +10,21 @@ namespace ijw.Grid {
     /// </summary>
     /// <typeparam name="T">行中每个单元格内容纳的元素类型</typeparam>
     public class Row<T>: RowColumnBase<T> {
-        /// <summary>
-        /// 无参数构造函数, 仅供Grid类初始化时内部使用
-        /// </summary>
-        internal Row() {
+        public override int Dimension => this._grid.ColumnCount;
+
+        public override T this[int index] {
+            get { 
+                return this._grid._cells[this._index][index];
+            }
+            set {
+                this._grid._cells[this._index][index] = value;
+            }
         }
 
         /// <summary>
-        /// 构造函数. 使用指定的元素数组来初始化一个行对象.
+        /// 构造函数, 仅供Grid类初始化时内部使用
         /// </summary>
-        /// <param name="cells">一组元素</param>
-        public Row(T[] cells) : base(cells) {
-        }
-        
-        protected override int getDimensionInGrid(Grid<T> grid) {
-            return grid.ColumnCount;
-        }
-        protected override void setCellValue(int index, T value) {
-            this._grid._cells[this._rowColumnIndex][index] = value;
-        }
-        protected override T getCellValue(int index) {
-            return this._grid._cells[_rowColumnIndex][index];
+        internal Row(Grid<T> grid, int index) : base(grid, index) {
         }
     }
 }

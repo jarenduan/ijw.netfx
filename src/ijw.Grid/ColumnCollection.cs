@@ -10,11 +10,8 @@ namespace ijw.Grid {
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public sealed class ColumnCollection<T> : RowCollumnCollectionBase<T, Column<T>> {
-        internal ColumnCollection(Grid<T> grid) : base(grid, grid.ColumnCount) {
-        }
-
-        protected override Column<T> generateEmptyRowOrColumn() {
-            return new Column<T>();
-        }
+        internal ColumnCollection(Grid<T> grid) : base(grid, grid.ColumnCount, (g, i) => {
+            return new Column<T>(g, i);
+        }) { }
     }
 }
