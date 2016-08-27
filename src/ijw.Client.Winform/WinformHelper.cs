@@ -104,13 +104,6 @@ namespace ijw.Winform {
                 try {
                     BinarySerializationHelper.Serialize(fileObject, sfd.FileName);
                     return true;
-                    //Stream myStream = null;
-                    //if ((myStream = sfd.OpenFile()) != null) {
-                    //    using (myStream) {
-                    //        SerializationHelper.SerializeObjectToBinaryStream(fileObject, myStream);
-                    //        return true;
-                    //    }
-                    //}
                 }
                 catch (Exception ex) {
                     MessageBox.Show("Error: Could not save file to disk. Original error: " + ex.Message);
