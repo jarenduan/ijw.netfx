@@ -13,6 +13,11 @@ namespace ijw.Grid {
     /// <typeparam name="T"></typeparam>
     public abstract class RowColumnBase<T> : IEnumerable<T> {
         /// <summary>
+        /// 行/列的序号, 从0开始
+        /// </summary>
+        public int Index { get; protected set; }
+
+        /// <summary>
         /// 维度. 返回表中的列数/行数.
         /// </summary>
         public abstract int Dimension { get; }
@@ -29,13 +34,9 @@ namespace ijw.Grid {
         /// </summary>
         internal RowColumnBase(Grid<T> grid, int index) {
             this._grid = grid;
-            this._index = index;
+            this.Index = index;
         }
 
-        /// <summary>
-        /// 行/列的序号
-        /// </summary>
-        protected int _index;
 
         /// <summary>
         /// 属于那个表

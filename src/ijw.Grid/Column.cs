@@ -14,10 +14,10 @@ namespace ijw.Grid {
 
         public override T this[int index] {
             get {
-                return this._grid._cells[index][this._index];
+                return this._grid._cells[index][this.Index];
             }
             set {
-                this._grid._cells[index][this._index] = value;
+                this._grid._cells[index][this.Index] = value;
             }
         }
 
