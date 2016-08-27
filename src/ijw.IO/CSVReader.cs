@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using ijw.Contract;
 using ijw.Reflection;
-using ijw.Collection;
 
 namespace ijw.IO {
     /// <summary>
@@ -24,9 +22,7 @@ namespace ijw.IO {
         public static IEnumerable<Tuple<string[], int>> ReadSeparatedStringsWithLineNumber(string csvFilepath, char[] separators) {
             csvFilepath.ShouldExistSuchFile();
             separators.ShouldBeNotNullArgument();
-            //separators.ShouldNotBeEmpty();
 
-            //var reader = StreamReaderHelper.NewStreamReader(csvFilepath, ijw.Text.EncodingHelper.GB2312);
             var reader = StreamReaderHelper.NewStreamReader(csvFilepath);
             foreach (var t in reader.ReadLinesWithLineNumber()) {
                 char[] with = separators ?? new char[] { ',' };
