@@ -1,5 +1,7 @@
 ﻿using System;
 using ijw.Diagnostic;
+using System.Reflection;
+using System.Diagnostics;
 
 namespace ijw {
     public static class EventHandlerExt {
@@ -11,16 +13,23 @@ namespace ijw {
         /// <param name="eventArgs">事件参数</param>
         /// <returns>激活了事件, 返回真; 反之返回假</returns>
         public static bool InvokeIfNotNull(this EventHandler handler, object sender, EventArgs eventArgs) {
-            //DebugHelper.WriteLine("Try to Invoke ?? event.");
-            //TODO: add reflection support for debughelper with handler name
             if (handler != null) {
-                handler.Invoke(sender, eventArgs);
+                DebugWriteInvokingInfo(handler); handler.Invoke(sender, eventArgs);
                 return true;
             }
             else {
-                //DebugHelper.WriteLine("Null handler, none invoked.");
+                DebugHelper.WriteLine("Null handler, none invoked.");
                 return false;
             }
+        }
+
+        [Conditional("DEBUG")]
+        private static void DebugWriteInvokingInfo(EventHandler handler) {
+#if !NETSTANDARD1_4
+                DebugHelper.WriteLine("Try to invoke event handler: " + handler.Method.Name + ".");
+#else
+            DebugHelper.WriteLine("Try to invoke event handler: " + handler.GetMethodInfo().Name + ".");
+#endif
         }
 
         /// <summary>
@@ -36,9 +45,9 @@ namespace ijw {
             where T : EventArgs
 #endif
         {
-            //TODO: add reflection support for debughelper with handler name
             if (handler != null)
             {
+                DebugWriteInvokingInfo(handler);
                 handler.Invoke(sender, e);
                 return true;
             }
@@ -47,6 +56,20 @@ namespace ijw {
                 DebugHelper.WriteLine("Null handler, none invoked.");
                 return false;
             }
+        }
+
+        [Conditional("DEBUG")]
+        //only the last added method's name is written.
+        private static void DebugWriteInvokingInfo<T>(EventHandler<T> handler)
+#if NET35 || NET40
+            where T : EventArgs
+#endif
+        {
+#if !NETSTANDARD1_4
+            DebugHelper.WriteLine("Try to invoke event handler: " + handler.Method.Name + ".");
+#else
+            DebugHelper.WriteLine("Try to invoke event handler: " + handler.GetMethodInfo().Name + ".");
+#endif
         }
     }
 }
