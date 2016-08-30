@@ -9,15 +9,15 @@ namespace ijw.Grid {
     /// 表中的一列
     /// </summary>
     /// <typeparam name="T">列中每个单元格容纳的元素的类型</typeparam>
-    public class Column<T> : RowColumnBase<T>{
+    public class Column<T> : IndexedViewBase<T>{
         public override int Dimension => this._grid.ColumnCount;
 
         public override T this[int index] {
             get {
-                return this._grid._cells[index][this.Index];
+                return this._grid._cells[index, this.Index];
             }
             set {
-                this._grid._cells[index][this.Index] = value;
+                this._grid._cells[index, this.Index] = value;
             }
         }
 
