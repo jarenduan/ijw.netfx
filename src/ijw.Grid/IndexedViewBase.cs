@@ -11,9 +11,9 @@ namespace ijw.Grid {
     /// 行/列对象更像是表中对应行/列的视图, 所有操作将直接针对表中单元格. 其内部存储将被清空, 也不再使用.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public abstract class RowColumnBase<T> : IEnumerable<T> {
+    public abstract class IndexedViewBase<T> : IEnumerable<T> {
         /// <summary>
-        /// 行/列的序号, 从0开始
+        /// 行/列的序号, 从0开始 
         /// </summary>
         public int Index { get; protected set; }
 
@@ -32,11 +32,10 @@ namespace ijw.Grid {
         /// <summary>
         /// 仅供内部类初始化时调用
         /// </summary>
-        internal RowColumnBase(Grid<T> grid, int index) {
+        internal IndexedViewBase(Grid<T> grid, int index) {
             this._grid = grid;
             this.Index = index;
         }
-
 
         /// <summary>
         /// 属于那个表

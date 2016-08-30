@@ -8,18 +8,19 @@ namespace ijw.Grid {
     /// </summary>
     /// <typeparam name="TElement">元素类型</typeparam>
     /// <typeparam name="TRowOrColumn">行/列类型</typeparam>
-    abstract public class RowCollumnCollectionBase<TElement, TRowOrColumn> : EnumerableBase<TRowOrColumn>
-    where TRowOrColumn : RowColumnBase<TElement> {
+    abstract public class IndexedViewCollectionBase<TElement, TRowOrColumn> : EnumerableBase<TRowOrColumn>
+    where TRowOrColumn : IndexedViewBase<TElement> {
         public TRowOrColumn this[int index] => this._data[index];
 
-        internal RowCollumnCollectionBase(Grid<TElement> grid, int count, Func<Grid<TElement>, int, TRowOrColumn> creator) {
+        internal IndexedViewCollectionBase(Grid<TElement> grid, int count) {
             grid.ShouldBeNotNullArgument();
             count.ShouldBeNotZero();
-            creator.ShouldBeNotNullArgument();
 
             this._grid = grid;
-            this._data = CollectionHelper.NewArrayWithValue(count, index => creator(this._grid, index));
+            this._data = CollectionHelper.NewArrayWithValue(count, index => createIndexedView(this._grid, index));
         }
+
+        protected abstract TRowOrColumn createIndexedView(Grid<TElement> _grid, int index);
 
         protected Grid<TElement> _grid;
     }
