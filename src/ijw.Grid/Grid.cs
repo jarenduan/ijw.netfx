@@ -10,25 +10,19 @@ namespace ijw.Grid {
 		/// <summary>
 		/// 行数
 		/// </summary>
-		public int RowCount {
-			get {
-				return this._cells.Length;
-			}
-		}
+		public int RowCount => this._cells.GetLength(0);
 
 		/// <summary>
 		/// 列数
 		/// </summary>
-		public int ColumnCount {
-			get { return this._cells[0].Length; }
-		}
+		public int ColumnCount => this._cells.GetLength(1);
 
 		/// <summary>
 		/// 返回指定序号的行
 		/// </summary>
 		/// <param name="index"></param>
 		/// <returns></returns>
-		public Row<T> this[int index] { get { return this.Rows[index]; } }
+		public Row<T> this[int index] => this.Rows[index];
 
 		/// <summary>
 		/// 行集合
@@ -48,10 +42,8 @@ namespace ijw.Grid {
 		public Grid(int rowCount, int columnCount) {
 			rowCount.ShouldLargerThan(0);
 			columnCount.ShouldLargerThan(0);
-			this._cells  = new T[rowCount][];
-			for (int i = 0; i < rowCount; i++) {
-				this._cells[i] = new T[columnCount];
-			}
+
+			this._cells = new T[rowCount, columnCount];
 			this.Rows = new RowCollection<T>(this);
 			this.Columns = new ColumnCollection<T>(this);
 		}
@@ -59,32 +51,13 @@ namespace ijw.Grid {
 		/// <summary>
 		/// 构造函数. 用指定的二维数组初始化Grid.
 		/// </summary>
-		/// <param name="array"></param>
+		/// <param name="array">二维数组，grid将直接引用它作为内部存储</param>
 		public Grid(T[,] array) {
 			array.ShouldBeNotNullArgument();
-			int rowCount = array.GetLength(0);
-			int columnCount = array.GetLength(1);
-			rowCount.ShouldLargerThan(0);
-			columnCount.ShouldLargerThan(0);
-
-			this._cells = new T[rowCount][];
-			for (int i = 0; i < rowCount; i++) {
-				this._cells[i] = new T[columnCount];
-				for (int j = 0; j < columnCount; j++) {
-					this._cells[i][j] = array[i, j];
-				}
-			}
-			this.Rows = new RowCollection<T>(this);
-			this.Columns = new ColumnCollection<T>(this);
-		}
-
-		public Grid(T[][] array) {
-			array.ShouldBeNotNullArgument();
-			array.Length.ShouldLargerThan(0);
-			array[0].Length.ShouldLargerThan(0);
+			array.GetLength(0).ShouldLargerThan(0);
+			array.GetLength(1).ShouldLargerThan(0);
 
 			this._cells = array;
-
 			this.Rows = new RowCollection<T>(this);
 			this.Columns = new ColumnCollection<T>(this);
 		}
@@ -92,6 +65,6 @@ namespace ijw.Grid {
 		/// <summary>
 		/// 内部使用了二维数组进行存储
 		/// </summary>
-		internal T[][] _cells;
+		internal T[,] _cells;
 	}
 }
