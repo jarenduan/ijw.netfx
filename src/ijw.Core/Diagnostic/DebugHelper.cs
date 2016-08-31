@@ -15,8 +15,14 @@ namespace ijw.Diagnostic {
         /// </summary>
         /// <param name="message">输出信息</param>
         [Conditional("DEBUG")]
-        public static void Write(string message) {
-            Debug.Write(GetFormattedMessage(message));
+#if (NET35 || NET40)
+        public static void Write(string message, string callerName = "") {
+            if (callerName == "") callerName = GetCallerName();
+#else
+        public static void Write(string message, [CallerMemberName] string callerName = "") {
+#endif
+            string info = getFormattedMessage(callerName, message);
+            Debug.Write(info);
         }
 
         /// <summary>
@@ -24,23 +30,25 @@ namespace ijw.Diagnostic {
         /// </summary>
         /// <param name="message">输出信息</param>
         [Conditional("DEBUG")]
-        public static void WriteLine(string message) {
-            Debug.WriteLine(GetFormattedMessage(message));
+#if (NET35 || NET40)
+        public static void WriteLine(string message, string callerName = "") {
+            if (callerName == "") callerName = GetCallerName();
+#else
+        public static void WriteLine(string message, [CallerMemberName] string callerName = "") {
+#endif
+            string info = getFormattedMessage(callerName, message);
+            Debug.WriteLine(info);
         }
 
-#if !(NET35 || NET40)
-        private static string GetFormattedMessage(string message, [CallerMemberName] string methodName = "") {
-            return getFormattedMessage(methodName, message);  
-        } 
-#else
-        private static string GetFormattedMessage(string message) {
-            var name = new StackTrace().GetFrame(2).GetMethod().DeclaringType.Name;
-            return getFormattedMessage(name, message);
+#if !NETSTANDARD1_4
+        public static string GetCallerName() {
+            var mi = new StackTrace().GetFrame(2).GetMethod();
+            return $"{mi.DeclaringType.Name}.{mi.Name}";
         }
 #endif
+
         private static string getFormattedMessage(string name, string message) {
-            string formatted = string.Format("[{3}][ThreadId: {0}][{1}]: {2}", Thread.CurrentThread.ManagedThreadId, name, message, DateTime.Now.ToLocalTime());
-            return formatted;
+            return $"[{DateTime.Now.ToLocalTime()}][ThreadId: {Thread.CurrentThread.ManagedThreadId}][{name}]: {message}";
         }
     }
 }
