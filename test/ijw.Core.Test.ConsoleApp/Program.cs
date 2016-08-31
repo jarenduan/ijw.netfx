@@ -1,6 +1,7 @@
 ﻿using System;
 using static ijw.ConsoleHelper;
 using static System.Console;
+using ijw.Diagnostic;
 
 namespace ijw.TestConsoleApp {
     public class Program
@@ -23,10 +24,10 @@ namespace ijw.TestConsoleApp {
                     case 0:
                         break;
                     case 1:
-                        ReadEnterInSecondsTest();
+                        TestReadEnterInSecondsTest();
                         break;
                     case 2:
-                        ReadKeyInSecondsTest();
+                        TestReadKeyInSecondsTest();
                         break;
                     default:
                         break;
@@ -37,7 +38,7 @@ namespace ijw.TestConsoleApp {
             ReadLine("Press enter to exit...");
         }
 
-        private static void ReadKeyInSecondsTest() {
+        private static void TestReadKeyInSecondsTest() {
             WriteLineInColor("ReadKeyInSeconds() test begin:");
 
             CursorTop = WindowTop + WindowHeight - 3;
@@ -77,7 +78,7 @@ namespace ijw.TestConsoleApp {
             ExitTest();
         }
 
-        private static void ReadEnterInSecondsTest() {
+        private static void TestReadEnterInSecondsTest() {
             WriteLineInColor("ReadEnterInSeconds() test begin:");
 
             CursorTop = WindowTop + WindowHeight - 3;
