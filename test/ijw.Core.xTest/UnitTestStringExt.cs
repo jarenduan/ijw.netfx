@@ -3,7 +3,6 @@ using Xunit;
 
 namespace ijw.Core.xTest {
     public class UnitTestStringExt {
-
         [Fact]
         public void TestFormatJson() {
 
