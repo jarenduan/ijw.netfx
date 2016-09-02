@@ -17,9 +17,9 @@ namespace ijw.Threading.Tasks {
         protected abstract void LoopBody();
 
         /// <summary>
-        /// 停止循环的条件, 为真则停止循环.
+        /// 停止循环的条件, 为真则停止循环. 默认值是一直为假，即一直循环。
         /// </summary>
-        public BooleanCondition StopCondition { get; set; }
+        public BooleanCondition StopCondition { get; set; } = () => false;
 
         /// <summary>
         /// 每次迭代时候检查, 为真则暂停一次迭代.
@@ -33,7 +33,7 @@ namespace ijw.Threading.Tasks {
         /// <returns>封装了循环的Task.</returns>
         public async Task StartAsync() {
             this._cts = new CancellationTokenSource();
-            await Task.Run(() => Start(), this._cts.Token);
+            await Task.Run(() => start(), this._cts.Token);
         }
 
         /// <summary>
@@ -72,25 +72,25 @@ namespace ijw.Threading.Tasks {
         /// <summary>
         /// 开始循环
         /// </summary>
-        protected void Start() {
+        protected void start() {
             DebugHelper.WriteLine("Loop started.");
             while (this.StopCondition == null ? true : this.StopCondition() == false) {
                 if (this._cts.Token.IsCancellationRequested) {
-                    DebugHelper.WriteLine("Exit notification recieved.");
+                    DebugHelper.WriteLine("Exiting signal recieved.");
                     break;
                 }
                 if (this.ShouldSuspend) {
                     DebugHelper.WriteLine("Loop suspended!");
                     _are.WaitOne();
                     if (!ShouldSuspend) {
-                        DebugHelper.WriteLine("Loop resuming!");
+                        DebugHelper.WriteLine("Loop resumed!");
                     }
                 }
                 else if (WaitCondition?.Invoke() == true) {
                     DebugHelper.WriteLine("Condition not satisfied, loop sleeping!");
                     _are.WaitOne();
                     if (this._cts.Token.IsCancellationRequested) {
-                        DebugHelper.WriteLine("Exit notification recieved.");
+                        DebugHelper.WriteLine("Exit signal recieved.");
                         break;
                     }
                     else {
