@@ -1,0 +1,15 @@
+﻿{
+  "version": "1.0.0-rc1",
+
+  "dependencies": {
+    "ijw.Log": "1.0.0-rc1",
+    "ijw.Threading.Tasks": "1.0.0-rc1",
+    "ijw.Collection": "1.0.0-rc1",
+    "ijw.Serialization": "1.0.0-rc1",
+    "ijw.Net.Socket": "1.0.0-rc1"
+  },
+
+  "frameworks": {
+    "net45": {}
+  }
+}
