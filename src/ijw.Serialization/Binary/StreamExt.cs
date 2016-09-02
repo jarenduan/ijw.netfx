@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
-namespace ijw.Serialization.Binary { 
+namespace ijw.Serialization.Binary {
     /// <summary>
     /// 扩展Stream类, 以支持一些简便的读写功能.
     /// </summary>
     public static class StreamExt {
-        #region Object read and write
+ #region Object read and write
         //TODO: support binary for .net standard
 #if NET35 || NET40 || NET45 //for netcore is not support binary formatter now, 2016-06-29
 
@@ -47,7 +45,7 @@ namespace ijw.Serialization.Binary {
         /// <param name="stream">流</param>
         /// <param name="obj">目标对象</param>
         /// <param name="writeLengthHeader">是否写入头. 如果为true, 将首先自动写入4个字节的头, 内容是对象序列化后的长度</param>
-        public static void WriteObjectInJSON<T>(this Stream stream, T obj, bool writeLengthHeader = true) {
+        public static void WriteObjectInJsonAndDispose<T>(this Stream stream, T obj, bool writeLengthHeader = true) {
             //using (MemoryStream mem = new MemoryStream()) {
             //    int objLen = SerializationHelper.SerializeObjectToBinaryStream(obj, mem);
             //    if (writeLengthHeader) {
