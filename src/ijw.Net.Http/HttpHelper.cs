@@ -34,7 +34,7 @@ namespace ijw.Net.Http {
         public static string DownloadString(string url, Encoding encoding, string userAgent = BrowserUserAgent.Firefox, int connectTimeout = 1000 * 10, int readTimeout = 1000 * 10) {
             return GetWebResponseContent(
                 url, 
-                (stream) => stream.ReadString(encoding), 
+                (stream) => stream.ReadStringAndDispose(encoding), 
                 userAgent,
                 connectTimeout,
                 readTimeout);
@@ -69,7 +69,7 @@ namespace ijw.Net.Http {
             return GetWebResponseContent(
                 url,
                 (stream) => {
-                    stream.WriteToTextFile(filename, readEncoding, writeEncoding, append);
+                    stream.WriteToTextFileAndDispose(filename, readEncoding, writeEncoding, append);
                     return 0;
                 },
                 userAgent,
@@ -135,7 +135,7 @@ namespace ijw.Net.Http {
         public static long DownloadBytesToFile(string url, string filename, Encoding readEncoding, Encoding writeEncoding, string userAgent = BrowserUserAgent.Firefox, int connectTimeout = 1000 * 10, int readTimeout = 1000 * 10, bool append = false) {
             return GetWebResponseContent(
                 url,
-                (stream) => stream.WriteToBinaryFile(filename, readEncoding, writeEncoding, append),
+                (stream) => stream.WriteToBinaryFileAndDispose(filename, readEncoding, writeEncoding, append),
                 userAgent,
                 connectTimeout,
                 readTimeout);
