@@ -34,7 +34,7 @@ namespace ijw.Serialization.Json {
         /// <param name="filepath">全路径文件名</param>
         /// <returns>反序列化后的对象</returns>
         public static T LoadJsonObjectFromFile<T>(string filepath) {
-            using (StreamReader reader = StreamReaderHelper.NewStreamReader(filepath)) {
+            using (StreamReader reader = StreamReaderHelper.NewStreamReaderFromFilepath(filepath)) {
                 var jstring = reader.ReadToEnd();
                 return JsonSerializationHelper.LoadJsonObject<T>(jstring);
             }
