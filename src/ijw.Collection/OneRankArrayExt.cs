@@ -9,9 +9,9 @@ namespace ijw.Collection
     /// </summary>
     public static class OneRankArrayExt
     {
-        public static void Fill<T>(this T[] collection, Func<int, T> filler) {
+        public static void Initialize<T>(this T[] collection, Func<int, T> initializer) {
             for (int i = 0; i < collection.Length; i++) {
-                collection[i] = filler(i);
+                collection[i] = initializer(i);
             }
         }
         public static IEnumerator<T> GetEnumeratorGenerics<T>(this T[] collection)
