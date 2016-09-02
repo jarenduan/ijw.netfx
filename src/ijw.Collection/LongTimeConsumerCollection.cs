@@ -27,29 +27,17 @@ namespace ijw.Collection {
         /// <summary>
         /// 元素数量.
         /// </summary>
-        public int Count {
-            get {
-                return this._itemsList.Count;
-            }
-        }
+        public int Count => this._itemsList.Count;
+
         /// <summary>
         /// 获取是否存在元素
         /// </summary>
-        public bool HasItem {
-            get {
-                return this._itemsList.Count != 0;
-                //return this._items.Count != 0;
-            }
-        }
+        public bool HasItem => this._itemsList.Count != 0;
+
         /// <summary>
         /// 获取当前是否存在未被提取消费的元素
         /// </summary>
-        public bool HasNonConsumingItem {
-            get {
-                return this._itemsList.Exists((tuple) => tuple.Item2 == false);
-                //return this._items.ContainsValue(false);
-            }
-        }
+        public bool IsItemAvailable => this._itemsList.Exists((tuple) => tuple.Item2 == false);
 
         /// <summary>
         /// 向集合尾部追加一个元素
@@ -148,16 +136,16 @@ namespace ijw.Collection {
         /// </summary>
         /// <param name="item">取出的元素</param>
         /// <returns>是否成功</returns>
-        public bool TryGetItem(out T item) {
+        public bool TryBorrow(out T item) {
             return TryGetItem(out item, false);
         }
 
         /// <summary>
-        /// 尝试取出一个没有被使用的元素
+        /// 尝试借出一个可用元素
         /// </summary>
         /// <param name="item">取出的元素</param>
         /// <returns>是否成功</returns>
-        public bool TryGetItemNotConsuming(out T item) {
+        public bool TryBorrowAvailable(out T item) {
             return TryGetItem(out item, true);
         }
         private bool TryGetItem(out T item, bool onlyGetNotInConsuming = false) {
@@ -166,7 +154,7 @@ namespace ijw.Collection {
                 DebugHelper.WriteLine("(Getting Item) Try getting Item, but no items.");
                 return false;
             }
-            if(onlyGetNotInConsuming && !this.HasNonConsumingItem) {
+            if(onlyGetNotInConsuming && !this.IsItemAvailable) {
                 DebugHelper.WriteLine("(Getting Item) Try getting Item, but all items are in consuming.");
                 return false;
             }
@@ -178,7 +166,7 @@ namespace ijw.Collection {
                     DebugHelper.WriteLine("(Getting Item) But no items :("); 
                     return false; 
                 }
-                if(onlyGetNotInConsuming && !this.HasNonConsumingItem) {
+                if(onlyGetNotInConsuming && !this.IsItemAvailable) {
                     DebugHelper.WriteLine("(Getting consuming Item) But all in consuming :(");
                     return false;
                 }
