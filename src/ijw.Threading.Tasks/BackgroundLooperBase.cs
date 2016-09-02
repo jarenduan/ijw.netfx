@@ -12,19 +12,6 @@ namespace ijw.Threading.Tasks {
     /// </summary>
     public abstract class BackgroundLooperBase {
         /// <summary>
-        /// 任务停止令牌
-        /// </summary>
-        protected CancellationTokenSource cts;
-        /// <summary>
-        /// 同步信号量
-        /// </summary>
-        protected static AutoResetEvent are = new AutoResetEvent(false);
-        /// <summary>
-        /// 是否应该等待
-        /// </summary>
-        protected bool ShouldWait = false;
-
-        /// <summary>
         /// 循环体, 必须实现.
         /// </summary>
         protected abstract void LoopBody();
@@ -45,25 +32,64 @@ namespace ijw.Threading.Tasks {
         /// </summary>
         /// <returns>封装了循环的Task.</returns>
         public async Task StartAsync() {
-            this.cts = new CancellationTokenSource();
-            await Task.Run(() => Start(), this.cts.Token);
+            this._cts = new CancellationTokenSource();
+            await Task.Run(() => Start(), this._cts.Token);
         }
 
         /// <summary>
-        /// 开始执行Loop
+        /// 通知循环体停止迭代.
+        /// 需要注意的是, 如果代码正处在循环体内, 将不会立即停止返回, 而是会执行完当前的迭代, 待下次迭代开始的时候才会停止循环.
+        /// </summary>
+        public void Exit() {
+            this._cts.Cancel();
+            DebugHelper.WriteLine("Loop exit signal sended...");
+            _are.Set();
+        }
+
+        /// <summary>
+        /// 暂停迭代循环。将会执行完当前迭代, 待下次迭代开始时暂停.
+        /// </summary>
+        public void Suspend() {
+            DebugHelper.WriteLine("Loop is going to suspend...");
+            this.ShouldSuspend = true;
+            _are.Set();
+        }
+
+        /// <summary>
+        /// 通知循环继续
+        /// </summary>
+        public void Resume() {
+            if (this.ShouldSuspend) {
+                DebugHelper.WriteLine("Loop is going to resume...");
+                this.ShouldSuspend = false;
+            }
+            else {
+                DebugHelper.WriteLine("Loop waking signal sended...");
+            }
+            _are.Set();
+        }
+
+        /// <summary>
+        /// 开始循环
         /// </summary>
         protected void Start() {
             DebugHelper.WriteLine("Loop started.");
-            while(this.StopCondition == null ? true : this.StopCondition() == false) {
-                if(this.cts.Token.IsCancellationRequested) {
+            while (this.StopCondition == null ? true : this.StopCondition() == false) {
+                if (this._cts.Token.IsCancellationRequested) {
                     DebugHelper.WriteLine("Exit notification recieved.");
                     break;
                 }
-                if((WaitCondition != null && WaitCondition() == true) || this.ShouldWait == true) {
-                    this.ShouldWait = false;
+                if (this.ShouldSuspend) {
+                    DebugHelper.WriteLine("Loop suspended!");
+                    _are.WaitOne();
+                    if (!ShouldSuspend) {
+                        DebugHelper.WriteLine("Loop resuming!");
+                    }
+                }
+                else if (WaitCondition?.Invoke() == true) {
                     DebugHelper.WriteLine("Condition not satisfied, loop sleeping!");
-                    are.WaitOne();
-                    if(this.cts.Token.IsCancellationRequested) {
+                    _are.WaitOne();
+                    if (this._cts.Token.IsCancellationRequested) {
                         DebugHelper.WriteLine("Exit notification recieved.");
                         break;
                     }
@@ -79,29 +105,16 @@ namespace ijw.Threading.Tasks {
         }
 
         /// <summary>
-        /// 通知循环体暂停一次迭代. 待接受到通知再继续循环.
-        /// 需要注意的是, 如果代码正处在循环体内, 将不会立即暂停, 而是会执行完当前的迭代, 待下次迭代开始的时候才会进入暂停.
+        /// 任务停止令牌
         /// </summary>
-        public void LoopWaitOnce() {
-            this.ShouldWait = true;
-        }
-
+        protected CancellationTokenSource _cts;
         /// <summary>
-        /// 通知循环体停止迭代.
-        /// 需要注意的是, 如果代码正处在循环体内, 将不会立即停止返回, 而是会执行完当前的迭代, 待下次迭代开始的时候才会停止循环.
+        /// 同步信号量
         /// </summary>
-        public void Exit() {
-            this.cts.Cancel();
-            DebugHelper.WriteLine("Loop exit signal sended...");
-            are.Set();
-        }
-
+        protected static AutoResetEvent _are = new AutoResetEvent(false);
         /// <summary>
-        /// 通知循环体继续迭代
+        /// 是否应该暂停
         /// </summary>
-        public void ContinueIfWaiting() {
-            DebugHelper.WriteLine("Loop waking signal sended...");
-            are.Set();
-        }
+        protected bool ShouldSuspend = false;
     }
 }
