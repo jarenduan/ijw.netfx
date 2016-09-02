@@ -23,7 +23,7 @@ namespace ijw.IO {
             csvFilepath.ShouldExistSuchFile();
             separators.ShouldBeNotNullArgument();
 
-            var reader = StreamReaderHelper.NewStreamReaderFromFilepath(csvFilepath);
+            var reader = StreamReaderHelper.NewStreamReaderFrom(csvFilepath);
             foreach (var t in reader.ReadLinesWithLineNumber()) {
                 char[] with = separators ?? new char[] { ',' };
                 string[] values = t.Item1.Split(with);
