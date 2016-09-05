@@ -1,4 +1,5 @@
-﻿using System.Net.Sockets;
+﻿using ijw.Diagnostic;
+using System.Net.Sockets;
 
 namespace ijw.Net.Socket {
     /// <summary>
@@ -11,6 +12,7 @@ namespace ijw.Net.Socket {
 #else
             c?.Close();
 #endif
+            DebugHelper.WriteLine("Tcp client closed.");
         }
         /// <summary>
         /// 检查是否在线
