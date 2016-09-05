@@ -2,6 +2,7 @@
   "version": "1.0.0-rc1",
 
   "dependencies": {
+    "ijw.Core": "1.0.0-rc1",
     "ijw.Log": "1.0.0-rc1",
     "ijw.Threading.Tasks": "1.0.0-rc1",
     "ijw.Collection": "1.0.0-rc1",
