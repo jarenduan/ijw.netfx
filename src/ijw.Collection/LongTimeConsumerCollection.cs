@@ -37,7 +37,7 @@ namespace ijw.Collection {
         /// <summary>
         /// 获取当前是否存在未被提取消费的元素
         /// </summary>
-        public bool IsItemAvailable => this._itemsList.Exists((tuple) => tuple.Item2 == false);
+        public bool HasAvailableItems => this._itemsList.Exists((tuple) => tuple.Item2 == false);
 
         /// <summary>
         /// 向集合尾部追加一个元素
@@ -154,7 +154,7 @@ namespace ijw.Collection {
                 DebugHelper.WriteLine("(Getting Item) Try getting Item, but no items.");
                 return false;
             }
-            if(onlyGetNotInConsuming && !this.IsItemAvailable) {
+            if(onlyGetNotInConsuming && !this.HasAvailableItems) {
                 DebugHelper.WriteLine("(Getting Item) Try getting Item, but all items are in consuming.");
                 return false;
             }
@@ -166,7 +166,7 @@ namespace ijw.Collection {
                     DebugHelper.WriteLine("(Getting Item) But no items :("); 
                     return false; 
                 }
-                if(onlyGetNotInConsuming && !this.IsItemAvailable) {
+                if(onlyGetNotInConsuming && !this.HasAvailableItems) {
                     DebugHelper.WriteLine("(Getting consuming Item) But all in consuming :(");
                     return false;
                 }
