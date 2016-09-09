@@ -6,7 +6,7 @@ namespace ijw.Serialization.Binary {
     /// 扩展Stream类, 以支持一些简便的读写功能.
     /// </summary>
     public static class StreamExt {
- #region Object read and write
+        #region Object read and write
         //TODO: support binary for .net standard
 #if NET35 || NET40 || NET45 //for netcore is not support binary formatter now, 2016-06-29
 

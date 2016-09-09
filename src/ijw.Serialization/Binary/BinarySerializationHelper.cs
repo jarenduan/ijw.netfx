@@ -1,15 +1,14 @@
 ﻿#if NET35 || NET40 || NET45 //for netcore is not support binary formatter now, 2016-06-29
 using ijw.Diagnostic;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 
 
 namespace ijw.Serialization.Binary {
-    public class BinarySerializationHelper
-    {
+    public class BinarySerializationHelper {
+        private static BinaryFormatter formatter; //cached, in case mutiple creation.
+
         /// <summary>
         /// 把对象序列化成字节数组
         /// </summary>
@@ -53,7 +52,7 @@ namespace ijw.Serialization.Binary {
         /// <param name="stream">写入的流</param>
         /// <returns>流的长度</returns>
         public static int Serialize(object objToSave, Stream stream) {
-            BinaryFormatter formatter = new BinaryFormatter();
+            createBinaryFormatter();
             formatter.Serialize(stream, objToSave);
             DebugHelper.WriteLine("Object serialized in binary successfully: " + stream.Length);
             return (int)stream.Length;
@@ -80,7 +79,7 @@ namespace ijw.Serialization.Binary {
         /// <param name="stream">二进制流</param>
         /// <returns>反序列化后的对象</returns>
         public static T Deserialize<T>(Stream stream) {
-            BinaryFormatter formatter = new BinaryFormatter();
+            createBinaryFormatter();
             DebugHelper.WriteLine("Object deserializing: " + stream.Length.ToString());
             try {
                 T obj = (T)formatter.Deserialize(stream);
@@ -89,8 +88,14 @@ namespace ijw.Serialization.Binary {
             }
             catch (Exception ex) {
                 DebugHelper.WriteLine(ex.Message);
+                return default(T);
             }
-            return default(T);
+        }
+
+        private static void createBinaryFormatter() {
+            if (formatter == null) {
+                formatter = new BinaryFormatter();
+            }
         }
     }
 }
