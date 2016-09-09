@@ -1,0 +1,14 @@
+﻿{
+  "version": "1.0.0-rc1",
+
+  "dependencies": {
+    "ijw.Net.Http": "1.0.0-rc1",
+    "ijw.Net.Html": "1.0.0-rc1"
+  },
+
+  "frameworks": {
+    "net35": {},
+    "net40": {},
+    "net45": {}
+  }
+}
