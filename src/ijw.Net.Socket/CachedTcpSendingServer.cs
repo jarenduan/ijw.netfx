@@ -16,21 +16,15 @@ namespace ijw.Net.Socket {
     /// <remarks>
     /// 内部维护了数据缓冲池.1)负责向池中追加对象. 2)根据既定策略取出一条数据进行发送 3)成功发送后从池中删除该对象.
     /// </remarks>
-    public class CachedTcpClient<T> {
-        //TODO: dispose implementation
+    public class CachedTcpSendingServer<T> {
         /// <summary>
-        /// 成功发送一个对象后会调用此委托
-        /// </summary>
-        public Action<T> ItemsSentAction { get; set; }
-
-        /// <summary>
-        /// Item数量发生变更时会调用此委托.
+        /// 缓存中Item数量发生变更时会调用此委托.
         /// </summary>
         public Action<int> ItemCountChangedAction { get; set; }
 
         /// <summary>
         /// 负责完成将一个Item写入网络流中，并关闭流。默认实现是向流中写入item的ToString()。
-        /// </summary>
+                /// </summary>
         public Action<NetworkStream, T> WriteItemAndDisposeAction
         {
             get { return this._sender.WriteItemAndDisposeAction; }
@@ -38,24 +32,30 @@ namespace ijw.Net.Socket {
         }
 
         /// <summary>
+        /// 成功发送一个对象后会调用此委托
+        /// </summary>
+        public Action<T> ItemsSentAction { get; set; }
+
+        /// <summary>
         /// 构造一个对象发送客户端
         /// </summary>
         /// <param name="getStratrgy">获取对象的策略</param>
         /// <param name="hostName">主机IP, 默认 127.0.0.1</param>
         /// <param name="portNum">端口号, 默认15210(obj三个字母的序号)</param>
-        /// <param name="logOn">是否开启日志</param>
-        public CachedTcpClient(FetchStrategies getStratrgy, string hostName = "127.0.0.1", int portNum = 15210) {
-            this._dataPool.ItemGettngStrategy = getStratrgy;
+        public CachedTcpSendingServer(string hostName = "127.0.0.1", int portNum = 15210, FetchStrategies getStratrgy = FetchStrategies.First) {
             this._sender = new TcpSender<T>() { HostName = hostName, PortNum = portNum };
+            this._ItemSent = new Progress<T>((obj) => {
+                this.ItemsSentAction?.Invoke(obj);
+            });
+
+            this._dataPool.ItemGettngStrategy = getStratrgy;
             this._dataPool.ItemCountChanged += (o, e) => {
                 this._ItemsCountChanged.Report(e.ItemCount);
             };
             this._ItemsCountChanged = new Progress<int>((count) => {
                 this.ItemCountChangedAction?.Invoke(count);
             });
-            this._ItemSent = new Progress<T>((obj) => {
-                this.ItemsSentAction?.Invoke(obj);
-            });
+
         }
 
         /// <summary>
@@ -128,6 +128,7 @@ namespace ijw.Net.Socket {
             this._bgLoopwork.Exit();
         }
 
+
         /// <summary>
         /// 批处理之前的剩余数据
         /// </summary>
@@ -136,10 +137,10 @@ namespace ijw.Net.Socket {
             throw new NotImplementedException();
         }
 
-        private TcpSender<T> _sender;
+        private IProgress<int> _ItemsCountChanged;
         private LongTimeConsumerCollection<T> _dataPool = new LongTimeConsumerCollection<T>();
         private BackgroundLooper _bgLoopwork = new BackgroundLooper();
-        private IProgress<int> _ItemsCountChanged;
+        private TcpSender<T> _sender;
         private IProgress<T> _ItemSent;
     }
 }

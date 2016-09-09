@@ -7,7 +7,7 @@ namespace ijw.Net.Socket.BinaryObject {
     /// 实现一个带有缓存的对象二进制序列化TCP发送客户端.
     /// </summary>
     /// <typeparam name="T">发送对象的类型</typeparam>
-    public class BinaryObjectTcpClient<T> : CachedTcpClient<T> {
+    public class BinaryObjectTcpClient<T> : CachedTcpSendingServer<T> {
         /// <summary>
         /// 构造一个对象发送客户端
         /// </summary>

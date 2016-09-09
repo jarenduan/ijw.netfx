@@ -12,7 +12,7 @@ namespace ijw.Net.Socket.BinaryObject {
     /// 调用StartAsync()方法, 内部启动了两个Task. 一个是负责监听TCP端口. 另一个负责发出通知事件.
     /// 两个Task共同维护了内部的一个线程安全的泛型集合. 
     /// </remarks>
-    public class BinaryObjectTcpServer<T> : CachedTcpServer<T> where T : class {
+    public class BinaryObjectTcpServer<T> : CachedTcpRecievingServer<T> where T : class {
         /// <summary>
         /// 初始化服务器实例
         /// </summary>
