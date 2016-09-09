@@ -69,7 +69,7 @@ namespace ijw.Net.Socket {
                 }
                 return item;
             }
-            catch (Exception ex) {
+            catch {
                 this.RetrieveItemFailed.InvokeIfNotNull(this, null);
                 throw;
             }
