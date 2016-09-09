@@ -6,7 +6,7 @@ using System.IO;
 namespace ijw.Serialization.Binary {
     public static class BinaryWriterExt {
         /// <summary>
-        /// 对象会先进行二进制序列化, 然后以二进制方式向流中写入(不大于4GB). 
+        /// 对象会先进行二进制序列化, 然后以二进制方式向底层的流中写入(不大于4GB). 
         /// </summary>
         /// <typeparam name="T">对象类型</typeparam>
         /// <param name="writer">流</param>
