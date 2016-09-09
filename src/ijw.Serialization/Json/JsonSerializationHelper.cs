@@ -1,4 +1,5 @@
-﻿using ijw.IO;
+﻿using ijw.Diagnostic;
+using ijw.IO;
 using Newtonsoft.Json;
 using System.IO;
 
@@ -23,7 +24,7 @@ namespace ijw.Serialization.Json {
         /// <param name="objToSave">欲序列化的对象</param>
         public static string SaveObjectToJsonString(object objToSave) {
             var jstring = JsonConvert.SerializeObject(objToSave);
-            //DebugHelper.WriteLine("Object serialized in json successfully: " + jstring);
+            DebugHelper.WriteLine("Object serialized in json successfully: " + jstring);
             return jstring;
         }
 
@@ -50,7 +51,7 @@ namespace ijw.Serialization.Json {
             using (StreamWriter w = StreamWriterHelper.NewStreamWriterByFilepath(filepath)) {
                 string jstring = JsonSerializationHelper.SaveObjectToJsonString(objToSave);
                 w.Write(jstring);
-                //DebugHelper.WriteLine("into text file: " + filepath);
+                DebugHelper.WriteLine("into text file: " + filepath);
                 return jstring.Length;
             }
         }
