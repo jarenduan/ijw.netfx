@@ -104,9 +104,6 @@ namespace ijw.IO {
 
 #endregion
 
-
-
-
         #region Write Text File
         /// <summary>
         /// 使用UTF8编码调用ReadStringByStreamReader方法读取流中的全部字符串, 使用UTF8编码覆盖或者追加到指定文件.
