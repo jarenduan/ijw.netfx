@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ijw.Net.Http {
+namespace ijw.Net.Html {
     /// <summary>
     /// Html文本的相关帮助类
     /// </summary>

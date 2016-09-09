@@ -1,0 +1,14 @@
+﻿{
+  "version": "1.0.0-rc1",
+
+  "dependencies": {
+    "HtmlAgilityPack": "1.4.9.5",
+    "ijw.Core": "1.0.0-rc1"
+  },
+
+  "frameworks": {
+    "net35": {},
+    "net40": {},
+    "net45": {}
+  }
+}

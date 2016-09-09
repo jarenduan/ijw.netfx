@@ -1,8 +1,7 @@
 ﻿using HtmlAgilityPack;
 using System.Collections.Generic;
-using System.Linq;
 
-namespace ijw.Net.Http {
+namespace ijw.Net.Html {
     /// <summary>
     /// Html字符串的扩展方法
     /// </summary>
@@ -27,27 +26,6 @@ namespace ijw.Net.Http {
         /// <returns>对节点返回InnerText, 对属性返回属性值</returns>
         public static List<string> SelectTextsByXPath(this string html, string xpath) {
             return HtmlHelper.SelectTextsByXPath(html, xpath);
-        }
-
-        public static bool IsIPv4Address(this string ip) {
-            string[] parts = ip.Split('.');
-            if (parts.Length != 4) {
-                return false;
-            }
-            for (int i = 0; i < parts.Length; i++) {
-                int j;
-                if (!int.TryParse(parts[i], out j)) {
-                    return false;
-                }
-                if (i == 0 && (j <= 0 || j > 255)) {
-                    return false;
-                }
-                if (i != 0 && (j < 0 || j > 255)) {
-                    return false;
-                }
-            }
-
-            return true;
         }
     }
 }
