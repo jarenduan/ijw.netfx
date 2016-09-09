@@ -8,8 +8,7 @@ namespace ijw.Threading.Tasks {
     /// </summary>
     public class BackgroundLooper :BackgroundLooperBase {
         /// <summary>
-        /// 循环中每次迭代的循环体
-        /// 如果每次迭代中的暂停条件不为真, 则会被调用
+        /// 循环中每次迭代的循环体, 当Looper的<see cref="BackgroundLooperBase.State"/>不等于<see cref="LooperState.Suspending"/> 并且 <see cref="BackgroundLooperBase.SleepCondition"/>为假时 会被调用。
         /// </summary>
         public Action LoopAction { get; set; }
 
@@ -20,7 +19,5 @@ namespace ijw.Threading.Tasks {
                 DebugHelper.WriteLine("Loop body ended.");
             }
         }
-
-       
     }
 }
