@@ -17,7 +17,8 @@ namespace ijw.Net.Socket.BinaryObject {
         /// 初始化服务器实例
         /// </summary>
         /// <param name="ifSupportUIThreading">是否对UI线程操作提供支持. true 则每次接收到对象将会封送至ObjectHandlerAsync所在线程进而可以更改控件. 反之ObjectHandlerAsync将在后台线程运行, 从而无法更改UI线程中的控件.</param>
-        public BinaryObjectTcpServer(bool ifSupportUIThreading = false) : base(ifSupportUIThreading) {
+        public BinaryObjectTcpServer(string hostName, int portNum, bool ifSupportUIThreading = false) : 
+            base(hostName, portNum, ifSupportUIThreading) {
             this.RetrieveItemAndDispose = (networkStream) => {
                 return networkStream.RetrieveBinaryObjectAndDispose<T>();
             };
