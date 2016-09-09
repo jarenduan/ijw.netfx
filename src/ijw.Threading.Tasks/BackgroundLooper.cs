@@ -1,6 +1,6 @@
 ﻿using ijw.Diagnostic;
 using System;
-
+//TODO: support net35 net40
 namespace ijw.Threading.Tasks {
     /// <summary>
     /// 封装异步执行循环任务的通用类, 提供启动, 暂停和退出的功能. 
