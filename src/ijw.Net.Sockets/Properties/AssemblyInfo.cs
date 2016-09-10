@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("ijw.Net.Socket")]
+[assembly: AssemblyProduct("ijw.Net.Sockets")]
 [assembly: AssemblyTrademark("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible
@@ -16,4 +16,4 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("dc49bde6-f223-4a38-a5f5-0c233b8ea535")]
+[assembly: Guid("594c977a-29cd-4634-8ea5-144ebf6648f5")]

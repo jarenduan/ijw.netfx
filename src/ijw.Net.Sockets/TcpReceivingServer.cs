@@ -1,8 +1,7 @@
 ﻿using ijw.Diagnostic;
 using ijw.Log;
+using ijw.Threading.Tasks;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
@@ -37,6 +36,53 @@ namespace ijw.Net.Socket {
         }
         public Action<T> ItemHandler { get; set; }
 
+#if !NETSTANDARD1_4
+        /// <summary>
+        /// 在新线程中启动监听. 通过注册<see cref="ItemRecieved"/>事件来处理接收到的对象.
+        /// </summary>
+        public void StartListening() {
+            if (this._isListenerRunning) {
+                DebugHelper.WriteLine("[Main] Server is already running.");
+                _logger.WriteError("[Main] Server is already running.");
+                return;
+            }
+            TaskHelper.Run(() => {
+                try {
+                    _receiver.Establish();
+                    //更改监听线程的状态 => 运行
+                    this._isListenerRunning = true;
+                    this._shouldContinueListen = true;
+                    //开始循环
+                    while (this._shouldContinueListen) {
+                        T item = null;
+                        try {
+                            item = _receiver.ReceiveData();
+                            if (item != null) {
+                                ItemHandler?.Invoke(item);
+                            }
+                            else {
+                                DebugHelper.WriteLine("[Listener] Null item retrieved.");
+                            }
+                        }
+                        catch {
+                            DebugHelper.WriteLine("[Listener] Bad item or stop signal ");
+                        }
+                    }
+                    DebugHelper.WriteLine("[Listener] Stopped.");
+                }
+                catch (Exception e) {
+                    DebugHelper.WriteLine(e.ToString());
+                    throw e;
+                }
+                finally {
+                    _receiver.Stop();
+                    this._isListenerRunning = false;
+                    this._shouldContinueListen = false;
+                }
+            });
+        }
+#endif
+#if !NET35
         /// <summary>
         /// 异步启动监听. 将在内部启动两个Task. 分别负责端口监听和事件激发.
         /// 可通过注册<see cref="ItemRecieved"/>事件来处理接收到的对象.
@@ -59,7 +105,7 @@ namespace ijw.Net.Socket {
                 while (this._shouldContinueListen) {
                     T item = null;
                     try {
-                        item = await _receiver.ReceiveData();
+                        item = await _receiver.ReceiveDataAsync();
                         if (item != null) {
                             ItemHandler?.Invoke(item);
                         }
@@ -83,7 +129,7 @@ namespace ijw.Net.Socket {
                 this._shouldContinueListen = false;
             }
         }
-
+#endif
         /// <summary>
         /// 停止服务器.
         /// 注意: Stop方法只停止了监听线程. 内部的通知处理线程仍会继续循环, 直至所有对象都被处理和移出集合.

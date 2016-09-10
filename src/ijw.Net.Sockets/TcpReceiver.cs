@@ -5,7 +5,6 @@ using System.Net.Sockets;
 using System.Threading.Tasks;
 
 namespace ijw.Net.Socket {
-    //TODO: dispose pattern
     public class TcpReceiver<T> where T : class {
         /// <summary>
         /// 欲监听的本地地址
@@ -21,7 +20,6 @@ namespace ijw.Net.Socket {
         /// 接收到流后，从流中解析取回数据项，并关闭流. 没有任何数据返回空. 有数据但解析发生错误应该抛出异常.
         /// </summary>
         public Func<NetworkStream, T> RetrieveItemAndDispose { get; set; }
-
 
         public event EventHandler RetrieveItemFailed;
 
@@ -51,11 +49,38 @@ namespace ijw.Net.Socket {
                 this._listener = null;
             }
         }
-
+#if !NETSTANDARD1_4
         /// <summary>
         /// 获取客户端发送的数据，会一直阻塞, 直至接受到数据.
         /// </summary>
-        public async Task<T> ReceiveData() {
+        public T ReceiveData() {
+            TcpClient client = null;
+            DebugHelper.WriteLine("[Listener] Waiting for TCP client...");
+            client = _listener.AcceptTcpClient();
+            try {
+
+                var networkStream = client.GetStream();
+                DebugHelper.WriteLine("[Listener] TCP client accepte, try retrieve data item...");
+                T item = null;
+                using (networkStream) {
+                    item = this.RetrieveItemAndDispose?.Invoke(networkStream);
+                }
+                return item;
+            }
+            catch {
+                this.RetrieveItemFailed.InvokeIfNotNull(this, null);
+                throw;
+            }
+            finally {
+                client.CloseIfNotNull();
+            }
+        }
+#endif
+#if !NET35
+        /// <summary>
+        /// 获取客户端发送的数据.
+        /// </summary>
+        public async Task<T> ReceiveDataAsync() {
             TcpClient client = null;
             DebugHelper.WriteLine("[Listener] Waiting for TCP client...");
             client = await _listener.AcceptTcpClientAsync();
@@ -77,7 +102,7 @@ namespace ijw.Net.Socket {
                 client.CloseIfNotNull();
             }
         }
-
+#endif
         /// <summary>
         /// 开一个tcp连接, 防止监听线程处在阻塞之中.
         /// </summary>
@@ -86,7 +111,11 @@ namespace ijw.Net.Socket {
             TcpClient client = null;
             try {
                 client = new TcpClient(AddressFamily.InterNetwork);
-                client.ConnectAsync(this.LocalAddress, this.PortNum);
+#if NETSTANDARD1_4
+                client.ConnectAsync(this.LocalAddress, this.PortNum).Wait();
+#else
+                client.Connect(this.LocalAddress, this.PortNum);
+#endif
             }
             catch {
             }

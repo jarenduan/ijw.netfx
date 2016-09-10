@@ -1,11 +1,9 @@
-﻿using ijw.Collection;
+﻿#if !NET35 && !NET40
+using ijw.Collection;
 using ijw.Diagnostic;
-using ijw.IO;
-using ijw.Log;
 using ijw.Threading.Tasks;
 using System;
 using System.Net.Sockets;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace ijw.Net.Socket {
@@ -144,3 +142,4 @@ namespace ijw.Net.Socket {
         private IProgress<T> _ItemSent;
     }
 }
+#endif

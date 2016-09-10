@@ -1,4 +1,5 @@
-﻿using ijw.Collection;
+﻿#if !NET35 && !NET40
+using ijw.Collection;
 using ijw.Diagnostic;
 using ijw.Log;
 using System;
@@ -297,3 +298,4 @@ namespace ijw.Net.Socket {
         #endregion
     }
 }
+#endif
