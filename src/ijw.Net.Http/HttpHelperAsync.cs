@@ -1,4 +1,4 @@
-﻿#if !NET35 && !NET40 //TODO: support task in net35 and net40
+﻿#if !NET35 && !NET40
 using ijw.Diagnostic;
 using ijw.IO;
 using ijw.Text;
