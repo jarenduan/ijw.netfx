@@ -4,6 +4,17 @@
     "ijw.Core": "1.0.0-rc1"
   },
   "frameworks": {
+    "net35": {
+      "dependencies": {
+        "TaskParallelLibrary": "1.0.2856",
+        "AsyncBridge.Net35": "0.2.0"
+      }
+    },
+    "net40": {
+      "dependencies": {
+        "Microsoft.Bcl.Async": "1.0.168"
+      }
+    },
     "net45": {},
     "netstandard1.4": {
       "imports": "dnxcore50",

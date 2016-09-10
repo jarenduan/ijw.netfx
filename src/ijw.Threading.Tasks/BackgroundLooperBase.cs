@@ -1,6 +1,6 @@
 ﻿using ijw.Diagnostic;
 using System.Threading;
-using System.Threading.Tasks;
+using System.Threading.Tasks; //for net40, KB2468871 should be installed.
 
 namespace ijw.Threading.Tasks {
     public enum LooperState { NotRunning, Awaken, Sleeping, Suspending};
@@ -32,7 +32,7 @@ namespace ijw.Threading.Tasks {
         public async Task StartAsync() {
             if (this.State == LooperState.NotRunning) {
                 this._cts = new CancellationTokenSource();
-                await Task.Run(() => loop(), this._cts.Token);
+                await TaskHelper.Run(() => loop(), this._cts.Token);
             }
             else {
                 DebugHelper.WriteLine("Loop is already running!");

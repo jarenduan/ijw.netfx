@@ -1,4 +1,4 @@
-﻿using ijw.Diagnostic;
+﻿#if !NET35 
 using System;
 
 namespace ijw.Threading.Tasks {
@@ -30,3 +30,4 @@ namespace ijw.Threading.Tasks {
         }
     }
 }
+#endif
