@@ -155,18 +155,25 @@ namespace ijw.Net.Http {
         /// <returns>处理后的内容</returns>
         public static async Task<T> GetWebResponseContentAsync<T>(string url, Func<Stream, T> processContent, string userAgent = BrowserUserAgent.Firefox, int connectTimeout = 1000 * 10, int readTimeout = 1000 * 10) {
             var uri = new Uri(url);
-            using (HttpClient client = new HttpClient()) {
-                if (!client.DefaultRequestHeaders.UserAgent.TryParseAdd(userAgent)) {
-                    throw new InvalidUserAgentException(userAgent);
-                }
-                client.Timeout = TimeSpan.FromMilliseconds(connectTimeout);
-                //client.ReadWriteTimeout = readTimeout;
-                Stream receiveStream = await client.GetStreamAsync(uri);
-                T content = processContent(receiveStream);
-                DebugHelper.WriteLine(content.ToString());
-                return content;
+            createHttpClientIfNull();
+            if (!client.DefaultRequestHeaders.UserAgent.TryParseAdd(userAgent)) {
+                throw new InvalidUserAgentException(userAgent);
+            }
+            client.Timeout = TimeSpan.FromMilliseconds(connectTimeout);
+            //client.ReadWriteTimeout = readTimeout;
+            Stream receiveStream = await client.GetStreamAsync(uri);
+            T content = processContent(receiveStream);
+            DebugHelper.WriteLine(content.ToString());
+            return content;
+        }
+
+        private static void createHttpClientIfNull() {
+            if (client == null) {
+                client = new HttpClient();
             }
         }
+
+        private static HttpClient client = null;
     }
 }
 #endif
