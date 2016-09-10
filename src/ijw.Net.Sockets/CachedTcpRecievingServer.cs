@@ -10,9 +10,8 @@ using System.Threading.Tasks;
 
 namespace ijw.Net.Socket {
     /// <summary>
-    /// CachedTcpServer&lt;T&gt;实现了一个泛型对象TCP接收/通知处理服务器. 
-    /// 调用者可通过指定ItemRecievedHandlerAsync委托, 方便地以异步的方式处理新接收到的对象.
-    /// 调用者也可以通过挂接事件处理器, 方便地同步处理接收到的对象.
+    /// 实现了一个泛型对象TCP接收/通知处理服务器. 
+    /// 调用者设置ItemRecievedHandlerAsync，异步处理新接收到的对象；也可通过挂接事件处理器, 同步处理接收到的对象.
     /// </summary>
     /// <typeparam name="T">获取对象的类型</typeparam>
     /// <remarks>

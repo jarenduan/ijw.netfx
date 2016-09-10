@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace ijw.Net.Socket {
     /// <summary>
-    /// CachedTcpClient&lt;T&gt;实现了一个带有内部缓存的TCP数据发送客户端. 
+    /// C带有内部缓存的TCP数据发送服务器. 
     /// </summary>
     /// <typeparam name="T">发送数据的类型</typeparam>
     /// <remarks>
-    /// 内部维护了数据缓冲池.1)负责向池中追加对象. 2)根据既定策略取出一条数据进行发送 3)成功发送后从池中删除该对象.
+    /// 内部维护了数据缓冲池: 1)负责向池中追加对象 2)根据既定策略取出一条数据进行发送 3)成功发送后从池中删除该对象.
     /// </remarks>
     public class CachedTcpSendingServer<T> {
         /// <summary>
@@ -68,7 +68,7 @@ namespace ijw.Net.Socket {
         }
 
         /// <summary>
-        /// 启动后台循环发送. 
+        /// 启动循环发送. 
         /// </summary>
         /// <remarks>
         /// 启动后，如果缓存中有数据, 进行TCP发送, 成功发送后从缓存中移除该数据. 
