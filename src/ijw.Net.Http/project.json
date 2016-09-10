@@ -2,7 +2,6 @@
   "version": "1.0.0-rc1",
 
   "dependencies": {
-    "HtmlAgilityPack": "1.4.9.4",
     "ijw.Core": "1.0.0-rc1",
     "ijw.IO": "1.0.0-rc1"
   },
@@ -10,6 +9,16 @@
   "frameworks": {
     "net35": {},
     "net40": {},
-    "net45": {}
+    "net45": {
+      "dependencies": {
+        "System.Net.Http": "4.0.0" 
+      }
+    },
+    "netstandard1.4": {
+      "imports": "dnxcore50",
+      "dependencies": {
+        "NETStandard.Library": "1.6.0"
+      }
+    }
   }
 }
