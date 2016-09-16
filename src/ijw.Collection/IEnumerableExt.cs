@@ -11,19 +11,24 @@ namespace ijw.Collection {
     /// </summary>
     public static class IEnumerableExt {
         #region Get Sub Collections
-        public static IEnumerable<T> GetSubLazy<T>(this IEnumerable<T> collection, int startIndex, int endIndex) {
+        public static IEnumerable<T> Take<T>(this IEnumerable<T> collection, int fromIndex, int toIndex) {
+            fromIndex.ShouldNotLessThan(0);
+            toIndex.ShouldNotLessThan(0);
+            fromIndex.ShouldNotLargerThan(toIndex);
+
+
+
             int index = -1;
-            //TODO: 遍历算法可以优化
             foreach (var element in collection) {
                 index++;
-                if (index >= startIndex && index <= endIndex) {
+                if (index >= fromIndex && index <= toIndex) {
                     yield return element;
                 }
             }
         }
 
         /// <summary>
-        /// 从指定位置至结束为止, 每次增加指定步长开始提取指定数目的元素，提取的所有元素将形成新集合, 内部使用了yield return.
+        /// 每次增加指定步长开始提取指定数目的元素，提取的所有元素将形成新集合, 内部使用了yield return.
         /// 步长和提取量相等, 则从起始处之后的元素全部被提取.
         /// </summary>
         /// <typeparam name="T"></typeparam>
@@ -34,17 +39,15 @@ namespace ijw.Collection {
         /// <param name="takeEachTime"></param>
         /// <param name=""></param>
         /// <returns></returns>
-        public static IEnumerable<T> GetSubByStepLazy<T>(this IEnumerable<T> collection, int startIndex,  int endIndex, int step = 1, int takeEachTime = 1) {
-            int index = -1;
-            foreach (var element in collection) {
-                index++;
-                if (index > endIndex) {
-                    break;
-                }
-                if (index < startIndex)
-                    continue;
-                if ((index - startIndex) % step <= takeEachTime) {
-                    yield return element;
+        public static IEnumerable<T> TakeEveryOther<T>(this IEnumerable<T> collection, int step, int takeEachTime) {
+            step.ShouldLargerThan(0);
+            takeEachTime.ShouldLargerThan(0);
+            takeEachTime.ShouldNotLargerThan(step);
+
+            int index = 0;
+            foreach (var item in collection) {
+                if (index % step < takeEachTime) {
+                    yield return item;
                 }
             }
         }
@@ -57,11 +60,11 @@ namespace ijw.Collection {
         /// <param name="startAt">启始索引. 该处元素将包括在返回结果中. 0 = 第一个元素, -n = 倒数第n个元素, null = 0. 默认值是0</param>
         /// <param name="endAt">结束索引. 该处元素将不包括在返回结果中. 0 = 第一个元素, -n = 倒数第n个元素, null = 结尾. 默认值为null. </param>
         /// <returns>子集</returns>
-        public static IEnumerable<T> GetSubLazyPythonStyle<T>(this IEnumerable<T> collection, int? startAt = 0, int? endAt = null) {
+        public static IEnumerable<T> TakePythonStyle<T>(this IEnumerable<T> collection, int? startAt = 0, int? endAt = null) {
             int startAtPython, endAtPython;
             int count = collection.Count();
             Helper.PythonStartEndCalculator(count, out startAtPython, out endAtPython, startAt, endAt);
-            return collection.GetSubLazy(startAtPython, endAtPython);
+            return collection.Take(startAtPython, endAtPython);
         }
 
         /// <summary>
@@ -142,7 +145,7 @@ namespace ijw.Collection {
         }
 
         /// <summary>
-        /// 查找指定元素在集合中的索引
+        /// 查找指定元素在集合第一次出现位置的索引
         /// </summary>
         /// <typeparam name="T">元素类型</typeparam>
         /// <param name="collection"></param>
@@ -160,7 +163,10 @@ namespace ijw.Collection {
             }
 
             int index = -1;
-            collection.ForEachWithIndex((v, i) => {
+
+
+
+            collection.ForEachWithIndexAndBreak((v, i) => {
                 if(v.Equals(value)) {
                     index = i;
                     return false;
@@ -225,15 +231,19 @@ namespace ijw.Collection {
             }
             else {
                 StringBuilder sb = new StringBuilder("[");
-                collection.ForEachWithIndex((item, index) => {
-                    if(index <= maxDisplayNumber - 2) {
-                        appendSimpleStringIfPossible<T>(sb, item);
-                        return true;
-                    }
-                    else {
-                        return false;
-                    }
-                });
+                foreach (var item in collection.Where((item,index) => index <= maxDisplayNumber - 2)){
+                    appendSimpleStringIfPossible<T>(sb, item);
+                }
+
+                //collection.ForEachWithIndexAndBreak((item, index) => {
+                //    if(index <= maxDisplayNumber - 2) {
+                //        appendSimpleStringIfPossible<T>(sb, item);
+                //        return true;
+                //    }
+                //    else {
+                //        return false;
+                //    }
+                //});
                 sb.Append("..., ");
                 appendSimpleStringIfPossible<T>(sb, collection.Last());
                 sb.Append("]");
@@ -282,16 +292,26 @@ namespace ijw.Collection {
         #endregion
 
         #region For Each With Index
+#if !NET35
+        public static IEnumerable<Tuple<T, int>> EachWithIndex<T>(this IEnumerable<T> collection) {
+            int index = 0;
+            foreach (var element in collection) {
+                yield return Tuple.Create(element, index);
+                index++;
+            }
+        }
+#endif
+
         /// <summary>
         /// 在集合上遍历调用某个函数, 提供元素和索引同时作为参数, 索引从0开始. 函数返回值可以控制是否break循环.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="collection"></param>
         /// <param name="actionWithBreak">返回TRUE继续循环, 返回false则break退出</param>
-        public static void ForEachWithIndex<T>(this IEnumerable<T> collection, Func<T, int, bool> actionWithBreak) {
+        public static void ForEachWithIndexAndBreak<T>(this IEnumerable<T> collection, Func<T, int, bool> actionWithBreak) {
             int index = 0;
-            foreach(var element in collection) {
-                if(!actionWithBreak(element, index))
+            foreach (var element in collection) {
+                if (!actionWithBreak(element, index))
                     break;
                 index++;
             }
