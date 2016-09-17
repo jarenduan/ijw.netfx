@@ -24,7 +24,7 @@ namespace ijw.Collection
         /// <typeparam name="T"></typeparam>
         /// <param name="collection"></param>
         /// <returns></returns>
-        public static IEnumerable<T> GetRandomSequence<T>(this T[] collection)
+        public static IEnumerable<T> Random<T>(this T[] collection)
         {
             int[] order = 0.ToTotal(collection.Length).Shuffle();
             for (int i = 0; i < order.Length; i++)
@@ -191,11 +191,11 @@ namespace ijw.Collection
                 IList<T> indexable = collection as IList<T>;
                 if (indexable == null)
                 {
-                    source = source.GetRandomSequence();
+                    source = source.Random();
                 }
                 else
                 {
-                    source = indexable.GetRandomSequence();
+                    source = indexable.Random();
                 }
             }
             var first = new List<T>();

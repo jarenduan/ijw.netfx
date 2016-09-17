@@ -155,7 +155,7 @@ namespace ijw.Data.Filter {
         public static void MedianFilter(IIndexable<double> values, IIndexable<double> result, int windowLength) {
             int half = windowLength / 2;
             for (int i = half; i < values.Count - half; i++) {
-                double[] window = values.GetSubLazyPythonStyle(i - half, i + half + 1).OrderBy((e) => e).ToArray();
+                double[] window = values.TakePythonStyle(i - half, i + half + 1).OrderBy((e) => e).ToArray();
                 result[i] = window[half + 1];
             }
         }
@@ -203,7 +203,7 @@ namespace ijw.Data.Filter {
         private static void MeanFilter(IIndexable<double> values, IIndexable<double> result, int windowLength) {
             int half = windowLength / 2;
             for (int i = half; i < values.Count - half; i++) {
-                result[i] = values.GetSubLazyPythonStyle(i - half, i + half + 1)
+                result[i] = values.TakePythonStyle(i - half, i + half + 1)
                           .ToArray()
                           .Sum((e) => e) / windowLength;
             }

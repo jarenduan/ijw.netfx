@@ -10,21 +10,15 @@ namespace ijw.Collection {
     /// 提供了IEnumerable的一系列扩展方法
     /// </summary>
     public static class IEnumerableExt {
-        #region Get Sub Collections
+        #region Take
         public static IEnumerable<T> Take<T>(this IEnumerable<T> collection, int fromIndex, int toIndex) {
             fromIndex.ShouldNotLessThan(0);
             toIndex.ShouldNotLessThan(0);
             fromIndex.ShouldNotLargerThan(toIndex);
 
-
-
-            int index = -1;
-            foreach (var element in collection) {
-                index++;
-                if (index >= fromIndex && index <= toIndex) {
-                    yield return element;
-                }
-            }
+            return collection.TakeWhile((ele, index) => 
+                index >= fromIndex && index <= toIndex
+            );
         }
 
         /// <summary>
@@ -37,19 +31,15 @@ namespace ijw.Collection {
         /// <param name="endIndex"></param>
         /// <param name="step">步长，提取的索引增加量，1代表相邻的下一个</param>
         /// <param name="takeEachTime"></param>
-        /// <param name=""></param>
         /// <returns></returns>
         public static IEnumerable<T> TakeEveryOther<T>(this IEnumerable<T> collection, int step, int takeEachTime) {
             step.ShouldLargerThan(0);
             takeEachTime.ShouldLargerThan(0);
             takeEachTime.ShouldNotLargerThan(step);
 
-            int index = 0;
-            foreach (var item in collection) {
-                if (index % step < takeEachTime) {
-                    yield return item;
-                }
-            }
+            return collection.TakeWhile((item, index) => 
+                index % step < takeEachTime
+            );
         }
 
         /// <summary>
@@ -81,7 +71,7 @@ namespace ijw.Collection {
             var source = collection;
             if(method == CollectionDividingMethod.Random) {
                 IList<T> indexable = collection as IList<T>;
-                source = indexable == null ? source.GetRandomSequence() : indexable.GetRandomSequence();
+                source = indexable == null ? source.Random() : indexable.Random();
             }
             collection.DivideByRatio(ratioOfFirstGroup, ratioOfSecondGroup, out firstGroup, out secondGroup);
         }
@@ -166,7 +156,7 @@ namespace ijw.Collection {
 
 
 
-            collection.ForEachWithIndexAndBreak((v, i) => {
+            collection.ForEachWithIndexWhile((v, i) => {
                 if(v.Equals(value)) {
                     index = i;
                     return false;
@@ -178,7 +168,7 @@ namespace ijw.Collection {
         }
         #endregion
 
-        #region Get Random Sequence
+        #region Random
 
         /// <summary>
         /// 返回随机打乱顺序的序列. 
@@ -186,19 +176,19 @@ namespace ijw.Collection {
         /// <typeparam name="T"></typeparam>
         /// <param name="collection"></param>
         /// <returns></returns>
-        public static IEnumerable<T> GetRandomSequence<T>(this IEnumerable<T> collection) {
+        public static IEnumerable<T> Random<T>(this IEnumerable<T> collection) {
             var array = collection as T[];
             if (array != null) {
                 //如果能转成T[]. 高效实现.
-                foreach (var item in array.GetRandomSequence()) {
+                foreach (var item in array.Random()) {
                     yield return item;
                 }
             }
             else {
-                var indexable = collection as IList<T>;
-                if (indexable != null) {
+                var list = collection as IList<T>;
+                if (list != null) {
                     //如果能转成Ilist. 高效实现.
-                    foreach (var item in array.GetRandomSequence()) {
+                    foreach (var item in list.Random()) {
                         yield return item;
                     }
                 }
@@ -291,8 +281,7 @@ namespace ijw.Collection {
 
         #endregion
 
-        #region For Each With Index
-#if !NET35
+        #region Each pair with index
         public static IEnumerable<Tuple<T, int>> EachWithIndex<T>(this IEnumerable<T> collection) {
             int index = 0;
             foreach (var element in collection) {
@@ -300,20 +289,20 @@ namespace ijw.Collection {
                 index++;
             }
         }
-#endif
+        #endregion
 
-        /// <summary>
-        /// 在集合上遍历调用某个函数, 提供元素和索引同时作为参数, 索引从0开始. 函数返回值可以控制是否break循环.
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="collection"></param>
-        /// <param name="actionWithBreak">返回TRUE继续循环, 返回false则break退出</param>
-        public static void ForEachWithIndexAndBreak<T>(this IEnumerable<T> collection, Func<T, int, bool> actionWithBreak) {
-            int index = 0;
-            foreach (var element in collection) {
-                if (!actionWithBreak(element, index))
+        #region For Each
+        public static void ForEach<T>(this IEnumerable<T> collection, Action<T> action) {
+            foreach (var item in collection) {
+                action(item);
+            }
+        }
+
+        public static void ForEachWhile<T>(this IEnumerable<T> collection, Func<T, bool> actionWithBreak) {
+            foreach (var item in collection) {
+                if (!actionWithBreak(item)) {
                     break;
-                index++;
+                }
             }
         }
 
@@ -326,11 +315,26 @@ namespace ijw.Collection {
         /// <returns>集合的元素个数</returns>
         public static int ForEachWithIndex<T>(this IEnumerable<T> collection, Action<T, int> action) {
             int index = 0;
-            foreach(var element in collection) {
+            foreach (var element in collection) {
                 action(element, index);
                 index++;
             }
             return index;
+        }
+
+        /// <summary>
+        /// 在集合上遍历调用某个函数, 提供元素和索引同时作为参数, 索引从0开始. 函数返回值可以控制是否break循环.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="actionWithBreak">返回TRUE继续循环, 返回false则break退出</param>
+        public static void ForEachWithIndexWhile<T>(this IEnumerable<T> collection, Func<T, int, bool> actionWithBreak) {
+            int index = 0;
+            foreach (var element in collection) {
+                if (!actionWithBreak(element, index))
+                    break;
+                index++;
+            }
         }
         #endregion
 
@@ -358,6 +362,30 @@ namespace ijw.Collection {
         }
         #endregion
 
+        #region First
+        public static T FirstOrDefault<T>(this IEnumerable<T> collection, Func<T, int, bool> pred) {
+            int index = 0;
+            foreach (var item in collection) {
+                if (pred(item, index)) {
+                    return item;
+                }
+                index++;
+            }
+            return default(T);
+        }
+
+        public static T First<T>(this IEnumerable<T> collection, Func<T, int, bool> pred) {
+            int index = 0;
+            foreach (var item in collection) {
+                if (pred(item, index)) {
+                    return item;
+                }
+                index++;
+            }
+            throw new InvalidOperationException();
+        }
+        #endregion  
+             
         #region IndexOf
         /// <summary>
         /// 在IEnumerable&lt;T&gt;查找第一个符合谓词的元素对象的索引
@@ -370,23 +398,25 @@ namespace ijw.Collection {
         /// 方法从后向前遍历集合, 因此时间复杂度是O(index), 即如果目标元素是第一个, 则只需要一次迭代.
         /// 此方法适用于预期元素处于列表中排位靠后的情况. 如果预期元素在较前的位置, 应该使用LastIndexOf&lt;T&gt;扩展方法.
         /// </remarks>
-        public static int FirstIndexOf<T>(this IEnumerable<T> collection, Predicate<T> predicate) {
-            int result = -1;
+        public static int IndexOf<T>(this IEnumerable<T> collection, Predicate<T> predicate) {
             int index = 0;
             foreach(var item in collection) {
                 if(predicate(item)) {
-                    result = index;
-                    break;
+                    return index;
                 }
                 index++;
             }
-            return result;
+            return -1;
         }
 
         /// <summary>
         /// 在IEnumerable&lt;T&gt;查找最后一个出现的元素对象索引
         /// </summary>
         public static int LastIndexOf<T>(this IEnumerable<T> collection, T item) {
+            var list = collection as List<T>;
+            if (list != null) {
+                return list.LastIndexOf(item);
+            }
             return collection.Reverse().IndexOf(item);
         } 
         #endregion

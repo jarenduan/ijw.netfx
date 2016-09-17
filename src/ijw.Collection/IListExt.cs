@@ -6,7 +6,7 @@ namespace ijw.Collection {
     /// 提供了IList接口的一系列扩展方法
     /// </summary>
     public static class IListExt {
-        public static IEnumerable<T> GetRandomSequence<T>(this IList<T> collection) {
+        public static IEnumerable<T> Random<T>(this IList<T> collection) {
             int[] order = 0.ToTotal(collection.Count).Shuffle();
             for (int i = 0; i < order.Length; i++) {
                 yield return collection[order[i]];
@@ -24,7 +24,7 @@ namespace ijw.Collection {
         /// 方法从前向后遍历列表, 因此时间复杂度是O(index), 即如果目标元素是第一个, 则只需要一次迭代.
         /// 此方法适用于预期元素处于列表中排位靠前的情况. 如果预期元素在较后的位置, 应该使用LastIndexOf&lt;T&gt;扩展方法.
         /// </remarks>
-        public static int FirstIndexOf<T>(this IList<T> collection, Predicate<T> predicate) {
+        public static int IndexOf<T>(this IList<T> collection, Predicate<T> predicate) {
             for (int i = 0; i < collection.Count; i++) {
                 if (predicate(collection[i])) {
                     return i;
@@ -69,7 +69,7 @@ namespace ijw.Collection {
             int index = -1;
             switch (strategies) {
                 case FetchStrategies.First:
-                    index = collection.FirstIndexOf(predicate); //O(index)
+                    index = collection.IndexOf(predicate); //O(index)
                     break;
                 case FetchStrategies.Last:
                     index = collection.LastIndexOf(predicate); //O(count - index)
