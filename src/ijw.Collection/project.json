@@ -4,7 +4,11 @@
     "ijw.Core": "1.0.0-rc1"
   },
   "frameworks": {
-    "net35": {},
+    "net35": {
+      "dependencies": {
+        "NetLegacySupport.Tuple": "1.1.1"
+      }
+    },
     "net40": {},
     "net45": {},
     "netstandard1.4": {

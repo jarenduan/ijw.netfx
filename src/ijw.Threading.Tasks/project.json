@@ -15,7 +15,8 @@
         "Microsoft.Bcl.Async": "1.0.168"
       }
     },
-    "net45": {},
+    "net45": {
+    },
     "netstandard1.4": {
       "imports": "dnxcore50",
       "dependencies": {

@@ -3,10 +3,20 @@
   "version": 2,
   "targets": {
     ".NETFramework,Version=v3.5": {
+      "NetLegacySupport.Tuple/1.1.1": {
+        "type": "package",
+        "compile": {
+          "lib/net35/NetLegacySupport.Tuple.dll": {}
+        },
+        "runtime": {
+          "lib/net35/NetLegacySupport.Tuple.dll": {}
+        }
+      },
       "ijw.Collection/1.0.0-rc1": {
         "type": "project",
         "framework": ".NETFramework,Version=v3.5",
         "dependencies": {
+          "NetLegacySupport.Tuple": "1.1.1",
           "ijw.Core": "1.0.0-rc1"
         },
         "compile": {
@@ -1254,6 +1264,18 @@
         "ref/xamarinmac20/_._",
         "ref/xamarintvos10/_._",
         "ref/xamarinwatchos10/_._"
+      ]
+    },
+    "NetLegacySupport.Tuple/1.1.1": {
+      "sha512": "uNWiaVk5Zjz4IS/3/Vd7ISczV3f389dK29dHZ8rMkb88tryiMTTNqh4Zgl3bpSUe0RXYiilAZGoXqCjThaK+Bg==",
+      "type": "package",
+      "path": "NetLegacySupport.Tuple/1.1.1",
+      "files": [
+        "NetLegacySupport.Tuple.1.1.1.nupkg.sha512",
+        "NetLegacySupport.Tuple.nuspec",
+        "lib/net20/NetLegacySupport.Tuple.dll",
+        "lib/net35/NetLegacySupport.Tuple.dll",
+        "lib/net40/NetLegacySupport.Tuple.dll"
       ]
     },
     "NETStandard.Library/1.6.0": {
