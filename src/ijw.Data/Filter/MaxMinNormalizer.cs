@@ -45,11 +45,9 @@ namespace ijw.Data.Filter {
         /// </summary>
         /// <returns>归一化后的向量</returns>
         public IIndexable<double> Normalize() {
-            double[] result = new double[this.Values.Count];
-
-            this.Values.ForEachWithIndex((v, i) => {
-                result[i] = v.NormalizeMaxMin(this.MinIn, this.MaxIn, this.MinOut, this.MaxOut);
-            });
+            var result = this.Values.Select(v => 
+                v.NormalizeMaxMin(this.MinIn, this.MaxIn, this.MinOut, this.MaxOut)
+            );
 
             return new Indexable<double>(result);
         }
@@ -60,11 +58,8 @@ namespace ijw.Data.Filter {
         /// <param name="input">输入向量</param>
         /// <returns>反归一化后的向量</returns>
         public double[] Denormalize(double[] values) {
-            double[] result = new double[values.Length];
-            for (int i = 0; i < values.Length; i++) {
-                result[i] = this.Denormalize(values[i]);
-            }
-            return result;
+            return values.Select(v => this.Denormalize(v))
+                        .ToArray();
         }
 
         /// <summary>
