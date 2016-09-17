@@ -17,11 +17,7 @@ namespace ijw.Collection
             this._data = data;
         }
 
-        public EnumerableBase(IEnumerable<T> data) {
-            data.ShouldBeNotNullArgument();
-            List<T> list = new List<T>();
-            list.AddRange(data);
-            this._data = list.ToArray();
+        public EnumerableBase(IEnumerable<T> data) : this(data?.ToArray()) {
         }
         /// <summary>
         /// 内部数组
