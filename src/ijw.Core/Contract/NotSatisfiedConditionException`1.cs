@@ -1,7 +1,7 @@
 ﻿using System;
 
 namespace ijw.Contract {
-    internal class NotSatisfiedConditionException<T> : Exception {
+    internal class NotSatisfiedConditionException<T> : ContractBreakException {
         private T obj;
         private Predicate<T> predicate;
 

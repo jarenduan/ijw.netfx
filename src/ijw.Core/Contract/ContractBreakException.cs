@@ -8,5 +8,9 @@ namespace ijw.Contract
     {
         public ContractBreakException(string message = ""):base (message) {
         }
+
+        public ContractBreakException(string message, Exception innerException) : base(message, innerException) {
+        }
+
     }
 }
