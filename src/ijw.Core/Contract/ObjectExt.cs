@@ -38,9 +38,23 @@ namespace ijw.Contract {
             return true;
         }
 
+        public static bool ShouldSatisfy<T, TException>(this T obj, Predicate<T> condition, TException excpetion) where TException : Exception {
+            if (!condition(obj)) {
+                throw excpetion;
+            }
+            return true;
+        }
+
         public static bool ShouldEquals<T>(this T obj, T other) {
             if (!obj.Equals(other)) {
                 throw new ContractBreakException();
+            }
+            return true;
+        }
+
+        public static bool ShouldEquals<T, TException>(this T obj, T other, Exception excpetion) where TException : Exception {
+            if (!obj.Equals(other)) {
+                throw excpetion;
             }
             return true;
         }
@@ -52,5 +66,11 @@ namespace ijw.Contract {
             return true;
         }
 
+        public static bool ShouldNotEquals<T, TException>(this T obj, T other, TException excpetion) where TException : Exception {
+            if (obj.Equals(other)) {
+                throw excpetion;
+            }
+            return true;
+        }
     }
 }
