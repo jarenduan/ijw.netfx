@@ -74,16 +74,17 @@ namespace ijw {
             }
         }
 
+        /// <summary>
+        /// 字符串重复指定次数
+        /// </summary>
+        /// <param name="times"></param>
+        /// <param name="aString">欲重复的字符串</param>
+        /// <returns>重复之后的新字符串</returns>
         public static string Times(this int times, string aString) {
             if (times <= 0) {
                 throw new ArgumentOutOfRangeException();
             }
-            string result = aString;
-            while (times > 1) {
-                result += aString;
-                times--;
-            }
-            return result;
+            return aString.Repeat(times);
         }
     }
 }

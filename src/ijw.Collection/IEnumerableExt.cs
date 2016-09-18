@@ -22,15 +22,13 @@ namespace ijw.Collection {
         }
 
         /// <summary>
-        /// 每次增加指定步长开始提取指定数目的元素，提取的所有元素将形成新集合, 内部使用了yield return.
-        /// 步长和提取量相等, 则从起始处之后的元素全部被提取.
+        /// 从0开始反复提取指定数目的元素，每次增加指定步长。提取元素形成新集合, 内部使用了yield return.
+        /// 如果步长和提取量相等, 则元素全部被提取.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="collection"></param>
-        /// <param name="startIndex"></param>
-        /// <param name="endIndex"></param>
-        /// <param name="step">步长，提取的索引增加量，1代表相邻的下一个</param>
-        /// <param name="takeEachTime"></param>
+        /// <param name="step">步长，每隔多少个元素进行提取，1代表相邻的下一个. 例如step设为2，则每次提取的起始索引是：0，2，4...</param>
+        /// <param name="takeEachTime">每次提取量，应小于等于步长</param>
         /// <returns></returns>
         public static IEnumerable<T> TakeEveryOther<T>(this IEnumerable<T> collection, int step, int takeEachTime) {
             step.ShouldLargerThan(0);
@@ -43,7 +41,7 @@ namespace ijw.Collection {
         }
 
         /// <summary>
-        /// 类python风格的取子集. 如: 对[1,2,3,4,5], GetSub(0, -1)返回[1,2,3,4]; GetSub(-3, -1)返回[3, 4]; GetSub(1,2)返回[2]
+        /// 类python风格的取子集. 如: 对[1,2,3,4,5], <see cref="TakePythonStyle"/>(0, -1)返回[1,2,3,4]; <see cref="TakePythonStyle"/>(-3, -1)返回[3, 4]; <see cref="TakePythonStyle"/>(1,2)返回[2]
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="collection"></param>
@@ -88,6 +86,7 @@ namespace ijw.Collection {
         public static void DivideByRatio<T>(this IEnumerable<T> source, int ratioOfFirstGroup, int ratioOfSecondGroup, out List<T> firstGroup, out List<T> secondGroup) {
             var first = new List<T>();
             var second = new List<T>();
+
             source.ForEachWithIndex((element, index) => {
                 if (index % (ratioOfFirstGroup + ratioOfSecondGroup) < ratioOfFirstGroup) {
                     first.Add(element);
@@ -115,23 +114,6 @@ namespace ijw.Collection {
                 }
                 i++;
             }
-
-            #region 其他实现
-            //另一实现
-            //List<T> result = new List<T>();
-
-            //collection.ForEachIndex((e, i) => {
-            //    if (indexes.Contains(i)) {
-            //        result.Add(e);
-            //    }
-            //});
-
-            //return result;
-
-            //早期实现
-            //var q = from i in collection where indexes.Contains(Array.IndexOf(collection, i)) select i;
-            //return q; 
-            #endregion
         }
 
         /// <summary>
@@ -153,8 +135,6 @@ namespace ijw.Collection {
             }
 
             int index = -1;
-
-
 
             collection.ForEachWithIndexWhile((v, i) => {
                 if(v.Equals(value)) {

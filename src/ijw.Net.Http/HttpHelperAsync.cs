@@ -148,32 +148,37 @@ namespace ijw.Net.Http {
         /// </summary>
         /// <typeparam name="T">处理后的内容的类型, 如byte[]、string等.</typeparam>
         /// <param name="url">指定的url</param>
-        /// <param name="processContent">内容处理委托</param>
+        /// <param name="process">内容处理委托</param>
         /// <param name="userAgent">浏览器类型, 默认是Firefox</param>
         /// <param name="connectTimeout">连接超时时间, 默认是10秒钟</param>
         /// <param name="readTimeout">读取Response流超时时间, 默认是10秒钟</param>
         /// <returns>处理后的内容</returns>
-        public static async Task<T> GetWebResponseContentAsync<T>(string url, Func<Stream, T> processContent, string userAgent = BrowserUserAgent.Firefox, int connectTimeout = 1000 * 10, int readTimeout = 1000 * 10) {
+        public static async Task<T> GetWebResponseContentAsync<T>(string url, Func<Stream, T> process, string userAgent = BrowserUserAgent.Firefox, int connectTimeout = 1000 * 10, int readTimeout = 1000 * 10) {
             var uri = new Uri(url);
-            createHttpClientIfNull();
             if (!client.DefaultRequestHeaders.UserAgent.TryParseAdd(userAgent)) {
                 throw new InvalidUserAgentException(userAgent);
             }
             client.Timeout = TimeSpan.FromMilliseconds(connectTimeout);
+           
             //client.ReadWriteTimeout = readTimeout;
             Stream receiveStream = await client.GetStreamAsync(uri);
-            T content = processContent(receiveStream);
+            T content = process(receiveStream);
             DebugHelper.WriteLine(content.ToString());
             return content;
         }
 
-        private static void createHttpClientIfNull() {
-            if (client == null) {
-                client = new HttpClient();
+        private static HttpClient client
+        {
+            get
+            {
+                if (_client == null) {
+                    _client = new HttpClient();
+                }
+                return _client;
             }
         }
 
-        private static HttpClient client = null;
+        private static HttpClient _client;
     }
 }
 #endif

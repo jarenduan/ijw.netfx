@@ -289,6 +289,12 @@ namespace ijw {
         #endregion
 
         #region  Is other type
+        
+        /// <summary>
+        /// 是否是32位整数
+        /// </summary>
+        /// <param name="aString"></param>
+        /// <returns>是返回true，反之返回false</returns>
         public static bool IsInteger32(this string aString) {
             int i;
             return int.TryParse(aString, out i);
