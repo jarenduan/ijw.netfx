@@ -161,7 +161,7 @@ namespace ijw.AI.ANN.BP {
                     //  Debug.WriteLine("   save weights deltas");
 
                     //就先累加起来, 更新修改量
-                    this.DELTAs = CollectionHelper.ForEachPair(this.DELTAs, deltas, (D, d) => { D += d; return D; });
+                    this.DELTAs = CollectionHelper.ForEachPair(this.DELTAs, deltas, (D, d) => { D += d; return D; }).ToList();
                 }
                 //如果不是
                 else {
