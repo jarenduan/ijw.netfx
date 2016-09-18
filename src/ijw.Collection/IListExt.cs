@@ -62,16 +62,16 @@ namespace ijw.Collection {
         /// <param name="strategies">查找策略, 从后向前或者从前向后.</param>
         /// <returns>返回符合谓词的元素的索引, 如果没有符合的将会返回-1</returns>
         /// <remarks>
-        /// 内部实际上调用了FirstIndexOf和LastIndexOf.
+        /// 内部实际上调用了IndexOf和LastIndexOf.
         /// 如果预期元素在较前的位置, 应该使用EnumeratingStrategies.Queue, 反之是EnumeratingStrategies.Stack.
         /// </remarks>
-        public static int IndexOf<T>(this IList<T> collection, Predicate<T> predicate, FetchStrategies strategies) {
+        public static int IndexOf<T>(this IList<T> collection, Predicate<T> predicate, FetchingStrategies strategies) {
             int index = -1;
             switch (strategies) {
-                case FetchStrategies.First:
+                case FetchingStrategies.FirstFirst:
                     index = collection.IndexOf(predicate); //O(index)
                     break;
-                case FetchStrategies.Last:
+                case FetchingStrategies.LastFirst:
                     index = collection.LastIndexOf(predicate); //O(count - index)
                     break;
                 default:

@@ -40,7 +40,7 @@ namespace ijw.Net.Socket {
         /// <param name="getStratrgy">获取对象的策略</param>
         /// <param name="hostName">主机IP, 默认 127.0.0.1</param>
         /// <param name="portNum">端口号, 默认15210(obj三个字母的序号)</param>
-        public CachedTcpSendingServer(string hostName = "127.0.0.1", int portNum = 15210, FetchStrategies getStratrgy = FetchStrategies.First) {
+        public CachedTcpSendingServer(string hostName = "127.0.0.1", int portNum = 15210, FetchingStrategies getStratrgy = FetchingStrategies.FirstFirst) {
             this._sender = new TcpSender<T>() { HostName = hostName, PortNum = portNum };
             this._ItemSent = new Progress<T>((obj) => {
                 this.ItemsSentAction?.Invoke(obj);

@@ -15,7 +15,7 @@ namespace ijw.Net.Socket.BinaryObject {
         /// <param name="hostName">主机IP, 默认 127.0.0.1</param>
         /// <param name="portNum">端口号, 默认15210(obj三个字母的序号)</param>
         /// <param name="logOn">是否开启日志</param>
-        public BinaryObjectTcpClient(string hostName = "127.0.0.1", int portNum = 15210, FetchStrategies getStratrgy = FetchStrategies.First) :
+        public BinaryObjectTcpClient(string hostName = "127.0.0.1", int portNum = 15210, FetchingStrategies getStratrgy = FetchingStrategies.FirstFirst) :
             base(hostName, portNum, getStratrgy) {
             this.WriteItemAndDisposeAction = (networkStream, item) => {
                 networkStream.WriteBinaryObjectAndDispose(item);

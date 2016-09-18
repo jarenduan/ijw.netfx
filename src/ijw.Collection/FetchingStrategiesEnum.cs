@@ -6,14 +6,14 @@ namespace ijw.Collection {
     /// <summary>
     /// 取回策略
     /// </summary>
-    public enum FetchStrategies {
+    public enum FetchingStrategies {
         /// <summary>
-        /// 从第一个取回
+        /// 第一个优先
         /// </summary>
-        First,
+        FirstFirst,
         /// <summary>
-        /// 从最后一个取回
+        /// 最后一个优先
         /// </summary>
-        Last
+        LastFirst
     }
 }

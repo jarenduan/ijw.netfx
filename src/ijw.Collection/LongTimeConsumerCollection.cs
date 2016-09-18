@@ -22,7 +22,7 @@ namespace ijw.Collection {
         /// <summary>
         /// 元素取出策略
         /// </summary>
-        public FetchStrategies ItemGettngStrategy { get; set; }
+        public FetchingStrategies ItemGettngStrategy { get; set; }
 
         /// <summary>
         /// 元素数量.
@@ -178,11 +178,11 @@ namespace ijw.Collection {
                 else {
                     DebugHelper.WriteLine($"(Getting Item) Item count: {_itemsList.Count}.");
                     switch(this.ItemGettngStrategy) {
-                        case FetchStrategies.First:
+                        case FetchingStrategies.FirstFirst:
                             index = 0;
                             DebugHelper.WriteLine("(Getting Item) Got the FIRST one!");
                             break;
-                        case FetchStrategies.Last:
+                        case FetchingStrategies.LastFirst:
                             index = this._itemsList.Count - 1;
                             DebugHelper.WriteLine("(Getting Item), Got the LAST one!");
                             break;
