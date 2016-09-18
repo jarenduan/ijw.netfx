@@ -8,7 +8,7 @@ namespace ijw.Net.Contracts {
                 return false;
             }
             else {
-                throw new ContractBreakException($"{aString} is not a IPv4 Address");
+                throw new ContractBrokenException($"{aString} is not a IPv4 Address");
             }
         }
     }

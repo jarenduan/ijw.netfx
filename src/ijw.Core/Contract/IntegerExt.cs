@@ -10,14 +10,14 @@
 
         public static bool ShouldBeEven(this int obj) {
             if (obj % 2 != 0) {
-                throw new ContractBreakException();
+                throw new ContractBrokenException();
             }
             return true;
         }
 
         public static bool ShouldBeOdd(this int obj) {
             if (obj % 2 == 0) {
-                throw new  ContractBreakException();
+                throw new  ContractBrokenException();
             }
             return true;
         }
