@@ -99,6 +99,9 @@ namespace ijw.Collection {
             firstGroup = first;
             secondGroup = second;
         }
+        #endregion
+
+        #region Elements At
         /// <summary>
         /// 从集合中按指定索引处, 提取相应的元素们形成新的集合. （输出按照元素在集合中的顺序，而非指定索引的顺序）
         /// </summary>
@@ -108,43 +111,12 @@ namespace ijw.Collection {
         /// <returns></returns>
         public static IEnumerable<T> ElementsAt<T>(this IEnumerable<T> collection, IEnumerable<int> indexes) {
             int i = 0;
-            foreach(var e in collection) {
-                if(indexes.Contains(i)) {
+            foreach (var e in collection) {
+                if (indexes.Contains(i)) {
                     yield return e;
                 }
                 i++;
             }
-        }
-
-        /// <summary>
-        /// 查找指定元素在集合第一次出现位置的索引
-        /// </summary>
-        /// <typeparam name="T">元素类型</typeparam>
-        /// <param name="collection"></param>
-        /// <param name="value">指定元素</param>
-        /// <returns>如果集合中不存在, 返回-1;</returns>
-        public static int IndexOf<T>(this IEnumerable<T> collection, T value) {
-            var list = collection as IList<T>;
-            if(list != null) {
-                return list.IndexOf(value);
-            }
-
-            var ilist = collection as IList;
-            if(ilist != null) {
-                return ilist.IndexOf(value);
-            }
-
-            int index = -1;
-
-            collection.ForEachWithIndexWhile((v, i) => {
-                if(v.Equals(value)) {
-                    index = i;
-                    return false;
-                }
-                else
-                    return true;
-            });
-            return index;
         }
         #endregion
 
@@ -327,7 +299,7 @@ namespace ijw.Collection {
         /// <param name="minValues">归一化下限值的集合</param>
         /// <returns>归一化后的集合</returns>
         public static List<double> Normalize(this IEnumerable<double> collection, IEnumerable<double> maxValues, IEnumerable<double> minValues) {
-            return CollectionHelper.ForEachThree(collection, maxValues, minValues, (x, max, min) => x.NormalizeMaxMin(min, max));
+            return CollectionHelper.ForEachThree(collection, maxValues, minValues, (x, max, min) => x.NormalizeMaxMin(min, max)).ToList();
         }
 
         /// <summary>
@@ -338,7 +310,7 @@ namespace ijw.Collection {
         /// <param name="minValues">归一化下限值的集合</param>
         /// <returns>反归一化后的集合</returns>
         public static List<double> Denormalize(this IEnumerable<double> collection, IEnumerable<double> maxValues, IEnumerable<double> minValues) {
-            return CollectionHelper.ForEachThree(collection, maxValues, minValues, (x, max, min) => x.DenormalizeMaxMin(min, max));
+            return CollectionHelper.ForEachThree(collection, maxValues, minValues, (x, max, min) => x.DenormalizeMaxMin(min, max)).ToList();
         }
         #endregion
 
@@ -364,9 +336,40 @@ namespace ijw.Collection {
             }
             throw new InvalidOperationException();
         }
-        #endregion  
-             
+        #endregion
+
         #region IndexOf
+        /// <summary>
+        /// 查找指定元素在集合第一次出现位置的索引
+        /// </summary>
+        /// <typeparam name="T">元素类型</typeparam>
+        /// <param name="collection"></param>
+        /// <param name="value">指定元素</param>
+        /// <returns>如果集合中不存在, 返回-1;</returns>
+        public static int IndexOf<T>(this IEnumerable<T> collection, T value) {
+            var list = collection as IList<T>;
+            if (list != null) {
+                return list.IndexOf(value);
+            }
+
+            var ilist = collection as IList;
+            if (ilist != null) {
+                return ilist.IndexOf(value);
+            }
+
+            int index = -1;
+
+            collection.ForEachWithIndexWhile((v, i) => {
+                if (v.Equals(value)) {
+                    index = i;
+                    return false;
+                }
+                else
+                    return true;
+            });
+            return index;
+        }
+
         /// <summary>
         /// 在IEnumerable&lt;T&gt;查找第一个符合谓词的元素对象的索引
         /// </summary>
