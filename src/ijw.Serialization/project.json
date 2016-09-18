@@ -10,7 +10,7 @@
     "net40": {},
     "net45": {},
     "netstandard1.4": {
-      "imports": "dnxcore50",
+      
       "dependencies": {
         "System.Runtime.Serialization.Formatters": "4.0.0-rc3-24212-01",
         "NETStandard.Library": "1.6.0"
