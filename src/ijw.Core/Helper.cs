@@ -14,7 +14,7 @@ namespace ijw
         /// <param name="endAtPython">结束索引. 该处字符将不包括在返回结果中. 0代表第一个字符, 负数代表倒数第几个字符(-1表示倒数第一个字符), null代表结尾. 默认值为null.</param>
         public static void PythonStartEndCalculator(int length, out int start, out int end, int? startAtPython = 0, int? endAtPython = null) {
             //endAt.ShouldNotEquals(0);
-
+            //TODO: tuple returns in c# 7.0
             if (startAtPython == null) {
                 startAtPython = 0;
             }

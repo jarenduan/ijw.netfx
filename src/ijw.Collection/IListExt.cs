@@ -63,7 +63,7 @@ namespace ijw.Collection {
         /// <returns>返回符合谓词的元素的索引, 如果没有符合的将会返回-1</returns>
         /// <remarks>
         /// 内部实际上调用了IndexOf和LastIndexOf.
-        /// 如果预期元素在较前的位置, 应该使用EnumeratingStrategies.Queue, 反之是EnumeratingStrategies.Stack.
+        /// 如果预期元素在较前的位置, 应该使用<see cref="FetchingStrategies.FirstFirst"/>, 反之是<see cref="FetchingStrategies.LastFirst"/>.
         /// </remarks>
         public static int IndexOf<T>(this IList<T> collection, Predicate<T> predicate, FetchingStrategies strategies) {
             int index = -1;
