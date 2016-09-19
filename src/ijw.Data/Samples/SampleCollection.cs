@@ -32,7 +32,7 @@ namespace ijw.Data.Samples {
             this.OutputDimension = outputDimension;
 
             this._data = new double[samples.Count()][];
-            samples.ForEachWithIndex((row, index) => {
+            samples.ForEach((row, index) => {
                 row.Length.ShouldEquals(totalDimension);
                 _data[index] = row;
                 this._samples.Add(new Sample(row, outputDimension, this.FieldNames));
@@ -55,14 +55,14 @@ namespace ijw.Data.Samples {
             this.FieldNames = firstSample.Fields;
 
             this._data = new double[samples.Count()][];
-            samples.ForEachWithIndex((s, index) => {
+            samples.ForEach((s, index) => {
                 s.Dimension.ShouldEquals(totalDimension);
                 s.InputDimension.ShouldEquals(this.InputDimension);
                 s.Fields.Count().ShouldEquals(totalDimension);
 
                 //新建一行样本数据
                 var line = new double[totalDimension];
-                s.ForEachWithIndex((v, jndex) => {
+                s.ForEach((v, jndex) => {
                     line[jndex] = v;
                 });
                 this._data[index] = line;

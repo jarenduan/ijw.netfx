@@ -200,7 +200,7 @@ namespace ijw.Collection
             }
             var first = new List<T>();
             var second = new List<T>();
-            source.ForEachWithIndex((element, index) =>
+            source.ForEach((element, index) =>
             {
                 if (index % (ratioOfFirstGroup + ratioOfSecondGroup) < ratioOfFirstGroup)
                 {

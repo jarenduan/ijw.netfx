@@ -80,7 +80,7 @@ namespace ijw.Collection {
             var first = new List<T>();
             var second = new List<T>();
 
-            source.ForEachWithIndex((element, index) => {
+            source.ForEach((element, index) => {
                 if (index % (ratioOfFirstGroup + ratioOfSecondGroup) < ratioOfFirstGroup) {
                     first.Add(element);
                 }
@@ -237,18 +237,41 @@ namespace ijw.Collection {
         #endregion
 
         #region For Each
-        public static void ForEach<T>(this IEnumerable<T> collection, Action<T> action) {
+        /// <summary>
+        /// 在集合上遍历调用某个函数. 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="action">调用的函数</param>
+        public static int ForEach<T>(this IEnumerable<T> collection, Action<T> action) {
+            int index = 0;
+
             foreach (var item in collection) {
+                index++;
                 action(item);
             }
+
+            return index;
         }
 
-        public static void ForEachWhile<T>(this IEnumerable<T> collection, Func<T, bool> actionWithBreak) {
+        /// <summary>
+        /// 在集合上遍历调用某个函数。 函数返回值可以控制是否break循环.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="doWhile">调用的函数，返回false则不继续迭代</param>
+        /// 
+        public static int ForEachWhile<T>(this IEnumerable<T> collection, Func<T, bool> doWhile) {
+            int index = 0;
+
             foreach (var item in collection) {
-                if (!actionWithBreak(item)) {
+                index++;
+                if (!doWhile(item)) {
                     break;
                 }
             }
+
+            return index;
         }
 
         /// <summary>
@@ -258,12 +281,14 @@ namespace ijw.Collection {
         /// <param name="collection"></param>
         /// <param name="action"></param>
         /// <returns>集合的元素个数</returns>
-        public static int ForEachWithIndex<T>(this IEnumerable<T> collection, Action<T, int> action) {
+        public static int ForEach<T>(this IEnumerable<T> collection, Action<T, int> action) {
             int index = 0;
+
             foreach (var element in collection) {
                 action(element, index);
                 index++;
             }
+
             return index;
         }
 
@@ -272,14 +297,15 @@ namespace ijw.Collection {
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="collection"></param>
-        /// <param name="actionWithBreak">返回TRUE继续循环, 返回false则break退出</param>
-        public static void ForEachWithIndexWhile<T>(this IEnumerable<T> collection, Func<T, int, bool> actionWithBreak) {
+        /// <param name="doWhile">返回TRUE继续循环, 返回false则break退出</param>
+        public static int ForEachWhile<T>(this IEnumerable<T> collection, Func<T, int, bool> doWhile) {
             int index = 0;
             foreach (var element in collection) {
-                if (!actionWithBreak(element, index))
+                if (!doWhile(element, index))
                     break;
                 index++;
             }
+            return index;
         }
         #endregion
 
@@ -352,7 +378,7 @@ namespace ijw.Collection {
 
             int index = -1;
 
-            collection.ForEachWithIndexWhile((v, i) => {
+            collection.ForEachWhile((v, i) => {
                 if (v.Equals(value)) {
                     index = i;
                     return false;
