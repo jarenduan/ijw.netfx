@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace ijw.Net.Socket {
     /// <summary>
-    /// C带有内部缓存的TCP数据发送服务器. 
+    /// 带内部缓存的TCP数据发送服务器. 
     /// </summary>
     /// <typeparam name="T">发送数据的类型</typeparam>
     /// <remarks>
-    /// 内部维护了数据缓冲池: 1)负责向池中追加对象 2)根据既定策略取出一条数据进行发送 3)成功发送后从池中删除该对象.
+    /// 内部维护了数据缓冲池: 1)负责向缓存中追加对象 2)根据既定策略取出一条数据进行发送 3)成功发送后从池中删除该对象.
     /// </remarks>
     public class CachedTcpSendingServer<T> {
         /// <summary>

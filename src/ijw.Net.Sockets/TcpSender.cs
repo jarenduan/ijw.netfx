@@ -19,7 +19,7 @@ namespace ijw.Net.Socket {
         public string HostName { get; set; }
 
         /// <summary>
-        /// 发送某个对象遇到错误时的最大尝试次数
+        /// 发送某个对象遇到错误时的最大重试次数
         /// </summary>
         public int MaxRetryTimes { get; set; } = 4;
 
