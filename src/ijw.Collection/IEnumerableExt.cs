@@ -11,16 +11,6 @@ namespace ijw.Collection {
     /// </summary>
     public static class IEnumerableExt {
         #region Take
-        public static IEnumerable<T> Take<T>(this IEnumerable<T> collection, int fromIndex, int toIndex) {
-            fromIndex.ShouldNotLessThan(0);
-            toIndex.ShouldNotLessThan(0);
-            fromIndex.ShouldNotLargerThan(toIndex);
-
-            return collection.TakeWhile((ele, index) => 
-                index >= fromIndex && index <= toIndex
-            );
-        }
-
         /// <summary>
         /// 从0开始反复提取指定数目的元素，每次增加指定步长。提取元素形成新集合, 内部使用了yield return.
         /// 如果步长和提取量相等, 则元素全部被提取.
@@ -49,12 +39,15 @@ namespace ijw.Collection {
         /// <param name="endAt">结束索引. 该处元素将不包括在返回结果中. 0 = 第一个元素, -n = 倒数第n个元素, null = 结尾. 默认值为null. </param>
         /// <returns>子集</returns>
         public static IEnumerable<T> TakePythonStyle<T>(this IEnumerable<T> collection, int? startAt = 0, int? endAt = null) {
-            int startAtPython, endAtPython;
             int count = collection.Count();
+            int startAtPython, endAtPython;
             Helper.PythonStartEndCalculator(count, out startAtPython, out endAtPython, startAt, endAt);
-            return collection.Take(startAtPython, endAtPython);
+            return collection.Skip(startAtPython).Take(endAtPython - startAtPython + 1);
         }
 
+        #endregion
+
+        #region Divide
         /// <summary>
         /// 把一个集合按指定的比率和方式分成两部分
         /// </summary>
@@ -67,7 +60,7 @@ namespace ijw.Collection {
         /// <param name="secondGroup">切分后的第二部分</param>
         public static void DivideByRatioAndMethod<T>(this IEnumerable<T> collection, int ratioOfFirstGroup, int ratioOfSecondGroup, CollectionDividingMethod method, out List<T> firstGroup, out List<T> secondGroup) {
             var source = collection;
-            if(method == CollectionDividingMethod.Random) {
+            if (method == CollectionDividingMethod.Random) {
                 IList<T> indexable = collection as IList<T>;
                 source = indexable == null ? source.Random() : indexable.Random();
             }
@@ -98,7 +91,7 @@ namespace ijw.Collection {
 
             firstGroup = first;
             secondGroup = second;
-        }
+        } 
         #endregion
 
         #region Elements At
