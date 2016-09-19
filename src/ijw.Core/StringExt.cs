@@ -19,7 +19,7 @@ namespace ijw {
         }
 
         /// <summary>
-        /// python风格的子字符串
+        /// 获取Python风格的子字符串
         /// </summary>
         /// <param name="astring"></param>
         /// <param name="startIndex">启始索引. 该处字符将包括在返回结果中. 0代表第一个字符, 负数代表倒数第几个字符(-1表示倒数第一个字符), null等同于0. 默认值是0</param>
