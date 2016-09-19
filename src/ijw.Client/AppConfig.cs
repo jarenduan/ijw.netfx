@@ -9,10 +9,7 @@ namespace ijw.Client {
             get
             {
                 var setting = config.AppSettings.Settings[settingName];
-                if (setting == null)
-                    return null;
-                else
-                    return setting.Value;
+                return setting?.Value;
             }
             set
             {
