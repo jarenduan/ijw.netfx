@@ -20,7 +20,7 @@ namespace ijw.Net.Html {
             string attr = null;
             if (last < xpath.Length - 2 && xpath[last + 1] == '@') {
                 attr = xpath.Substring(last + 2);
-                xpath = xpath.GetSubStringPythonStyle(0, last);
+                xpath = xpath.SubstringPythonStyle(0, last);
             }
 
             var htmlNodes = htmlDoc.DocumentNode.SelectNodes(xpath);

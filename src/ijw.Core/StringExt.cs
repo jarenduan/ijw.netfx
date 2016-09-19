@@ -25,14 +25,14 @@ namespace ijw {
         /// <param name="startIndex">启始索引. 该处字符将包括在返回结果中. 0代表第一个字符, 负数代表倒数第几个字符(-1表示倒数第一个字符), null等同于0. 默认值是0</param>
         /// <param name="endIndex">结束索引. 该处字符将不包括在返回结果中. 0代表第一个字符, 负数代表倒数第几个字符(-1表示倒数第一个字符), null代表结尾. 默认值为null.</param>
         /// <returns></returns>
-        public static string GetSubStringPythonStyle(this string astring, int? startIndex = null, int? endIndex = null) {
+        public static string SubstringPythonStyle(this string astring, int? startIndex = null, int? endIndex = null) {
             int startAt, endAt;
             Helper.PythonStartEndCalculator(astring.Length, out startAt, out endAt, startIndex, endIndex);
             if (endAt < 0) {
                 return string.Empty;
             }
             else {
-                return astring.GetSubString(startAt, endAt);
+                return astring.SubStringFromTo(startAt, endAt);
             }
         }
 
@@ -40,19 +40,19 @@ namespace ijw {
         /// 获取子串
         /// </summary>
         /// <param name="astring"></param>
-        /// <param name="startIndex">起始索引（该位置字符也包括在字串中）</param>
-        /// <param name="endIndex">结束索引（该位置字符也包括在字串中）</param>
+        /// <param name="fromIndex">起始索引（该位置字符也包括在字串中）</param>
+        /// <param name="toIndex">结束索引（该位置字符也包括在字串中）</param>
         /// <returns></returns>
-        public static string GetSubString(this string astring, int startIndex, int endIndex) {
-            startIndex.ShouldBeNotLessThanZero();
-            endIndex.ShouldBeNotLessThanZero();
-            endIndex.ShouldLessThan(astring.Length);
-            if (endIndex < startIndex) {
+        public static string SubStringFromTo(this string astring, int fromIndex, int toIndex) {
+            fromIndex.ShouldBeNotLessThanZero();
+            toIndex.ShouldBeNotLessThanZero();
+            toIndex.ShouldLessThan(astring.Length);
+            if (toIndex < fromIndex) {
                 return string.Empty;
             }
-            char[] result = new char[endIndex - startIndex + 1];
+            char[] result = new char[toIndex - fromIndex + 1];
             int j = 0;
-            for (int i = startIndex; i <= endIndex; i++) {
+            for (int i = fromIndex; i <= toIndex; i++) {
                 result[j] = astring[i];
                 j++;
             }
