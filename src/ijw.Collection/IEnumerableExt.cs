@@ -11,6 +11,14 @@ namespace ijw.Collection {
     /// </summary>
     public static class IEnumerableExt {
         #region Take
+        /// <summary>
+        /// 给定起止索引，提取范围内的元素，包括起止处的元素。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="fromIndex">起始索引</param>
+        /// <param name="toIndex">终止索引</param>
+        /// <returns></returns>
         public static IEnumerable<T> Take<T>(this IEnumerable<T> collection, int fromIndex, int toIndex) {
             fromIndex.ShouldNotLessThan(0);
             toIndex.ShouldNotLessThan(0);
