@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using ijw.Maths.Functions;
 using ijw.AI.ANN.Base;
-using System.Runtime.Serialization;
 
-namespace ijw.AI.ANN.BP {
+namespace ijw.AI.ANN.BP
+{
 
     public class BPHiddenNode : MiddleNodeBase, IBPTraining {
          /// <summary>

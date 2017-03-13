@@ -22,6 +22,5 @@ namespace ijw.IO {
         public static void WriteToFile(this string content, string filepath, bool append = false) {
             FileHelper.WriteStringToFile(filepath, content, append);
         }
-
     }
 }

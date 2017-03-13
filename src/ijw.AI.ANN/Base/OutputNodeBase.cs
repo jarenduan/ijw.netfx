@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using ijw.Maths.Functions;
-using System.Runtime.Serialization;
 
 namespace ijw.AI.ANN.Base {
     public abstract class OutputNodeBase : NodeBase,IRecieve {

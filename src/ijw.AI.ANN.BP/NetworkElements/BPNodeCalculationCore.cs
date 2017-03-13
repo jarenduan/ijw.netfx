@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using ijw.Maths.Functions;
-using System.Runtime.Serialization;
+﻿using ijw.Maths.Functions;
 
-namespace ijw.AI.ANN.BP {
+namespace ijw.AI.ANN.BP
+{
     /// <summary>
     /// BP神经元的核心计算逻辑
     /// </summary>
