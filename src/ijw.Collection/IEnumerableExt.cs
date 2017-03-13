@@ -24,7 +24,7 @@ namespace ijw.Collection {
             toIndex.ShouldNotLessThan(0);
             fromIndex.ShouldNotLargerThan(toIndex);
 
-            return collection.TakeWhile((ele, index) => 
+            return collection.Where((ele, index) => 
                 index >= fromIndex && index <= toIndex
             );
         }
@@ -43,7 +43,7 @@ namespace ijw.Collection {
             takeEachTime.ShouldLargerThan(0);
             takeEachTime.ShouldNotLargerThan(step);
 
-            return collection.TakeWhile((item, index) => 
+            return collection.Where((item, index) => 
                 index % step < takeEachTime
             );
         }
@@ -57,9 +57,11 @@ namespace ijw.Collection {
         /// <param name="endAt">结束索引. 该处元素将不包括在返回结果中. 0 = 第一个元素, -n = 倒数第n个元素, null = 结尾. 默认值为null. </param>
         /// <returns>子集</returns>
         public static IEnumerable<T> TakePythonStyle<T>(this IEnumerable<T> collection, int? startAt = 0, int? endAt = null) {
-            int startAtPython, endAtPython;
             int count = collection.Count();
-            Helper.PythonStartEndCalculator(count, out startAtPython, out endAtPython, startAt, endAt);
+            Helper.PythonStartEndCalculator(count, out int startAtPython, out int endAtPython, startAt, endAt);
+            if (startAtPython > endAtPython) {
+                return new List<T>();
+            }
             return collection.Take(startAtPython, endAtPython);
         }
 
@@ -137,16 +139,14 @@ namespace ijw.Collection {
         /// <param name="collection"></param>
         /// <returns></returns>
         public static IEnumerable<T> Random<T>(this IEnumerable<T> collection) {
-            var array = collection as T[];
-            if (array != null) {
+            if (collection is T[] array) {
                 //如果能转成T[]. 高效实现.
                 foreach (var item in array.Random()) {
                     yield return item;
                 }
             }
             else {
-                var list = collection as IList<T>;
-                if (list != null) {
+                if (collection is IList<T> list) {
                     //如果能转成Ilist. 高效实现.
                     foreach (var item in list.Random()) {
                         yield return item;
@@ -202,8 +202,7 @@ namespace ijw.Collection {
         }
 
         private static void appendSimpleStringIfPossible<T>(StringBuilder sb, T item) {
-            IEnumerable<T> ienum = item as IEnumerable<T>;
-            if(ienum != null) {
+            if (item is IEnumerable<T> ienum) {
                 sb.Append(ienum.ToSimpleEnumStrings());
             }
             else {
@@ -224,12 +223,11 @@ namespace ijw.Collection {
         public static string ToAllEnumStrings<T>(this IEnumerable<T> collection, string separator = ", ", string prefix = "[", string postfix = "]", Func<T, string> transform = null) {
             StringBuilder sb = new StringBuilder(prefix);
             foreach(var item in collection) {
-                IEnumerable<T> ienum = item as IEnumerable<T>;
-                if(ienum != null) {
+                if (item is IEnumerable<T> ienum) {
                     sb.Append(ienum.ToAllEnumStrings(separator, prefix, postfix));
                 }
                 else {
-                    string s = transform == null ? item.ToString(): transform(item) ;
+                    string s = transform == null ? item.ToString() : transform(item);
                     sb.Append(s);
                 }
                 sb.Append(separator);
@@ -381,13 +379,11 @@ namespace ijw.Collection {
         /// <param name="value">指定元素</param>
         /// <returns>如果集合中不存在, 返回-1;</returns>
         public static int IndexOf<T>(this IEnumerable<T> collection, T value) {
-            var list = collection as IList<T>;
-            if (list != null) {
+            if (collection is IList<T> list) {
                 return list.IndexOf(value);
             }
 
-            var ilist = collection as IList;
-            if (ilist != null) {
+            if (collection is IList ilist) {
                 return ilist.IndexOf(value);
             }
 
@@ -430,8 +426,7 @@ namespace ijw.Collection {
         /// 在IEnumerable&lt;T&gt;查找最后一个出现的元素对象索引
         /// </summary>
         public static int LastIndexOf<T>(this IEnumerable<T> collection, T item) {
-            var list = collection as List<T>;
-            if (list != null) {
+            if (collection is List<T> list) {
                 return list.LastIndexOf(item);
             }
             return collection.Reverse().IndexOf(item);
