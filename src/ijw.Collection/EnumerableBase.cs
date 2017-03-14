@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using ijw.Contract;
 
-namespace ijw.Collection
-{
+namespace ijw.Collection {
     /// <summary>
     /// 通过在内部使用数组T[], 提供了一个最小的IEnumerable!<![CDATA[<T>]]>实现. 无法实例化.
     /// 可以从此类继承, 从而方便地利用定长数组实现IEnumerable!<![CDATA[<T>]]>.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public abstract class EnumerableBase<T> : IEnumerable<T>, IEnumerable {
-        public EnumerableBase() { } 
+        public EnumerableBase() { }
         public EnumerableBase(T[] data) {
             data.ShouldBeNotNullArgument();
             this._data = data;

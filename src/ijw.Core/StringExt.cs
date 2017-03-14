@@ -26,8 +26,7 @@ namespace ijw {
         /// <param name="endIndex">结束索引. 该处字符将不包括在返回结果中. 0代表第一个字符, 负数代表倒数第几个字符(-1表示倒数第一个字符), null代表结尾. 默认值为null.</param>
         /// <returns></returns>
         public static string SubstringPythonStyle(this string astring, int? startIndex = null, int? endIndex = null) {
-            int startAt, endAt;
-            Helper.PythonStartEndCalculator(astring.Length, out startAt, out endAt, startIndex, endIndex);
+            Helper.PythonStartEndCalculator(astring.Length, out int startAt, out int endAt, startIndex, endIndex);
             if (endAt < 0) {
                 return string.Empty;
             }
@@ -245,8 +244,7 @@ namespace ijw {
         /// <param name="defaultNumer">转换失败时返回的值, 默认是0</param>
         /// <returns></returns>
         public static int ToIntAnyway(this string s, int defaultNumer = 0) {
-            int i;
-            if (int.TryParse(s, out i)) {
+            if (int.TryParse(s, out int i)) {
                 return i;
             }
             else {
@@ -278,8 +276,7 @@ namespace ijw {
                 result = defaultValue;
             }
 #else
-            T e;
-            if (Enum.TryParse<T>(aString, out e)) {
+            if (Enum.TryParse<T>(aString, out T e)) {
                 result = e;
             }
 #endif
@@ -296,8 +293,7 @@ namespace ijw {
         /// <param name="aString"></param>
         /// <returns>是返回true，反之返回false</returns>
         public static bool IsInteger32(this string aString) {
-            int i;
-            return int.TryParse(aString, out i);
+            return int.TryParse(aString, out int i);
         }
         #endregion
 

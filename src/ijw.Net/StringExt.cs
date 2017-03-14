@@ -7,8 +7,7 @@
                 return false;
             }
             for (int i = 0; i < parts.Length; i++) {
-                int j;
-                if (!int.TryParse(parts[i], out j)) {
+                if (!int.TryParse(parts[i], out int j)) {
                     return false;
                 }
                 if (i == 0 && (j <= 0 || j > 255)) {
