@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>1.0.0-rc1</VersionPrefix>
+    <TargetFramework>net45</TargetFramework>
+    <AssemblyName>ijw.Client.WinForm.Controls.Package</AssemblyName>
+    <PackageId>ijw.Client.WinForm.Controls.Package</PackageId>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ijw.Client.Winform.Controls\ijw.Client.Winform.Controls.csproj">
+      <PrivateAssets>All</PrivateAssets>
+    </ProjectReference>
+  </ItemGroup>
+  
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+    <Content Include="bin\$(Configuration)\$(TargetFramework)\*.*">
+      <PackagePath>lib\$(TargetFramework)\</PackagePath>
+    </Content>
+  </ItemGroup>
+</Project>
