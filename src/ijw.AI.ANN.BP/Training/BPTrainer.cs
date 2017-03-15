@@ -67,10 +67,10 @@ namespace ijw.AI.ANN.BP {
         /// 训练网络
         /// </summary>
         public void Train() {
-            CheckSamplesCountAndDimension(this.TrainingSamples);
+            checkSamplesCountAndDimension(this.TrainingSamples);
             //训练预定的次数
             for (int i = 0; i < this.TrainingTimes; i++) {
-                if (IsConveged(Train(TrainingSamples))) { //如果收敛, 停止训练
+                if (isConveged(Train(TrainingSamples))) { //如果收敛, 停止训练
                     //if (IsConveged(Train(TrainingSamples.GetRandomSequence()))) { //如果收敛, 停止训练
                     return;
                 }
@@ -84,7 +84,7 @@ namespace ijw.AI.ANN.BP {
         /// <param name="progress">进度报告</param>
         /// <returns></returns>
         public Task TrainAsync(CancellationToken cancellationToken, IProgress<double> progress) {
-            CheckSamplesCountAndDimension(this.TrainingSamples);
+            checkSamplesCountAndDimension(this.TrainingSamples);
 
             var task = Task.Run(() => {
                 //Stopwatch st = new Stopwatch();
@@ -93,7 +93,7 @@ namespace ijw.AI.ANN.BP {
                     //Debug.WriteLine("Start training " + i.ToString() + "/" + this.TrainingTimes.ToString());
                     //st.Start();
                     var overallError = Train(TrainingSamples, cancellationToken, progress);
-                    if (IsConveged(overallError) || cancellationToken.IsCancellationRequested) { //如果收敛, 停止训练
+                    if (isConveged(overallError) || cancellationToken.IsCancellationRequested) { //如果收敛, 停止训练
                         return;
                     }
                     //st.Stop();
@@ -128,7 +128,7 @@ namespace ijw.AI.ANN.BP {
             //  st.Start();
 
             //检查样本集合没问题
-            CheckSamplesCountAndDimension(samples);
+            checkSamplesCountAndDimension(samples);
             //   st.Stop();
             //   Debug.WriteLine("done." + st.Elapsed.ToString());
 
@@ -152,7 +152,7 @@ namespace ijw.AI.ANN.BP {
                 //   st.Reset();
                 //   st.Start();
                 //没有的话就要开始训练, 先获取权值调整量
-                var deltas = GetWeightsDeltas(s.Input, s.Output);
+                var deltas = getWeightsDeltas(s.Input, s.Output);
                 //  st.Stop();
                 // Debug.WriteLine("done." + st.Elapsed.ToString());
 
@@ -219,7 +219,7 @@ namespace ijw.AI.ANN.BP {
             //   Debug.WriteLine("done." + st.Elapsed.ToString());
 
             //触发一下事件(同步)
-            RaiseTrainedEvent(error);
+            raiseTrainedEvent(error);
 
             //返回误差
             //st.Stop();
@@ -227,7 +227,7 @@ namespace ijw.AI.ANN.BP {
             return error;
         }
 
-        private IEnumerable<double> GetWeightsDeltas(IEnumerable<double> inputSample, IEnumerable<double> outputSample) {
+        private IEnumerable<double> getWeightsDeltas(IEnumerable<double> inputSample, IEnumerable<double> outputSample) {
             //设定输入值和期望的输出值
             this.Network.Input = inputSample;
             this.Network.DesireOutput = outputSample;
@@ -246,7 +246,7 @@ namespace ijw.AI.ANN.BP {
         /// 计算网络是否收敛
         /// </summary>
         /// <returns></returns>
-        private bool IsConveged(double overallError) {
+        private bool isConveged(double overallError) {
             return overallError < DesireError;
         }
 
@@ -264,7 +264,7 @@ namespace ijw.AI.ANN.BP {
         /// 检查样本集, 确保样本集中有样本, 并且输入输出的维度和待训练网络一致
         /// </summary>
         /// <param name="samples"></param>
-        private void CheckSamplesCountAndDimension(SampleCollection samples) {
+        private void checkSamplesCountAndDimension(SampleCollection samples) {
             if (samples == null || samples.Count() == 0) {
                 throw new NoSamplesException();
             }
@@ -276,12 +276,10 @@ namespace ijw.AI.ANN.BP {
             }
         }
 
-        private void RaiseTrainedEvent(double error) {
-            if (this.TrainedEvent != null) {
-                //   this.TrainedEvent(this, new TrainedEventArgs(this.Network.GetRelativeError()));
-                //this.TrainedEvent(this, new BPTrainedEventArgs(this.Network.Output.First()));
-                this.TrainedEvent(this, new BPTrainedEventArgs(error));
-            }
+        private void raiseTrainedEvent(double error) {
+            //   this.TrainedEvent(this, new TrainedEventArgs(this.Network.GetRelativeError()));
+            //this.TrainedEvent(this, new BPTrainedEventArgs(this.Network.Output.First()));
+            this.TrainedEvent?.Invoke(this, new BPTrainedEventArgs(error));
         }
 
         /// <summary>
@@ -297,13 +295,14 @@ namespace ijw.AI.ANN.BP {
             //model.CalculateDerivative(model.Input);
             //return -(getDelta(conn.To) * model.Derivative * conn.Value * this.LearningRate);
 
-            var nextNode = conn.To as IBPTraining;
-            if (nextNode == null) {
+            if (conn.To is IBPTraining nextNode) {
+                double delta = nextNode.GetDelta();
+                //double delta = getDelta(nextNode);
+                return delta * conn.Value * this.LearningRate;
+            }
+            else {
                 throw new WrongNodeTyoeException(conn.To);
             }
-            double delta = nextNode.GetDelta();
-            //double delta = getDelta(nextNode);
-            return delta * conn.Value * this.LearningRate;
         }
 
         //private double getDelta(BPNonInputNodeBase nextNode) {
