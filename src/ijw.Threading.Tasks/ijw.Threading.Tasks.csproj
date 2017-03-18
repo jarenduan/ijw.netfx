@@ -2,21 +2,27 @@
 
   <PropertyGroup>
     <VersionPrefix>1.0.0-rc1</VersionPrefix>
-    <TargetFrameworks>net35;net45;netstandard1.4</TargetFrameworks>
+    <TargetFrameworks>net35;net40;net45;netstandard1.4</TargetFrameworks>
     <AssemblyName>ijw.Threading.Tasks</AssemblyName>
     <PackageId>ijw.Threading.Tasks</PackageId>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.4' ">1.6.0</NetStandardImplicitPackageVersion>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <AppConfig Condition="'$(TargetFramework)' == 'net40'">App.net40.config</AppConfig>
+    <AutoUnifyAssemblyReferences Condition="'$(TargetFramework)' == 'net40'">false</AutoUnifyAssemblyReferences>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ijw.Core\ijw.Core.csproj" />
   </ItemGroup>
 
+  
   <ItemGroup Condition=" '$(TargetFramework)' == 'net35' ">
     <PackageReference Include="TaskParallelLibrary" Version="1.0.2856" />
+    <PackageReference Include="AsyncBridge.Net35">
+      <Version>0.2.0</Version>
+    </PackageReference>
     <Reference Include="System" />
   </ItemGroup>
 
@@ -36,16 +42,4 @@
     <PackageReference Include="System.Threading.Thread" Version="4.0.0" />
   </ItemGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net35'">
-    <PackageReference Include="AsyncBridge.Net35">
-      <Version>0.2.0</Version>
-    </PackageReference>
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net45'">
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net40'">
-  </ItemGroup>
-
-</Project>
+ </Project>
