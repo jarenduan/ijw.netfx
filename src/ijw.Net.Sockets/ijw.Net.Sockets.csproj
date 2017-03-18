@@ -2,17 +2,20 @@
 
   <PropertyGroup>
     <VersionPrefix>1.0.0-rc1</VersionPrefix>
-    <TargetFrameworks>net35;net45;netstandard1.4</TargetFrameworks>
+    <TargetFrameworks>net35;net40;net45;netstandard1.4</TargetFrameworks>
     <AssemblyName>ijw.Net.Sockets</AssemblyName>
     <PackageId>ijw.Net.Sockets</PackageId>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.4' ">1.6.0</NetStandardImplicitPackageVersion>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <AppConfig Condition="'$(TargetFramework)' == 'net40'">App.net40.config</AppConfig>
+    <AutoUnifyAssemblyReferences Condition="'$(TargetFramework)' == 'net40'">false</AutoUnifyAssemblyReferences>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\ijw.Core\ijw.Core.csproj" />
+    <ProjectReference Include="..\ijw.IO\ijw.IO.csproj" />
     <ProjectReference Include="..\ijw.Log\ijw.Log.csproj" />
     <ProjectReference Include="..\ijw.Threading.Tasks\ijw.Threading.Tasks.csproj" />
     <ProjectReference Include="..\ijw.Collection\ijw.Collection.csproj" />

@@ -76,27 +76,27 @@ namespace ijw.Net.Socket {
         /// </remarks>
         public async Task StartSendingAsync() {
             //初始化looper
-            _bgLoopwork = new BackgroundLooper();
-            _bgLoopwork.ExitCondition = () => false;
-            _bgLoopwork.SleepCondition = () => !this._dataPool.HasAvailableItems;
-            _bgLoopwork.LoopAction = async () => {
-                //if(this.DataPool.Count >= 512) {
-                //    BatchHandle();
-                //}
-                T item;
-                if (_dataPool.TryBorrowAvailable(out item)) {
-                    //有可发数据
-                    if (await _sender.TrySendDataWithRetryAsync(item)) {
-                        //发送成功
-                        DebugHelper.WriteLine("Try removing item from pool.");
-                        _dataPool.Remove(item);
-                        _ItemSent.Report(item);
-                    }
-                    else {
-                        //发送失败
-                        _dataPool.Return(item);
-                        this._bgLoopwork.WakeUpIfSleeping(); //归还item后，唤醒looper
-                        throw new Exception($"Sending fail: has retry {_sender.MaxRetryTimes.ToString()} times. 有可能服务器未开启或者网络问题.");
+            _bgLoopwork = new BackgroundLooper() {
+                ExitCondition = () => false,
+                SleepCondition = () => !this._dataPool.HasAvailableItems,
+                LoopAction = async () => {
+                    //if(this.DataPool.Count >= 512) {
+                    //    BatchHandle();
+                    //}
+                    if (_dataPool.TryBorrowAvailable(out T item)) {
+                        //有可发数据
+                        if (await _sender.TrySendDataWithRetryAsync(item)) {
+                            //发送成功
+                            DebugHelper.WriteLine("Try removing item from pool.");
+                            _dataPool.Remove(item);
+                            _ItemSent.Report(item);
+                        }
+                        else {
+                            //发送失败
+                            _dataPool.Return(item);
+                            this._bgLoopwork.WakeUpIfSleeping(); //归还item后，唤醒looper
+                            throw new Exception($"Sending fail: has retry {_sender.MaxRetryTimes.ToString()} times. 有可能服务器未开启或者网络问题.");
+                        }
                     }
                 }
             };
@@ -130,7 +130,7 @@ namespace ijw.Net.Socket {
         /// <summary>
         /// 批处理之前的剩余数据
         /// </summary>
-        private void BatchHandle() {
+        private void batchHandle() {
             //TODO: implement;
             throw new NotImplementedException();
         }

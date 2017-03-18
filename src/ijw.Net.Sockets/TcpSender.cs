@@ -92,7 +92,7 @@ namespace ijw.Net.Socket {
 #pragma warning restore 168
         }
 #endif
-#if !NET35
+#if !NET35 && !NET40
         /// <summary>
         /// 发送一条数据，尝试重试
         /// </summary>

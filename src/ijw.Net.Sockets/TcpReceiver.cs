@@ -76,7 +76,11 @@ namespace ijw.Net.Socket {
             }
         }
 #endif
-#if !NET35
+#if !NET35 && !NET40
+
+        //TODO: Add support to net35 and net40
+        //There are only async version, considering add sync version for net35 and net40
+
         /// <summary>
         /// 获取客户端发送的数据.
         /// </summary>

@@ -82,7 +82,11 @@ namespace ijw.Net.Socket {
             });
         }
 #endif
-#if !NET35
+#if !NET35 && !NET40
+        //TODO: Add support to net35 and net40
+        //There are only async version, considering add sync version for net35 and net40
+
+
         /// <summary>
         /// 异步启动监听. 将在内部启动两个Task. 分别负责端口监听和事件激发.
         /// 可通过注册<see cref="ItemRecieved"/>事件来处理接收到的对象.
