@@ -54,7 +54,6 @@ namespace ijw.Diagnostic {
         /// 获取调用者的方法信息。注意:获取的是调用GetCallerName()所在方法的方法的信息。
         /// </summary>
         /// <returns>返回方法信息。</returns>
-
         public static System.Reflection.MethodBase GetCallerMethod() {
             return new StackTrace().GetFrame(2).GetMethod();
         }
