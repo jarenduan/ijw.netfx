@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>0.0.1-rc1</VersionPrefix>
+    <Authors>Jaren</Authors>
+    <TargetFrameworks>net35;net40;net45;netstandard1.4</TargetFrameworks>
+    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.4' ">1.6.0</NetStandardImplicitPackageVersion>
+    <AssemblyName>ijw.Entity</AssemblyName>
+    <PackageId>ijw.Entity</PackageId>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ijw.Core\ijw.Core.csproj" />
+  </ItemGroup>
+</Project>
