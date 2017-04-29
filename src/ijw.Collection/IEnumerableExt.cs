@@ -24,7 +24,7 @@ namespace ijw.Collection {
             toIndex.ShouldNotLessThan(0);
             fromIndex.ShouldNotLargerThan(toIndex);
 
-            return collection.Where((ele, index) => 
+            return collection.Where((ele, index) =>
                 index >= fromIndex && index <= toIndex
             );
         }
@@ -43,7 +43,7 @@ namespace ijw.Collection {
             takeEachTime.ShouldLargerThan(0);
             takeEachTime.ShouldNotLargerThan(step);
 
-            return collection.Where((item, index) => 
+            return collection.Where((item, index) =>
                 index % step < takeEachTime
             );
         }
@@ -64,25 +64,9 @@ namespace ijw.Collection {
             }
             return collection.Take(startAtPython, endAtPython);
         }
+        #endregion
 
-        /// <summary>
-        /// 把一个集合按指定的比率和方式分成两部分
-        /// </summary>
-        /// <typeparam name="T">元素类型</typeparam>
-        /// <param name="collection">源集合</param>
-        /// <param name="ratioOfFirstGroup">第一部分的比例</param>
-        /// <param name="ratioOfSecondGroup">第二把部分的比例</param>
-        /// <param name="method">切分方式</param>
-        /// <param name="firstGroup">切分后的第一部分</param>
-        /// <param name="secondGroup">切分后的第二部分</param>
-        public static void DivideByRatioAndMethod<T>(this IEnumerable<T> collection, int ratioOfFirstGroup, int ratioOfSecondGroup, CollectionDividingMethod method, out List<T> firstGroup, out List<T> secondGroup) {
-            var source = collection;
-            if(method == CollectionDividingMethod.Random) {
-                IList<T> indexable = collection as IList<T>;
-                source = indexable == null ? source.Random() : indexable.Random();
-            }
-            collection.DivideByRatio(ratioOfFirstGroup, ratioOfSecondGroup, out firstGroup, out secondGroup);
-        }
+        #region Divide
 
         /// <summary>
         /// 按指定的比例把集合分拆成两部分
@@ -93,6 +77,7 @@ namespace ijw.Collection {
         /// <param name="ratioOfSecondGroup">第二部分的占比</param>
         /// <param name="firstGroup">分拆出的第一部分</param>
         /// <param name="secondGroup">分拆出的第二部分</param>
+        /// <remarks>net40+请使用返回元组的版本， out return 版本不推荐使用</remarks>
         public static void DivideByRatio<T>(this IEnumerable<T> source, int ratioOfFirstGroup, int ratioOfSecondGroup, out List<T> firstGroup, out List<T> secondGroup) {
             var first = new List<T>();
             var second = new List<T>();
@@ -109,6 +94,58 @@ namespace ijw.Collection {
             firstGroup = first;
             secondGroup = second;
         }
+
+        /// <summary>
+        /// 把一个集合按指定的比率和方式分成两部分
+        /// </summary>
+        /// <typeparam name="T">元素类型</typeparam>
+        /// <param name="collection">源集合</param>
+        /// <param name="method">切分方式</param>
+        /// <param name="ratioOfFirstGroup">第一部分的比例</param>
+        /// <param name="ratioOfSecondGroup">第二把部分的比例</param>
+        /// <param name="firstGroup">切分后的第一部分</param>
+        /// <param name="secondGroup">切分后的第二部分</param>
+        /// <remarks>net40+请使用返回元组的版本， out return 版本不推荐使用</remarks>
+        public static void DivideByRatioAndMethod<T>(this IEnumerable<T> collection, int ratioOfFirstGroup, int ratioOfSecondGroup, CollectionDividingMethod method, out List<T> firstGroup, out List<T> secondGroup) {
+            var source = collection;
+            if (method == CollectionDividingMethod.Random) {
+                IList<T> indexable = collection as IList<T>;
+                source = indexable == null ? source.Random() : indexable.Random();
+            }
+            collection.DivideByRatio(ratioOfFirstGroup, ratioOfSecondGroup, out firstGroup, out secondGroup);
+        }
+
+#if !NET35
+        /// <summary>
+        /// 按指定的比例把集合分拆成两部分
+        /// </summary>
+        /// <typeparam name="T">元素类型</typeparam>
+        /// <param name="collection">源集合</param>
+        /// <param name="ratioOfFirstGroup">第一部分的占比</param>
+        /// <param name="ratioOfSecondGroup">第二部分的占比</param>
+        /// <returns>元组（分拆出的第一部分，分拆出的第二部分）</returns>
+        /// <remarks>使用返回元组的版本， out return 版本不推荐使用</remarks>
+        public static (List<T> firstGroup, List<T> secondGroup) DivideByRatio<T>(this IEnumerable<T> source, int ratioOfFirstGroup, int ratioOfSecondGroup) {
+            source.DivideByRatio(ratioOfFirstGroup, ratioOfSecondGroup, out var firstGrouop, out var secondGroup);
+            return (firstGrouop, secondGroup);
+        }
+
+        /// <summary>
+        /// 把一个集合按指定的比率和方式分成两部分
+        /// </summary>
+        /// <typeparam name="T">元素类型</typeparam>
+        /// <param name="collection">源集合</param>
+        /// <param name="method">切分方式</param>
+        /// <param name="ratioOfFirstGroup">第一部分的比例</param>
+        /// <param name="ratioOfSecondGroup">第二把部分的比例</param>
+        /// <returns>元组（切分后的第一部分，切分后的第二部分）</returns>
+        /// <remarks>使用返回元组的版本， out return 版本不推荐使用</remarks>
+        public static (List<T> firstGroup, List<T> secondGroup) DivideByRatioAndMethod<T>(this IEnumerable<T> source, CollectionDividingMethod method, int ratioOfFirstGroup, int ratioOfSecondGroup) {
+            source.DivideByRatioAndMethod(ratioOfFirstGroup, ratioOfSecondGroup, method, out var firstGrouop, out var secondGroup);
+            return (firstGrouop, secondGroup);
+        }
+#endif
+
         #endregion
 
         #region Elements At
@@ -173,15 +210,15 @@ namespace ijw.Collection {
         /// <param name="maxDisplayNumber"></param>
         /// <returns></returns>
         public static string ToSimpleEnumStrings<T>(this IEnumerable<T> collection, int maxDisplayNumber = 3) {
-            if(maxDisplayNumber <= 0)
+            if (maxDisplayNumber <= 0)
                 maxDisplayNumber = 3;
             int count = collection.Count();
-            if(count <= maxDisplayNumber) {
+            if (count <= maxDisplayNumber) {
                 return collection.ToAllEnumStrings();
             }
             else {
                 StringBuilder sb = new StringBuilder("[");
-                foreach (var item in collection.Where((item,index) => index <= maxDisplayNumber - 2)){
+                foreach (var item in collection.Where((item, index) => index <= maxDisplayNumber - 2)) {
                     appendSimpleStringIfPossible<T>(sb, item);
                 }
 
@@ -222,7 +259,7 @@ namespace ijw.Collection {
         /// <returns></returns>
         public static string ToAllEnumStrings<T>(this IEnumerable<T> collection, string separator = ", ", string prefix = "[", string postfix = "]", Func<T, string> transform = null) {
             StringBuilder sb = new StringBuilder(prefix);
-            foreach(var item in collection) {
+            foreach (var item in collection) {
                 if (item is IEnumerable<T> ienum) {
                     sb.Append(ienum.ToAllEnumStrings(separator, prefix, postfix));
                 }
@@ -413,8 +450,8 @@ namespace ijw.Collection {
         /// </remarks>
         public static int IndexOf<T>(this IEnumerable<T> collection, Predicate<T> predicate) {
             int index = 0;
-            foreach(var item in collection) {
-                if(predicate(item)) {
+            foreach (var item in collection) {
+                if (predicate(item)) {
                     return index;
                 }
                 index++;
@@ -430,7 +467,7 @@ namespace ijw.Collection {
                 return list.LastIndexOf(item);
             }
             return collection.Reverse().IndexOf(item);
-        } 
+        }
         #endregion
     }
 }
