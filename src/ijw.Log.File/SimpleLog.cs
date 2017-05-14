@@ -1,11 +1,11 @@
 ﻿using System;
 using ijw.IO;
 
-namespace ijw.Log {
+namespace ijw.Log.File {
     /// <summary>
     /// 最简单的文件日志器，所有方法线程安全。
     /// </summary>
-    public class SimpleLog : ILogHelper {
+    public class SimpleFileLog : ILogHelper {
         private object _syncRoot = new object();
         private string _logfilePath = "~.log";
 
@@ -37,7 +37,7 @@ namespace ijw.Log {
         /// 向日志中追加写入字符串
         /// </summary>
         /// <param name="content"></param>
-        public void Write(string content){
+        public void Write(string content) {
             lock (this._syncRoot) {
                 FileHelper.WriteStringToFile(this.LogFilePath, content, true);
             }

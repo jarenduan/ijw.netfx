@@ -2,12 +2,12 @@
 //log4net的配置不能自动化，比较麻烦，不符合ijw基本原则。
 using System;
 
-namespace ijw.Log {
+namespace ijw.Log.File {
     /// <summary>
     /// 日志帮助类
     /// </summary>
     public class LogHelper : ILogHelper {
-        private SimpleLog _logger = new SimpleLog();
+        private SimpleFileLog _logger = new SimpleFileLog();
 
         /// <summary>
         /// 日志文件路径, 默认文件当前目录的~.log。
