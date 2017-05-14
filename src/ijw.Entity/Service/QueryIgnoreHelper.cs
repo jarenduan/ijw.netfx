@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace ijw.Data.Entity {
+namespace ijw.Entity {
     /// <summary>
     /// 查询时忽略值的帮助类.
     /// </summary>
@@ -13,7 +13,7 @@ namespace ijw.Data.Entity {
         /// </summary>
         public const string QueryIgnoreValue = "~查~询~忽~略~值~";
 
-        /// <summary>
+        /// <summary>s
         /// 查询字符串是否是忽略值
         /// </summary>
         /// <param name="queryParameter"></param>

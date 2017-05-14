@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 
-namespace ijw.Data.Entity {
+namespace ijw.LinqExpression {
     /// <summary>
     /// Lambda表达式辅助类
     /// </summary>
@@ -22,8 +19,5 @@ namespace ijw.Data.Entity {
         /// <typeparam name="T"></typeparam>
         /// <returns>总为假的表达式</returns>
         public static Expression<Func<T, bool>> False<T>() { return f => false; }
-
-        
     }
-
 }

@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ijw.Data.Entity {
+namespace ijw.LinqExpression {
     public static class ExpressionExt {
         /// <summary>
         /// 把自身作为左端, 把指定表达式作为右端, 然后用逻辑与连接.
@@ -41,6 +37,25 @@ namespace ijw.Data.Entity {
             var body = Expression.Or(left, right);
 
             return Expression.Lambda<Func<T, bool>>(body, candidateExpr);
+        }
+
+        /// <summary> 
+        /// 统一ParameterExpression 
+        /// </summary> 
+        internal class ParameterReplacer : ExpressionVisitor {
+            public ParameterReplacer(ParameterExpression paramExpr) {
+                this.ParameterExpression = paramExpr;
+            }
+
+            public ParameterExpression ParameterExpression { get; private set; }
+
+            public Expression Replace(Expression expr) {
+                return this.Visit(expr);
+            }
+
+            protected override Expression VisitParameter(ParameterExpression p) {
+                return this.ParameterExpression;
+            }
         }
     }
 }

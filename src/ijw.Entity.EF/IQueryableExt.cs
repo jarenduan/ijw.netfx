@@ -1,19 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Data.Entity;
-using ijw.Reflection;
 
-namespace ijw.Data.Entity
-{
+namespace ijw.Data.Entity {
     /// <summary>
     /// 实体框架帮助类
     /// </summary>
-    public static class IQueryableExt
-    {
+    public static class IQueryableExt {
         /// <summary>
         /// 查询指定分页的数据
         /// </summary>
@@ -58,7 +52,6 @@ namespace ijw.Data.Entity
             else {
                 return query.OrderByDescending(orderby);
             }
-
         }
 
         /// <summary>
@@ -69,7 +62,7 @@ namespace ijw.Data.Entity
         /// <param name="propertyName">排序根据的属性名</param>
         /// <param name="ascending">是否正向排序</param>
         /// <returns></returns>
-        public static IQueryable<T> OrderBy<T>(this IQueryable<T> source, string propertyName, bool ascending = true){
+        public static IQueryable<T> OrderBy<T>(this IQueryable<T> source, string propertyName, bool ascending = true) {
             Type type = typeof(T);
 
             PropertyInfo property = type.GetProperty(propertyName);
@@ -87,28 +80,4 @@ namespace ijw.Data.Entity
             return source.Provider.CreateQuery<T>(resultExp);
         }
     }
-
-    /// <summary> 
-    /// 统一ParameterExpression 
-    /// </summary> 
-    internal class ParameterReplacer : ExpressionVisitor
-    {
-        public ParameterReplacer(ParameterExpression paramExpr)
-        {
-            this.ParameterExpression = paramExpr;
-        }
-
-        public ParameterExpression ParameterExpression { get; private set; }
-
-        public Expression Replace(Expression expr)
-        {
-            return this.Visit(expr);
-        }
-
-        protected override Expression VisitParameter(ParameterExpression p)
-        {
-            return this.ParameterExpression;
-        }
-    }
-
 }
