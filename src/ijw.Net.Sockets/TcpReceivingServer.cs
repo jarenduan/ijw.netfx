@@ -1,5 +1,6 @@
 ﻿using ijw.Diagnostic;
 using ijw.Log;
+using ijw.Log.File;
 using ijw.Threading.Tasks;
 using System;
 using System.Net;

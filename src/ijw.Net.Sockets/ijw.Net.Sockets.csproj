@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ijw.Core\ijw.Core.csproj" />
     <ProjectReference Include="..\ijw.IO\ijw.IO.csproj" />
+    <ProjectReference Include="..\ijw.Log.File\ijw.Log.File.csproj" />
     <ProjectReference Include="..\ijw.Log\ijw.Log.csproj" />
     <ProjectReference Include="..\ijw.Threading.Tasks\ijw.Threading.Tasks.csproj" />
     <ProjectReference Include="..\ijw.Collection\ijw.Collection.csproj" />
