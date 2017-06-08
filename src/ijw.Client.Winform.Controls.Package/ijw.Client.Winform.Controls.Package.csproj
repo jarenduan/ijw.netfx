@@ -3,8 +3,8 @@
   <PropertyGroup>
     <VersionPrefix>1.0.0-rc1</VersionPrefix>
     <TargetFramework>net45</TargetFramework>
-    <AssemblyName>ijw.Client.WinForm.Controls.Package</AssemblyName>
-    <PackageId>ijw.Client.WinForm.Controls.Package</PackageId>
+    <AssemblyName>ijw.Client.Winform.Controls.Package</AssemblyName>
+    <PackageId>ijw.Client.Winform.Controls.Package</PackageId>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
@@ -19,8 +19,11 @@
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
-    <Content Include="bin\$(Configuration)\$(TargetFramework)\*.*">
+    <Content Include="$(OutDir)*.*" Exclude="$(OutDir)$(TargetFileName);$(OutDir)*.exe">
       <PackagePath>lib\$(TargetFramework)\</PackagePath>
+    </Content>
+    <Content Include="$(OutDir)*.exe">
+      <PackagePath>content\$(TargetFramework)</PackagePath>
     </Content>
   </ItemGroup>
 </Project>
