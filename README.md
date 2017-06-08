@@ -4,9 +4,9 @@ A few nuget packages providing extensions and helpers for .Net Core and .Net Fra
 # Repro structure
 there're 3 folders in the repro:
 
-  1. `pkg`: output nuget packages.
+  1. `src`: source codes.
 
-  2. `src`: source codes.
+  2. `pkg`: output nuget packages.  
 
   3. `test`: all test projects.
 
