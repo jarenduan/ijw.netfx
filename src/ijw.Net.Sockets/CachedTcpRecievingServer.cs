@@ -2,6 +2,7 @@
 using ijw.Collection;
 using ijw.Diagnostic;
 using ijw.Log;
+using ijw.Log.File;
 using System;
 using System.Net;
 using System.Net.Sockets;
@@ -18,7 +19,7 @@ namespace ijw.Net.Socket {
     /// 调用StartAsync()方法, 内部启动了两个Task. 一个是负责监听TCP端口. 另一个负责发出通知事件.
     /// 两个Task共同维护了内部的一个线程安全的泛型集合. 
     /// </remarks>
-    public class CachedTcpRecievingServer<T> : IDisposable where T: class {
+    public class CachedTcpRecievingServer<T> : IDisposable where T : class {
         /// <summary>
         /// 服务器IP
         /// </summary>

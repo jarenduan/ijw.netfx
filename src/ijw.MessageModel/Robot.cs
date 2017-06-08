@@ -19,7 +19,7 @@ namespace ijw.MessageModel {
         private void Attack() {
             if (this.Strength > 0) {
                 this.Strength--;
-                string message = "attack,objB,1";
+                //string message = "attack,objB,1";
                 //sendMessage(message);
             }
         }
