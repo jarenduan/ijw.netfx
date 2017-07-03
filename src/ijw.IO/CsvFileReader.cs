@@ -1,7 +1,7 @@
-﻿using ijw.Contract;
+﻿#if !NET35
+using ijw.Contract;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 
 namespace ijw.IO {
@@ -17,7 +17,6 @@ namespace ijw.IO {
         /// </summary>
         public char[] Separators { get; set; } = new char[] { ',' };
 
-#if !NET35
         /// <summary>
         /// 将每行分隔后，返回字符串数组和行号
         /// </summary>
@@ -26,16 +25,17 @@ namespace ijw.IO {
             this.Separators.ShouldBeNotNullArgument();
             this.Encoding.ShouldBeNotNullReference();
 
-            var reader = StreamReaderHelper.NewStreamReaderFrom(this.CsvFilePath, this.Encoding);
-            foreach (var t in reader.ReadLinesWithLineNumber()) {
-                if (t.Item2 == 1 && this.IsFirstLineHeader) {
-                    continue;
+            using (var reader = StreamReaderHelper.NewStreamReaderFrom(this.CsvFilePath, this.Encoding)) {
+                foreach (var t in reader.ReadLinesWithLineNumber()) {
+                    if (t.Item2 == 1 && this.IsFirstLineHeader) {
+                        continue;
+                    }
+                    char[] with = this.Separators ?? new char[] { ',' };
+                    string[] values = t.Item1.Split(with);
+                    yield return new Tuple<string[], int>(values, t.Item2);
                 }
-                char[] with = this.Separators ?? new char[] { ',' };
-                string[] values = t.Item1.Split(with);
-                yield return new Tuple<string[], int>(values, t.Item2);
             }
         }
-#endif
     }
 }
+#endif
