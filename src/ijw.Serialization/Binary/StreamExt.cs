@@ -7,9 +7,8 @@ namespace ijw.Serialization.Binary {
     /// </summary>
     public static class StreamExt {
         #region Object read and write
-        //TODO: support binary for .net standard
-#if NET35 || NET40 || NET45 //for netcore is not support binary formatter now, 2016-06-29
-
+        //#if NET35 || NET40 || NET45 //for netcore is not support binary formatter now, 2016-06-29
+        //20170614 update to netstandard2.0
         /// <summary>
         /// 使用指定长度从网络流中取回二进制形式序列化的对象, 
         /// </summary>
@@ -37,7 +36,7 @@ namespace ijw.Serialization.Binary {
                 writer.WriteBinaryObject(obj, writeLengthHeader);
             }
         }
-#endif
+        //#endif
         /// <summary>
         /// 以JSON方式向网络流中写入对象. 对象会先进行JSON序列化,然后写入流中. 
         /// </summary>
@@ -58,6 +57,6 @@ namespace ijw.Serialization.Binary {
             //}
             throw new NotImplementedException();
         }
-#endregion
+        #endregion
     }
 }

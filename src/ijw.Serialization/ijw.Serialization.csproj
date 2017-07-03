@@ -2,10 +2,9 @@
 
   <PropertyGroup>
     <VersionPrefix>1.0.0-rc1</VersionPrefix>
-    <TargetFrameworks>net35;net40;net45;netstandard1.4</TargetFrameworks>
+    <TargetFrameworks>net35;net40;net45;netstandard2.0</TargetFrameworks>
     <AssemblyName>ijw.Serialization</AssemblyName>
     <PackageId>ijw.Serialization</PackageId>
-    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.4' ">1.6.0</NetStandardImplicitPackageVersion>
     <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
     <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
     <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
