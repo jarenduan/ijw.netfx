@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using ijw.Collection;
 using ijw.Maths.Models;
-using System.Runtime.Serialization;
 using ijw.Data.Filter;
 
-namespace ijw.AI.ANN.BP {
+namespace ijw.AI.ANN.BP
+{
     public class BPNet : IPreidictionModel, IMathModel, IBPNet {
         public int InputDimension {
             get { return this.InputLayer.Count(); }

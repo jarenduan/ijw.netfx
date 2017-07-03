@@ -41,9 +41,21 @@ namespace ijw.Diagnostic {
         }
 
 #if !NETSTANDARD1_4
+        /// <summary>
+        /// 获取调用者的方法名称。注意:获取的是调用GetCallerName()所在方法的方法的名称。
+        /// </summary>
+        /// <returns>返回方法名称，形式如：类型名.方法名称。</returns>
         public static string GetCallerName() {
             var mi = new StackTrace().GetFrame(2).GetMethod();
             return $"{mi.DeclaringType.Name}.{mi.Name}";
+        }
+
+        /// <summary>
+        /// 获取调用者的方法信息。注意:获取的是调用GetCallerName()所在方法的方法的信息。
+        /// </summary>
+        /// <returns>返回方法信息。</returns>
+        public static System.Reflection.MethodBase GetCallerMethod() {
+            return new StackTrace().GetFrame(2).GetMethod();
         }
 #endif
 

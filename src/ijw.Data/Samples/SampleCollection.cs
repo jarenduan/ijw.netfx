@@ -174,8 +174,7 @@ namespace ijw.Data.Samples {
         /// <param name="firstGroup">第一个子集</param>
         /// <param name="secondGroup">第二个子集</param>
         public void DivideIntoTwo(int ratioOfFirstGroup, int ratioOfSecondGroup, CollectionDividingMethod method, out SampleCollection firstGroup, out SampleCollection secondGroup) {
-            List<Sample> samples1, samples2;
-            this.DivideByRatioAndMethod(ratioOfFirstGroup, ratioOfSecondGroup, method, out samples1, out samples2);
+            this.DivideByRatioAndMethod(ratioOfFirstGroup, ratioOfSecondGroup, method, out List<Sample> samples1, out List<Sample> samples2);
 
             firstGroup = new SampleCollection(samples1);
             secondGroup = new SampleCollection(samples2);
@@ -279,8 +278,7 @@ namespace ijw.Data.Samples {
 
                 var values = new double[totalDimension];
                 for (int i = 0; i < strValues.Length; i++) {
-                    double value;
-                    if (!double.TryParse(strValues[i], out value)) {
+                    if (!double.TryParse(strValues[i], out double value)) {
                         if (ignoreInvalidLine) {
                             validLine = false;
                             break;

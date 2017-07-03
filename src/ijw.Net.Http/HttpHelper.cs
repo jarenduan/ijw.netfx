@@ -1,4 +1,4 @@
-﻿#if NET35 || NET40 || NET45
+﻿//#if NET35 || NET40 || NET45
 using ijw.Diagnostic;
 using ijw.IO;
 using ijw.Text;
@@ -175,4 +175,4 @@ namespace ijw.Net.Http {
         }
     }
 }
-#endif
+//#endif

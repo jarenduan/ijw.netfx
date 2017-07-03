@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>0.0.1-rc1</VersionPrefix>
+    <Authors>Jaren</Authors>
+    <TargetFrameworks>net40;net45;netstandard1.4</TargetFrameworks>
+    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.4' ">1.6.0</NetStandardImplicitPackageVersion>
+    <AssemblyName>ijw.MessageModel</AssemblyName>
+    <PackageId>ijw.MessageModel</PackageId>
+    <AppConfig Condition="'$(TargetFramework)' == 'net40'">App.net40.config</AppConfig>
+    <AutoUnifyAssemblyReferences Condition="'$(TargetFramework)' == 'net40'">false</AutoUnifyAssemblyReferences>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\ijw.Core\ijw.Core.csproj" />
+    <ProjectReference Include="..\ijw.Net.Sockets\ijw.Net.Sockets.csproj" />
+    <ProjectReference Include="..\ijw.Reflection\ijw.Reflection.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+</Project>

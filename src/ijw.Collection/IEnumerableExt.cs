@@ -1,9 +1,9 @@
-﻿using System;
+﻿using ijw.Contract;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ijw.Contract;
 
 namespace ijw.Collection {
     /// <summary>
@@ -24,7 +24,7 @@ namespace ijw.Collection {
             toIndex.ShouldNotLessThan(0);
             fromIndex.ShouldNotLargerThan(toIndex);
 
-            return collection.TakeWhile((ele, index) => 
+            return collection.Where((ele, index) =>
                 index >= fromIndex && index <= toIndex
             );
         }
@@ -43,7 +43,7 @@ namespace ijw.Collection {
             takeEachTime.ShouldLargerThan(0);
             takeEachTime.ShouldNotLargerThan(step);
 
-            return collection.TakeWhile((item, index) => 
+            return collection.Where((item, index) =>
                 index % step < takeEachTime
             );
         }
@@ -57,30 +57,16 @@ namespace ijw.Collection {
         /// <param name="endAt">结束索引. 该处元素将不包括在返回结果中. 0 = 第一个元素, -n = 倒数第n个元素, null = 结尾. 默认值为null. </param>
         /// <returns>子集</returns>
         public static IEnumerable<T> TakePythonStyle<T>(this IEnumerable<T> collection, int? startAt = 0, int? endAt = null) {
-            int startAtPython, endAtPython;
             int count = collection.Count();
-            Helper.PythonStartEndCalculator(count, out startAtPython, out endAtPython, startAt, endAt);
+            Helper.PythonStartEndCalculator(count, out int startAtPython, out int endAtPython, startAt, endAt);
+            if (startAtPython > endAtPython) {
+                return new List<T>();
+            }
             return collection.Take(startAtPython, endAtPython);
         }
+        #endregion
 
-        /// <summary>
-        /// 把一个集合按指定的比率和方式分成两部分
-        /// </summary>
-        /// <typeparam name="T">元素类型</typeparam>
-        /// <param name="collection">源集合</param>
-        /// <param name="ratioOfFirstGroup">第一部分的比例</param>
-        /// <param name="ratioOfSecondGroup">第二把部分的比例</param>
-        /// <param name="method">切分方式</param>
-        /// <param name="firstGroup">切分后的第一部分</param>
-        /// <param name="secondGroup">切分后的第二部分</param>
-        public static void DivideByRatioAndMethod<T>(this IEnumerable<T> collection, int ratioOfFirstGroup, int ratioOfSecondGroup, CollectionDividingMethod method, out List<T> firstGroup, out List<T> secondGroup) {
-            var source = collection;
-            if(method == CollectionDividingMethod.Random) {
-                IList<T> indexable = collection as IList<T>;
-                source = indexable == null ? source.Random() : indexable.Random();
-            }
-            collection.DivideByRatio(ratioOfFirstGroup, ratioOfSecondGroup, out firstGroup, out secondGroup);
-        }
+        #region Divide
 
         /// <summary>
         /// 按指定的比例把集合分拆成两部分
@@ -91,6 +77,7 @@ namespace ijw.Collection {
         /// <param name="ratioOfSecondGroup">第二部分的占比</param>
         /// <param name="firstGroup">分拆出的第一部分</param>
         /// <param name="secondGroup">分拆出的第二部分</param>
+        /// <remarks>net40+请使用返回元组的版本， out return 版本不推荐使用</remarks>
         public static void DivideByRatio<T>(this IEnumerable<T> source, int ratioOfFirstGroup, int ratioOfSecondGroup, out List<T> firstGroup, out List<T> secondGroup) {
             var first = new List<T>();
             var second = new List<T>();
@@ -107,6 +94,58 @@ namespace ijw.Collection {
             firstGroup = first;
             secondGroup = second;
         }
+
+        /// <summary>
+        /// 把一个集合按指定的比率和方式分成两部分
+        /// </summary>
+        /// <typeparam name="T">元素类型</typeparam>
+        /// <param name="collection">源集合</param>
+        /// <param name="method">切分方式</param>
+        /// <param name="ratioOfFirstGroup">第一部分的比例</param>
+        /// <param name="ratioOfSecondGroup">第二把部分的比例</param>
+        /// <param name="firstGroup">切分后的第一部分</param>
+        /// <param name="secondGroup">切分后的第二部分</param>
+        /// <remarks>net40+请使用返回元组的版本， out return 版本不推荐使用</remarks>
+        public static void DivideByRatioAndMethod<T>(this IEnumerable<T> collection, int ratioOfFirstGroup, int ratioOfSecondGroup, CollectionDividingMethod method, out List<T> firstGroup, out List<T> secondGroup) {
+            var source = collection;
+            if (method == CollectionDividingMethod.Random) {
+                IList<T> indexable = collection as IList<T>;
+                source = indexable == null ? source.Random() : indexable.Random();
+            }
+            collection.DivideByRatio(ratioOfFirstGroup, ratioOfSecondGroup, out firstGroup, out secondGroup);
+        }
+
+#if !NET35
+        /// <summary>
+        /// 按指定的比例把集合分拆成两部分
+        /// </summary>
+        /// <typeparam name="T">元素类型</typeparam>
+        /// <param name="collection">源集合</param>
+        /// <param name="ratioOfFirstGroup">第一部分的占比</param>
+        /// <param name="ratioOfSecondGroup">第二部分的占比</param>
+        /// <returns>元组（分拆出的第一部分，分拆出的第二部分）</returns>
+        /// <remarks>使用返回元组的版本， out return 版本不推荐使用</remarks>
+        public static (List<T> firstGroup, List<T> secondGroup) DivideByRatio<T>(this IEnumerable<T> source, int ratioOfFirstGroup, int ratioOfSecondGroup) {
+            source.DivideByRatio(ratioOfFirstGroup, ratioOfSecondGroup, out var firstGrouop, out var secondGroup);
+            return (firstGrouop, secondGroup);
+        }
+
+        /// <summary>
+        /// 把一个集合按指定的比率和方式分成两部分
+        /// </summary>
+        /// <typeparam name="T">元素类型</typeparam>
+        /// <param name="collection">源集合</param>
+        /// <param name="method">切分方式</param>
+        /// <param name="ratioOfFirstGroup">第一部分的比例</param>
+        /// <param name="ratioOfSecondGroup">第二把部分的比例</param>
+        /// <returns>元组（切分后的第一部分，切分后的第二部分）</returns>
+        /// <remarks>使用返回元组的版本， out return 版本不推荐使用</remarks>
+        public static (List<T> firstGroup, List<T> secondGroup) DivideByRatioAndMethod<T>(this IEnumerable<T> source, CollectionDividingMethod method, int ratioOfFirstGroup, int ratioOfSecondGroup) {
+            source.DivideByRatioAndMethod(ratioOfFirstGroup, ratioOfSecondGroup, method, out var firstGrouop, out var secondGroup);
+            return (firstGrouop, secondGroup);
+        }
+#endif
+
         #endregion
 
         #region Elements At
@@ -137,16 +176,14 @@ namespace ijw.Collection {
         /// <param name="collection"></param>
         /// <returns></returns>
         public static IEnumerable<T> Random<T>(this IEnumerable<T> collection) {
-            var array = collection as T[];
-            if (array != null) {
+            if (collection is T[] array) {
                 //如果能转成T[]. 高效实现.
                 foreach (var item in array.Random()) {
                     yield return item;
                 }
             }
             else {
-                var list = collection as IList<T>;
-                if (list != null) {
+                if (collection is IList<T> list) {
                     //如果能转成Ilist. 高效实现.
                     foreach (var item in list.Random()) {
                         yield return item;
@@ -173,15 +210,15 @@ namespace ijw.Collection {
         /// <param name="maxDisplayNumber"></param>
         /// <returns></returns>
         public static string ToSimpleEnumStrings<T>(this IEnumerable<T> collection, int maxDisplayNumber = 3) {
-            if(maxDisplayNumber <= 0)
+            if (maxDisplayNumber <= 0)
                 maxDisplayNumber = 3;
             int count = collection.Count();
-            if(count <= maxDisplayNumber) {
+            if (count <= maxDisplayNumber) {
                 return collection.ToAllEnumStrings();
             }
             else {
                 StringBuilder sb = new StringBuilder("[");
-                foreach (var item in collection.Where((item,index) => index <= maxDisplayNumber - 2)){
+                foreach (var item in collection.Where((item, index) => index <= maxDisplayNumber - 2)) {
                     appendSimpleStringIfPossible<T>(sb, item);
                 }
 
@@ -202,8 +239,7 @@ namespace ijw.Collection {
         }
 
         private static void appendSimpleStringIfPossible<T>(StringBuilder sb, T item) {
-            IEnumerable<T> ienum = item as IEnumerable<T>;
-            if(ienum != null) {
+            if (item is IEnumerable<T> ienum) {
                 sb.Append(ienum.ToSimpleEnumStrings());
             }
             else {
@@ -223,13 +259,12 @@ namespace ijw.Collection {
         /// <returns></returns>
         public static string ToAllEnumStrings<T>(this IEnumerable<T> collection, string separator = ", ", string prefix = "[", string postfix = "]", Func<T, string> transform = null) {
             StringBuilder sb = new StringBuilder(prefix);
-            foreach(var item in collection) {
-                IEnumerable<T> ienum = item as IEnumerable<T>;
-                if(ienum != null) {
+            foreach (var item in collection) {
+                if (item is IEnumerable<T> ienum) {
                     sb.Append(ienum.ToAllEnumStrings(separator, prefix, postfix));
                 }
                 else {
-                    string s = transform == null ? item.ToString(): transform(item) ;
+                    string s = transform == null ? item.ToString() : transform(item);
                     sb.Append(s);
                 }
                 sb.Append(separator);
@@ -324,6 +359,67 @@ namespace ijw.Collection {
         }
         #endregion
 
+        #region For Each and the Next
+        /// <summary>
+        /// 迭代每一个元素和下一个元素。例如对于[1,2,3,4],迭代返回(1,2)、(2,3)、(3,4)。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <returns>返回每一个和下一个组成的元组</returns>
+        public static IEnumerable<Tuple<T, T>> ForEachAndNext<T>(this IEnumerable<T> collection) {
+            var enumerator = collection.GetEnumerator();
+            if (!enumerator.MoveNext()) {
+                yield break;
+            }
+            var prev = enumerator.Current;
+            while (enumerator.MoveNext()) {
+                var curr = enumerator.Current;
+                yield return Tuple.Create(prev, curr);
+                prev = curr;
+            }
+        }
+
+        /// <summary>
+        /// 对每一个元素和下一个元素调用指定函数。例如对于[1,2,3,4]和func,迭代调用func(1,2)、func(2,3)、func(3,4)。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="func">指定的函数，接受两个参数</param>
+        /// <returns>计算结果组成的序列</returns>
+        public static IEnumerable<TResult> ForEachAndNext<T, TResult>(this IEnumerable<T> collection, Func<T, T, TResult> func) {
+            var enumerator = collection.GetEnumerator();
+            if (!enumerator.MoveNext()) {
+                yield break;
+            }
+            var prev = enumerator.Current;
+            while (enumerator.MoveNext()) {
+                var curr = enumerator.Current;
+                yield return func(prev, curr);
+                prev = curr;
+            }
+        }
+
+        /// <summary>
+        /// 对每一个元素和下一个元素执行指定操作。例如对于[1,2,3,4]和action,迭代执行action(1,2)、action(2,3)、action(3,4)。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="action">指定的操作，接受两个参数</param>
+        public static void ForEachAndNext<T>(this IEnumerable<T> collection, Action<T, T> action) {
+            var enumerator = collection.GetEnumerator();
+            if (!enumerator.MoveNext()) {
+                return;
+            }
+            var prev = enumerator.Current;
+            while (enumerator.MoveNext()) {
+                var curr = enumerator.Current;
+                action(prev, curr);
+                prev = curr;
+            }
+        }
+        #endregion
+
         #region Doubles' Normalizer
         /// <summary>
         /// 对浮点集合中的值逐一进行归一化
@@ -381,13 +477,11 @@ namespace ijw.Collection {
         /// <param name="value">指定元素</param>
         /// <returns>如果集合中不存在, 返回-1;</returns>
         public static int IndexOf<T>(this IEnumerable<T> collection, T value) {
-            var list = collection as IList<T>;
-            if (list != null) {
+            if (collection is IList<T> list) {
                 return list.IndexOf(value);
             }
 
-            var ilist = collection as IList;
-            if (ilist != null) {
+            if (collection is IList ilist) {
                 return ilist.IndexOf(value);
             }
 
@@ -417,8 +511,8 @@ namespace ijw.Collection {
         /// </remarks>
         public static int IndexOf<T>(this IEnumerable<T> collection, Predicate<T> predicate) {
             int index = 0;
-            foreach(var item in collection) {
-                if(predicate(item)) {
+            foreach (var item in collection) {
+                if (predicate(item)) {
                     return index;
                 }
                 index++;
@@ -430,12 +524,11 @@ namespace ijw.Collection {
         /// 在IEnumerable&lt;T&gt;查找最后一个出现的元素对象索引
         /// </summary>
         public static int LastIndexOf<T>(this IEnumerable<T> collection, T item) {
-            var list = collection as List<T>;
-            if (list != null) {
+            if (collection is List<T> list) {
                 return list.LastIndexOf(item);
             }
             return collection.Reverse().IndexOf(item);
-        } 
+        }
         #endregion
     }
 }

@@ -38,5 +38,22 @@ namespace ijw.Reflection {
             object typedValue = stringvalue.To(pi.PropertyType);
             pi.SetValue(obj, typedValue, null);
         }
+
+        public static object InvokeMethod<T>(this T obj, string methodName, params object[] paras) {
+            MethodInfo mi = typeof(T).GetMethodInfo(methodName);
+            return mi != null ? mi.Invoke(obj, paras) : throw new ArgumentOutOfRangeException(methodName);
+        }
+
+        public static bool TryInvokeMethod<T>(this T obj, string methodName, out object result, params object[] paras) {
+            MethodInfo mi = typeof(T).GetMethodInfo(methodName);
+            if (mi == null) {
+                result = null;
+                return false;
+            }
+            else {
+                result = mi.Invoke(obj, paras);
+                return true;
+            }
+        }
     }
 }

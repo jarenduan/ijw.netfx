@@ -1,0 +1,47 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>1.0.0-rc1</VersionPrefix>
+    <TargetFrameworks>net35;net40;net45;netstandard1.4</TargetFrameworks>
+    <AssemblyName>ijw.Net.Sockets</AssemblyName>
+    <PackageId>ijw.Net.Sockets</PackageId>
+    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.4' ">1.6.0</NetStandardImplicitPackageVersion>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <AppConfig Condition="'$(TargetFramework)' == 'net40'">App.net40.config</AppConfig>
+    <AutoUnifyAssemblyReferences Condition="'$(TargetFramework)' == 'net40'">false</AutoUnifyAssemblyReferences>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ijw.Core\ijw.Core.csproj" />
+    <ProjectReference Include="..\ijw.IO\ijw.IO.csproj" />
+    <ProjectReference Include="..\ijw.Log.File\ijw.Log.File.csproj" />
+    <ProjectReference Include="..\ijw.Log\ijw.Log.csproj" />
+    <ProjectReference Include="..\ijw.Threading.Tasks\ijw.Threading.Tasks.csproj" />
+    <ProjectReference Include="..\ijw.Collection\ijw.Collection.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net35' ">
+    <PackageReference Include="TaskParallelLibrary" Version="1.0.2856" />
+    <PackageReference Include="AsyncBridge.Net35" Version="0.2.0" />
+    <Reference Include="System" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net40' ">
+    <PackageReference Include="Microsoft.Bcl.Async" Version="1.0.168" />
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.4' ">
+    <PackageReference Include="System.Diagnostics.StackTrace" Version="4.0.1" />
+    <PackageReference Include="System.Threading.Thread" Version="4.0.0" />
+  </ItemGroup>
+
+</Project>

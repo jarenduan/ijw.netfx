@@ -2,20 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ijw.Collection
-{
+namespace ijw.Collection {
     /// <summary>
     /// 提供对一维数组的扩展方法
     /// </summary>
-    public static class OneRankArrayExt
-    {
+    public static class OneRankArrayExt {
         public static void Initialize<T>(this T[] collection, Func<int, T> initializer) {
             for (int i = 0; i < collection.Length; i++) {
                 collection[i] = initializer(i);
             }
         }
-        public static IEnumerator<T> GetEnumeratorGenerics<T>(this T[] collection)
-        {
+        public static IEnumerator<T> GetEnumeratorGenerics<T>(this T[] collection) {
             return collection.AsEnumerable().GetEnumerator();
         }
         /// <summary>
@@ -24,11 +21,9 @@ namespace ijw.Collection
         /// <typeparam name="T"></typeparam>
         /// <param name="collection"></param>
         /// <returns></returns>
-        public static IEnumerable<T> Random<T>(this T[] collection)
-        {
+        public static IEnumerable<T> Random<T>(this T[] collection) {
             int[] order = 0.ToTotal(collection.Length).Shuffle();
-            for (int i = 0; i < order.Length; i++)
-            {
+            for (int i = 0; i < order.Length; i++) {
                 yield return collection[order[i]];
             }
         }
@@ -39,20 +34,15 @@ namespace ijw.Collection
         /// <param name="source"></param>
         /// <param name="comparer"></param>
         /// <returns></returns>
-        public static bool ItemEquals<T>(this T[] source, T[] comparer)
-        {
-            if (comparer == null)
-            {
+        public static bool ItemEquals<T>(this T[] source, T[] comparer) {
+            if (comparer == null) {
                 throw new ArgumentNullException();
             }
-            if (comparer.Length != comparer.Length)
-            {
+            if (comparer.Length != comparer.Length) {
                 throw new CountNotMatchException();
             }
-            for (int i = 0; i < source.Length; i++)
-            {
-                if (source[i].Equals(comparer[i]))
-                {
+            for (int i = 0; i < source.Length; i++) {
+                if (source[i].Equals(comparer[i])) {
                     return false;
                 }
             }
@@ -68,13 +58,11 @@ namespace ijw.Collection
         /// <param name="source"></param>
         /// <param name="toRemove">指定的值</param>
         /// <returns></returns>
-        public static T[] RemoveAll<T>(this T[] source, T toRemove)
-        {
+        public static T[] RemoveAll<T>(this T[] source, T toRemove) {
             int len = source.Length;
             T[] result = new T[len];
             int j = 0;
-            for (int i = 0; i < len; i++)
-            {
+            for (int i = 0; i < len; i++) {
                 if (source[i].Equals(toRemove))
                     continue;
                 result[j] = source[i];
@@ -92,8 +80,7 @@ namespace ijw.Collection
         /// <param name="source"></param>
         /// <param name="toRemove">指定的值</param>
         /// <returns></returns>
-        public static T[] ShrinkByRemoving<T>(this T[] source, T toRemove)
-        {
+        public static T[] ShrinkByRemoving<T>(this T[] source, T toRemove) {
             var r = from item in source
                     where !item.Equals(toRemove)
                     select item;
@@ -108,12 +95,10 @@ namespace ijw.Collection
         /// <param name="replace">要替换的值</param>
         /// <param name="with">替换成的值</param>
         /// <returns>新数组</returns>
-        public static T[] ReplaceAll<T>(this T[] source, T replace, T with = default(T))
-        {
+        public static T[] ReplaceAll<T>(this T[] source, T replace, T with = default(T)) {
             int len = source.Length;
             T[] result = new T[len];
-            for (int i = 0; i < len; i++)
-            {
+            for (int i = 0; i < len; i++) {
                 if (source[i].Equals(replace))
                     result[i] = with;
                 else
@@ -130,8 +115,7 @@ namespace ijw.Collection
         /// <param name="collection"></param>
         /// <param name="index">指定的索引, 一组整数</param>
         /// <param name="values">指定的值</param>
-        public static void SetValuesForTheIndexes<T>(this T[] collection, IEnumerable<int> index, IEnumerable<T> values)
-        {
+        public static void SetValuesForTheIndexes<T>(this T[] collection, IEnumerable<int> index, IEnumerable<T> values) {
             if (index.Count() != values.Count())
                 throw new CountNotMatchException();
             Dictionary<int, T> dict = new Dictionary<int, T>();
@@ -145,13 +129,9 @@ namespace ijw.Collection
         /// <typeparam name="T"></typeparam>
         /// <param name="collection"></param>
         /// <param name="values"></param>
-        public static void SetValuesForTheIndexes<T>(this T[] collection, Dictionary<int, T> values)
-        {
-            for (int i = 0; i < collection.Length; i++)
-            {
-                T value;
-                if (values.TryGetValue(i, out value))
-                {
+        public static void SetValuesForTheIndexes<T>(this T[] collection, Dictionary<int, T> values) {
+            for (int i = 0; i < collection.Length; i++) {
+                if (values.TryGetValue(i, out var value)) {
                     collection[i] = value;
                 }
             }
@@ -163,17 +143,14 @@ namespace ijw.Collection
         /// </summary>
         /// <param name="numbers"></param>
         /// <returns></returns>
-        public static T[] Shuffle<T>(this T[] numbers)
-        {
+        public static T[] Shuffle<T>(this T[] numbers) {
             int count = numbers.Length;
-            if (count == 0)
-            {
+            if (count == 0) {
                 return numbers;
             }
             Random r = new Random();
             int i = r.Next(count / 2, count);
-            i.Times(() =>
-            {
+            i.Times(() => {
                 int i1 = r.Next(count);
                 int i2 = r.Next(count);
                 var temp = numbers[i1];
@@ -183,37 +160,37 @@ namespace ijw.Collection
             return numbers;
         }
 
-        public static void DivideByRatioAndMethod<T>(this T[] collection, int ratioOfFirstGroup, int ratioOfSecondGroup, CollectionDividingMethod method, out IList<T> firstGroup, out IList<T> secondGroup)
-        {
+        //Return IList is bad design, so this is deprecated in net40+, use tuple-returning instead.
+        public static void DivideByRatioAndMethod<T>(this T[] collection, int ratioOfFirstGroup, int ratioOfSecondGroup, CollectionDividingMethod method, out IList<T> firstGroup, out IList<T> secondGroup) {
+            List<T> first = new List<T>(), second = new List<T>();
+            divide(collection, method, ratioOfFirstGroup, ratioOfSecondGroup, first, second);
+            firstGroup = first;
+            secondGroup = second;
+        }
+
+#if !NET35
+        public static (List<T> firstGroup, List<T> secondGroup) DivideByRatioAndMethod<T>(this T[] collection, CollectionDividingMethod method, int ratioOfFirstGroup, int ratioOfSecondGroup) {
+            List<T> first = new List<T>(), second = new List<T>();
+            divide(collection, method, ratioOfFirstGroup, ratioOfSecondGroup, first, second);
+            return (first, second);
+        }
+#endif
+
+        private static void divide<T>(T[] collection, CollectionDividingMethod method, int ratioOfFirstGroup, int ratioOfSecondGroup, List<T> first, List<T> second) {
             IEnumerable<T> source = collection;
-            if (method == CollectionDividingMethod.Random)
-            {
+            if (method == CollectionDividingMethod.Random) {
                 IList<T> indexable = collection as IList<T>;
-                if (indexable == null)
-                {
-                    source = source.Random();
-                }
-                else
-                {
-                    source = indexable.Random();
-                }
+                source = indexable == null ? source.Random() : indexable.Random();
             }
-            var first = new List<T>();
-            var second = new List<T>();
-            source.ForEach((element, index) =>
-            {
-                if (index % (ratioOfFirstGroup + ratioOfSecondGroup) < ratioOfFirstGroup)
-                {
+
+            source.ForEach((element, index) => {
+                if (index % (ratioOfFirstGroup + ratioOfSecondGroup) < ratioOfFirstGroup) {
                     first.Add(element);
                 }
-                else
-                {
+                else {
                     second.Add(element);
                 }
             });
-
-            firstGroup = first;
-            secondGroup = second;
         }
     }
 }

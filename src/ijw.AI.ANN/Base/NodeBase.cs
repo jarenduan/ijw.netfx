@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Runtime.Serialization;
 using ijw.Maths.Functions;
 
 namespace ijw.AI.ANN.Base {

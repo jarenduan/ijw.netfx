@@ -1,4 +1,5 @@
 ﻿using ijw.Log;
+using ijw.Log.File;
 using System;
 
 namespace ijw.Data.Entity {
@@ -34,7 +35,7 @@ namespace ijw.Data.Entity {
 
         ////没有下面这行语句的显式类型使用, 调用者build后, 项目输出文件夹中EF.SqlServer Dll的引用会被自动优化掉, 导致运行时缺少相应引用
         //static private Type _tempType1_ = typeof(System.Data.Entity.SqlServer.SqlProviderServices);
-        
+
         //PS: 使用如下的方法是不行的:(
         //static EntityServicesBase() {
         //    var _tempType2_ = typeof(System.Data.Entity.SqlServerCompact.SqlCeProviderServices);

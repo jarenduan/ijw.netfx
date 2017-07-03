@@ -93,10 +93,10 @@ namespace ijw.Data.Samples {
         }
         public override string ToString() {
             StringBuilder sb = new StringBuilder("Sample: {");
-            var inputFieldNames = this.Fields == null ? null : this.Fields.Take(this.InputDimension);
+            var inputFieldNames = this.Fields?.Take(this.InputDimension);
             fieldsToStringHelper(sb, this.Input, inputFieldNames);
             sb.Append("}, {");
-            var outputFieldNames = this.Fields == null ? null : this.Fields.Skip(this.InputDimension);
+            var outputFieldNames = this.Fields?.Skip(this.InputDimension);
             fieldsToStringHelper(sb, this.Output, outputFieldNames);
             sb.Append("}");
             return sb.ToString();
@@ -243,7 +243,7 @@ namespace ijw.Data.Samples {
             }
             else {
                 CollectionHelper.ForEachPair(fieldValues, fieldNames, (i, j) => {
-                    sb.Append("[").Append(j == null ? "no name" : j).Append(": ").Append(i.ToString("F3")).Append("],");
+                    sb.Append("[").Append(j ?? "no name").Append(": ").Append(i.ToString("F3")).Append("],");
                 });
             }
             sb.RemoveLast();

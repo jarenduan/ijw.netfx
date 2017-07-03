@@ -1,6 +1,7 @@
 ﻿using ijw.Diagnostic;
 using ijw.IO;
 using ijw.Log;
+using ijw.Log.File;
 using System;
 using System.Net.Sockets;
 using System.Threading;
@@ -92,7 +93,7 @@ namespace ijw.Net.Socket {
 #pragma warning restore 168
         }
 #endif
-#if !NET35
+#if !NET35 && !NET40
         /// <summary>
         /// 发送一条数据，尝试重试
         /// </summary>
@@ -140,7 +141,7 @@ namespace ijw.Net.Socket {
                 return true;
             }
 #pragma warning disable 168
-            catch (Exception ex){
+            catch (Exception ex) {
                 _client.CloseIfNotNull();
                 DebugHelper.WriteLine($"Cannot connect {this.HostName}:{this.PortNum}!");
                 _logger?.WriteError("无法连接, 可能是网络问题/服务器没有开启/地址端口不对! Error:" + ex.Message);

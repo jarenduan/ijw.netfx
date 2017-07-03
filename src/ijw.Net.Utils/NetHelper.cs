@@ -1,5 +1,7 @@
 ﻿using ijw.Net.Html;
-namespace ijw.Net.Http.Utils
+using ijw.Net.Http;
+
+namespace ijw.Net.Utils
 {
     public class NetHelper
     {

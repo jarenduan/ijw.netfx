@@ -1,4 +1,5 @@
-﻿#if NET35 || NET40 || NET45 //for netcore is not support binary formatter now, 2016-06-29
+﻿//#if NET35 || NET40 || NET45 //for netcore is not support binary formatter now, 2016-06-29
+//20170614 update to netstandard2.0
 using ijw.Diagnostic;
 using System;
 using System.IO;
@@ -99,4 +100,4 @@ namespace ijw.Serialization.Binary {
         }
     }
 }
-#endif
+//#endif

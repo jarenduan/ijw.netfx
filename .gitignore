@@ -62,6 +62,7 @@ artifacts/
 *.tmp
 *.tmp_proj
 *.log
+!ijw.Log
 *.vspscc
 *.vssscc
 .builds
@@ -243,5 +244,4 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
-/src/ijw/ConsoleHelper.cs
-/src/ijw/ConsoleHelper.cs
+

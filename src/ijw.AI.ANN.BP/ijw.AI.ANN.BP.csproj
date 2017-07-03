@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>1.0.0-rc1</VersionPrefix>
+    <TargetFrameworks>net45;netstandard1.4</TargetFrameworks>
+    <AssemblyName>ijw.AI.ANN.BP</AssemblyName>
+    <PackageId>ijw.AI.ANN.BP</PackageId>
+    <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.4' ">1.6.0</NetStandardImplicitPackageVersion>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ijw.Core\ijw.Core.csproj" />
+    <ProjectReference Include="..\ijw.Maths\ijw.Maths.csproj" />
+    <ProjectReference Include="..\ijw.Data\ijw.Data.csproj" />
+    <ProjectReference Include="..\ijw.AI.ANN\ijw.AI.ANN.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.4' ">
+    <PackageReference Include="System.Threading.Thread" Version="4.0.0" />
+  </ItemGroup>
+
+</Project>

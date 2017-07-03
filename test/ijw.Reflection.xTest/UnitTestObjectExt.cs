@@ -46,21 +46,21 @@ namespace ijw.Reflection.xTest {
             };
             testClass t = ReflectionHelper.CreateNewInstance<testClass>(propertyName, values);
             Assert.Equal(new DateTime(2016, 8, 8, 16, 44, 33), t.PropDateTime);
-            Assert.Equal(null, t.PropDateTimeNullable);
+            Assert.Null(t.PropDateTimeNullable);
             Assert.Equal(32, t.PropInt32); Assert.Equal(32, t.PropInt32Nullable);
-            Assert.Equal(16, t.PropInt16); Assert.Equal(null, t.PropInt16Nullable);
+            Assert.Equal(16, t.PropInt16); Assert.Null(t.PropInt16Nullable);
             Assert.Equal(64, t.PropInt64); Assert.Equal(64, t.PropInt64Nullable);
             Assert.Equal(128.0d, t.PropDouble); Assert.Equal(128.0d, t.PropDoubleNullable);
-            Assert.Equal(256.0f, t.PropSingle); Assert.Equal(null, t.PropSingleNullable);
+            Assert.Equal(256.0f, t.PropSingle); Assert.Null(t.PropSingleNullable);
             Assert.Equal(123.45m, t.PropDecimal); Assert.Equal(123.45m, t.PropDecimalNullable);
-            Assert.Equal('C', t.PropChar); Assert.Equal(null, t.PropCharNullable);
+            Assert.Equal('C', t.PropChar); Assert.Null(t.PropCharNullable);
             Assert.Equal((byte)65, t.PropByte); Assert.Equal((byte)65, t.PropByteNullable);
-            Assert.Equal(false, t.PropBoolean); Assert.Equal(null, t.PropBooleanNullable);
+            Assert.False(t.PropBoolean); Assert.Null(t.PropBooleanNullable);
             Assert.Equal("just a string", t.PropString);
             Assert.Equal(32u, t.PropUInt32); Assert.Equal(32u, t.PropUInt32Nullable);
-            Assert.Equal(16u, t.PropUInt16); Assert.Equal(null, t.PropUInt16Nullable);
-            Assert.Equal(64u, t.PropUInt64); Assert.Equal(null, t.PropUInt64Nullable);
-            Assert.Equal(testEnum.First, t.PropEnum); Assert.Equal(null, t.PropEnumNullable);
+            Assert.Equal(16u, t.PropUInt16); Assert.Null(t.PropUInt16Nullable);
+            Assert.Equal(64u, t.PropUInt64); Assert.Null(t.PropUInt64Nullable);
+            Assert.Equal(testEnum.First, t.PropEnum); Assert.Null(t.PropEnumNullable);
             Assert.Equal(DBNull.Value, t.PropDBNull);
         }
 

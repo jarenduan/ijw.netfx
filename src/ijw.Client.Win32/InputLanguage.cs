@@ -33,7 +33,7 @@ namespace ijw.Client.Win32 {
             return (int)((long)this.handle);
         }
 
-        private static string GetLocalizedKeyboardLayoutName(string layoutDisplayName) {
+        private static string getLocalizedKeyboardLayoutName(string layoutDisplayName) {
             if ((layoutDisplayName != null) && (Environment.OSVersion.Version.Major >= 5)) {
                 StringBuilder pszOutBuf = new StringBuilder(0x200);
                 if (Win32API.SHLoadIndirectString(layoutDisplayName, pszOutBuf, (uint)pszOutBuf.Capacity, IntPtr.Zero) == 0) {
@@ -57,7 +57,7 @@ namespace ijw.Client.Win32 {
             }
         }
 
-        private static string PadWithZeroes(string input, int length) {
+        private static string padWithZeroes(string input, int length) {
             return ("0000000000000000".Substring(0, length - input.Length) + input);
         }
 
@@ -116,8 +116,8 @@ namespace ijw.Client.Win32 {
                 new RegistryPermission(PermissionState.Unrestricted).Assert();
                 try {
                     if ((num2 == num) || (num2 == 0)) {
-                        RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Keyboard Layouts\" + PadWithZeroes(Convert.ToString(num, 0x10), 8));
-                        localizedKeyboardLayoutName = GetLocalizedKeyboardLayoutName(key.GetValue("Layout Display Name") as string);
+                        RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SYSTEM\CurrentControlSet\Control\Keyboard Layouts\" + padWithZeroes(Convert.ToString(num, 0x10), 8));
+                        localizedKeyboardLayoutName = getLocalizedKeyboardLayoutName(key.GetValue("Layout Display Name") as string);
                         if (localizedKeyboardLayoutName == null) {
                             localizedKeyboardLayoutName = (string)key.GetValue("Layout Text");
                         }
@@ -145,7 +145,7 @@ namespace ijw.Client.Win32 {
                             foreach (string str4 in valueNames) {
                                 if (handle == ((IntPtr)Convert.ToInt32(str4, 0x10))) {
                                     RegistryKey key4 = key3.OpenSubKey(str4);
-                                    localizedKeyboardLayoutName = GetLocalizedKeyboardLayoutName(key4.GetValue("Layout Display Name") as string);
+                                    localizedKeyboardLayoutName = getLocalizedKeyboardLayoutName(key4.GetValue("Layout Display Name") as string);
                                     if (localizedKeyboardLayoutName == null) {
                                         localizedKeyboardLayoutName = (string)key4.GetValue("Layout Text");
                                     }
@@ -160,7 +160,7 @@ namespace ijw.Client.Win32 {
                                     RegistryKey key5 = key3.OpenSubKey(str5);
                                     string str6 = (string)key5.GetValue("Layout Id");
                                     if ((str6 != null) && (Convert.ToInt32(str6, 0x10) == num2)) {
-                                        localizedKeyboardLayoutName = GetLocalizedKeyboardLayoutName(key5.GetValue("Layout Display Name") as string);
+                                        localizedKeyboardLayoutName = getLocalizedKeyboardLayoutName(key5.GetValue("Layout Display Name") as string);
                                         if (localizedKeyboardLayoutName == null) {
                                             localizedKeyboardLayoutName = (string)key5.GetValue("Layout Text");
                                         }
