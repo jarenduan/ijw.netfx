@@ -1,9 +1,9 @@
-﻿using System;
+﻿using ijw.Contract;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using ijw.Contract;
 
 namespace ijw.Collection {
     /// <summary>
@@ -356,6 +356,67 @@ namespace ijw.Collection {
                 index++;
             }
             return index;
+        }
+        #endregion
+
+        #region For Each and the Next
+        /// <summary>
+        /// 迭代每一个元素和下一个元素。例如对于[1,2,3,4],迭代返回(1,2)、(2,3)、(3,4)。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <returns>返回每一个和下一个组成的元组</returns>
+        public static IEnumerable<Tuple<T, T>> ForEachAndNext<T>(this IEnumerable<T> collection) {
+            var enumerator = collection.GetEnumerator();
+            if (!enumerator.MoveNext()) {
+                yield break;
+            }
+            var prev = enumerator.Current;
+            while (enumerator.MoveNext()) {
+                var curr = enumerator.Current;
+                yield return Tuple.Create(prev, curr);
+                prev = curr;
+            }
+        }
+
+        /// <summary>
+        /// 对每一个元素和下一个元素调用指定函数。例如对于[1,2,3,4]和func,迭代调用func(1,2)、func(2,3)、func(3,4)。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="func">指定的函数，接受两个参数</param>
+        /// <returns>计算结果组成的序列</returns>
+        public static IEnumerable<TResult> ForEachAndNext<T, TResult>(this IEnumerable<T> collection, Func<T, T, TResult> func) {
+            var enumerator = collection.GetEnumerator();
+            if (!enumerator.MoveNext()) {
+                yield break;
+            }
+            var prev = enumerator.Current;
+            while (enumerator.MoveNext()) {
+                var curr = enumerator.Current;
+                yield return func(prev, curr);
+                prev = curr;
+            }
+        }
+
+        /// <summary>
+        /// 对每一个元素和下一个元素执行指定操作。例如对于[1,2,3,4]和action,迭代执行action(1,2)、action(2,3)、action(3,4)。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="action">指定的操作，接受两个参数</param>
+        public static void ForEachAndNext<T>(this IEnumerable<T> collection, Action<T, T> action) {
+            var enumerator = collection.GetEnumerator();
+            if (!enumerator.MoveNext()) {
+                return;
+            }
+            var prev = enumerator.Current;
+            while (enumerator.MoveNext()) {
+                var curr = enumerator.Current;
+                action(prev, curr);
+                prev = curr;
+            }
         }
         #endregion
 
