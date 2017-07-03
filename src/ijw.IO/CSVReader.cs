@@ -10,7 +10,6 @@ namespace ijw.IO {
     /// </summary>
     [Obsolete]
     public class CSVReader {
-#if !NET35
         #region read strings, both using utf-8
         /// <summary>
         /// 将每行以逗号分隔后，返回字符串数组和行号. 使用utf-8读取文件.
@@ -55,6 +54,5 @@ namespace ijw.IO {
                 }
             }
         }
-#endif
     }
 }

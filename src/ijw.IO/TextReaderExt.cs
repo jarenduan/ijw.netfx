@@ -22,7 +22,6 @@ namespace ijw.IO {
             }
         }
 
-#if !NET35
         public static IEnumerable<Tuple<string, int>> ReadLinesWithLineNumber(this TextReader reader) {
             string line = reader.ReadLine();
             int num = 0;
@@ -32,6 +31,5 @@ namespace ijw.IO {
                 line = reader.ReadLine();
             }
         }
-#endif
     }
 }

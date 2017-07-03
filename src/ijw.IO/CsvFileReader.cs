@@ -1,5 +1,4 @@
-﻿#if !NET35
-using ijw.Contract;
+﻿using ijw.Contract;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -38,4 +37,3 @@ namespace ijw.IO {
         }
     }
 }
-#endif
