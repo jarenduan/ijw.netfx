@@ -24,7 +24,7 @@ namespace ijw {
         /// <param name="times">运行次数</param>
         /// <param name="loopBody">欲运行的委托</param>
         public static void Run(int times, Action loopBody) {
-            for(int i = 0; i < times; i++) {
+            for (int i = 0; i < times; i++) {
                 loopBody();
             }
         }
@@ -150,14 +150,11 @@ namespace ijw {
         /// </summary>
         /// <param name="loopbody"></param>
         /// <param name="times">运行次数</param>
-        public static void RunWithInterval(this Action loopbody, int times, int interval = 0)
-        {
+        public static void RunWithInterval(this Action loopbody, int times, int interval = 0) {
             interval.ShouldSatisfy((i) => i > 0);
-            for (int i = 0; i < times; i++)
-            {
+            for (int i = 0; i < times; i++) {
                 loopbody();
-                if (interval > 0)
-                {
+                if (interval > 0) {
                     Thread.Sleep(interval);
                 }
             }
@@ -168,14 +165,11 @@ namespace ijw {
         /// </summary>
         /// <param name="times">运行次数</param>
         /// <param name="loopBody">欲运行的委托</param>
-        public static void RunWithInterval(int times, Action loopBody, int interval = 0)
-        {
+        public static void RunWithInterval(int times, Action loopBody, int interval = 0) {
             interval.ShouldSatisfy((i) => i > 0);
-            for (int i = 0; i < times; i++)
-            {
+            for (int i = 0; i < times; i++) {
                 loopBody();
-                if (interval > 0)
-                {
+                if (interval > 0) {
                     Thread.Sleep(interval);
                 }
             }
@@ -187,17 +181,13 @@ namespace ijw {
         /// <param name="toRun">指定的方法, 返回true则为成功运行, false为运行失败.</param>
         /// <param name="maxRetryTimes">尝试的最多次数</param>
         /// <returns>是否成功运行该指定方法</returns>
-        public static bool TryRunUntilTrueWithInterval(Func<bool> toRun, int maxRetryTimes = 5, int interval = 0)
-        {
+        public static bool TryRunUntilTrueWithInterval(Func<bool> toRun, int maxRetryTimes = 5, int interval = 0) {
             interval.ShouldSatisfy((i) => i > 0);
-            while (maxRetryTimes > 0)
-            {
-                if (toRun() == true)
-                {
+            while (maxRetryTimes > 0) {
+                if (toRun() == true) {
                     return true;
                 }
-                if (interval > 0)
-                {
+                if (interval > 0) {
                     Thread.Sleep(interval);
                 }
                 maxRetryTimes--;
@@ -212,19 +202,15 @@ namespace ijw {
         /// <param name="toRun">指定的方法, 返回true则为成功运行, false为运行失败.</param>
         /// <param name="maxRetryTimes">尝试的最多次数</param>
         /// <returns>是否成功运行该指定方法</returns>
-        public static bool TryRunUntilTrueWithInterval(Func<int, bool> toRun, int maxRetryTimes = 5, int interval = 0)
-        {
+        public static bool TryRunUntilTrueWithInterval(Func<int, bool> toRun, int maxRetryTimes = 5, int interval = 0) {
             interval.ShouldSatisfy((i) => i > 0);
             int tryTime = 1;
-            while (tryTime <= maxRetryTimes)
-            {
-                if (toRun(tryTime) == true)
-                {
+            while (tryTime <= maxRetryTimes) {
+                if (toRun(tryTime) == true) {
                     return true;
                 }
                 tryTime++;
-                if (interval > 0)
-                {
+                if (interval > 0) {
                     Thread.Sleep(interval);
                 }
             }
@@ -238,21 +224,16 @@ namespace ijw {
         /// <param name="toRun">欲运行的方法</param>
         /// <param name="maxRetryTimes">尝试的最多次数</param>
         /// <returns>返回该制定方法成功运行的结果</returns>
-        public static T TryRunWithInterval<T>(Func<T> toRun, int maxRetryTimes = 5, int interval = 0)
-        {
+        public static T TryRunWithInterval<T>(Func<T> toRun, int maxRetryTimes = 5, int interval = 0) {
             interval.ShouldSatisfy((i) => i > 0);
-            while (maxRetryTimes > 0)
-            {
-                try
-                {
+            while (maxRetryTimes > 0) {
+                try {
                     return toRun();
                 }
-                catch
-                {
+                catch {
                     maxRetryTimes--;
                 }
-                if (interval > 0)
-                {
+                if (interval > 0) {
                     Thread.Sleep(interval);
                 }
             }
@@ -267,22 +248,17 @@ namespace ijw {
         /// <param name="toRun">欲运行的方法</param>
         /// <param name="maxRetryTimes">尝试的最多次数</param>
         /// <returns>返回该制定方法成功运行的结果</returns>
-        public static T TryRunWithInterval<T>(Func<int, T> toRun, int maxRetryTimes = 5, int interval = 0)
-        {
+        public static T TryRunWithInterval<T>(Func<int, T> toRun, int maxRetryTimes = 5, int interval = 0) {
             interval.ShouldSatisfy((i) => i > 0);
             int tryTime = 1;
-            while (tryTime <= maxRetryTimes)
-            {
-                try
-                {
+            while (tryTime <= maxRetryTimes) {
+                try {
                     return toRun(tryTime);
                 }
-                catch
-                {
+                catch {
                     tryTime++;
                 }
-                if (interval > 0)
-                {
+                if (interval > 0) {
                     Thread.Sleep(interval);
                 }
             }
@@ -296,22 +272,17 @@ namespace ijw {
         /// <param name="toRun">欲运行的方法</param>
         /// <param name="maxRetryTimes">尝试的最多次数</param>
         /// <returns>返回该制定方法成功运行的结果</returns>
-        public static T TryRunUntilNotNullWithInterval<T>(Func<T> toRun, int maxRetryTimes = 5, int interval = 0) where T : class
-        {
+        public static T TryRunUntilNotNullWithInterval<T>(Func<T> toRun, int maxRetryTimes = 5, int interval = 0) where T : class {
             interval.ShouldSatisfy((i) => i > 0);
-            while (maxRetryTimes > 0)
-            {
+            while (maxRetryTimes > 0) {
                 var result = toRun();
-                if (result != null)
-                {
+                if (result != null) {
                     return result;
                 }
-                else
-                {
+                else {
                     maxRetryTimes--;
                 }
-                if (interval > 0)
-                {
+                if (interval > 0) {
                     Thread.Sleep(interval);
                 }
             }
@@ -326,23 +297,18 @@ namespace ijw {
         /// <param name="toRun">欲运行的方法</param>
         /// <param name="maxRetryTimes">尝试的最多次数</param>
         /// <returns>返回该制定方法成功运行的结果</returns>
-        public static T TryRunUntilNotNullWithInterval<T>(Func<int, T> toRun, int maxRetryTimes = 5, int interval = 0) where T : class
-        {
+        public static T TryRunUntilNotNullWithInterval<T>(Func<int, T> toRun, int maxRetryTimes = 5, int interval = 0) where T : class {
             interval.ShouldSatisfy((i) => i > 0);
             int tryTime = 1;
-            while (tryTime <= maxRetryTimes)
-            {
+            while (tryTime <= maxRetryTimes) {
                 var result = toRun(tryTime);
-                if (result != null)
-                {
+                if (result != null) {
                     return result;
                 }
-                else
-                {
+                else {
                     tryTime++;
                 }
-                if (interval > 0)
-                {
+                if (interval > 0) {
                     Thread.Sleep(interval);
                 }
             }
