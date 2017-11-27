@@ -92,11 +92,14 @@ namespace ijw {
             bool hasEnter = false;
             ConsoleKeyInfo key;
 
+#pragma warning disable IDE0017 // 简化对象初始化
             var t = new Thread(() => {
                 key = Console.ReadKey(true);
                 hasEnter = key.Key == ConsoleKey.Enter;
                 stop = true;
             });
+#pragma warning restore IDE0017 // 简化对象初始化
+
             t.IsBackground = true;
             t.Start();
 
@@ -108,7 +111,7 @@ namespace ijw {
 
             //Count down seconds
             while (!stop && seconds > 0) {
-                WriteSecondAndAfterMsg(seconds, msgAfterSeconds, isShowTimeCountDown);
+                writeSecondAndAfterMsg(seconds, msgAfterSeconds, isShowTimeCountDown);
 
 
                 //count down 1s within many little loops, so that key pressing could get in
@@ -136,7 +139,7 @@ namespace ijw {
 
             t.Abort();
 
-            WriteSecondAndAfterMsg(seconds, msgAfterSeconds, isShowTimeCountDown);
+            writeSecondAndAfterMsg(seconds, msgAfterSeconds, isShowTimeCountDown);
 
             if (stop) {
                 WriteLine();
@@ -178,7 +181,7 @@ namespace ijw {
                 posy -= extraLine;
             }
 
-            WriteSecondAndAfterMsg(timeout, msgAfterSeconds, isShowTimeCountDown);
+            writeSecondAndAfterMsg(timeout, msgAfterSeconds, isShowTimeCountDown);
 
             //Time count down
             while (!shouldStop && timeout > 0) {
@@ -211,7 +214,7 @@ namespace ijw {
                 CursorLeft = posx;
                 CursorTop = posy;
 
-                WriteSecondAndAfterMsg(timeout, msgAfterSeconds, isShowTimeCountDown);
+                writeSecondAndAfterMsg(timeout, msgAfterSeconds, isShowTimeCountDown);
             }
 
             WriteLine();
@@ -223,7 +226,7 @@ namespace ijw {
                 return defaultResult;
             }
         }
-        private static void WriteSecondAndAfterMsg(int seconds, string msgAfterSeconds, bool isShowTimeCountDown) {
+        private static void writeSecondAndAfterMsg(int seconds, string msgAfterSeconds, bool isShowTimeCountDown) {
             //print the second string
             if (isShowTimeCountDown) {
                 Write(seconds.ToString());
@@ -263,7 +266,7 @@ namespace ijw {
                 posy -= extraLine;
             }
 
-            WriteSecondAndAfterMsg(timeout, msgAfterSeconds, isShowTimeCountDown);
+            writeSecondAndAfterMsg(timeout, msgAfterSeconds, isShowTimeCountDown);
 
             //Count down seconds
             while (!shouldStop && timeout > 0) {
@@ -295,7 +298,7 @@ namespace ijw {
                 CursorLeft = posx;
                 CursorTop = posy;
 
-                WriteSecondAndAfterMsg(timeout, msgAfterSeconds, isShowTimeCountDown);
+                writeSecondAndAfterMsg(timeout, msgAfterSeconds, isShowTimeCountDown);
             }
 
             WriteLine();
