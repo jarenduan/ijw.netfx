@@ -276,7 +276,7 @@ namespace ijw.Collection {
 
         #endregion
 
-        #region Each pair with index
+        #region Each with index
         public static IEnumerable<Tuple<T, int>> EachWithIndex<T>(this IEnumerable<T> collection) {
             int index = 0;
             foreach (var element in collection) {
@@ -288,7 +288,7 @@ namespace ijw.Collection {
 
         #region For Each
         /// <summary>
-        /// 在集合上遍历调用某个函数. 
+        /// 在集合上遍历执行指定操作。 
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="collection"></param>
@@ -305,7 +305,25 @@ namespace ijw.Collection {
         }
 
         /// <summary>
-        /// 在集合上遍历调用某个函数。 函数返回值可以控制是否break循环.
+        /// 在集合上遍历执行指定操作, 提供元素和索引同时作为参数, 索引从0开始。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="action"></param>
+        /// <returns>集合的元素个数</returns>
+        public static int ForEach<T>(this IEnumerable<T> collection, Action<T, int> action) {
+            int index = 0;
+
+            foreach (var element in collection) {
+                action(element, index);
+                index++;
+            }
+
+            return index;
+        }
+
+        /// <summary>
+        /// 在集合上遍历调用某个函数。函数返回值可以控制是否继续迭代。
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="collection"></param>
@@ -325,29 +343,12 @@ namespace ijw.Collection {
         }
 
         /// <summary>
-        /// 在集合上遍历调用某个函数, 提供元素和索引同时作为参数, 索引从0开始. 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="collection"></param>
-        /// <param name="action"></param>
-        /// <returns>集合的元素个数</returns>
-        public static int ForEach<T>(this IEnumerable<T> collection, Action<T, int> action) {
-            int index = 0;
-
-            foreach (var element in collection) {
-                action(element, index);
-                index++;
-            }
-
-            return index;
-        }
-
-        /// <summary>
         /// 在集合上遍历调用某个函数, 提供元素和索引同时作为参数, 索引从0开始. 函数返回值可以控制是否break循环.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="collection"></param>
         /// <param name="doWhile">返回TRUE继续循环, 返回false则break退出</param>
+        /// <returns>执行到元素的索引</returns>
         public static int ForEachWhile<T>(this IEnumerable<T> collection, Func<T, int, bool> doWhile) {
             int index = 0;
             foreach (var element in collection) {
@@ -361,7 +362,7 @@ namespace ijw.Collection {
 
         #region For Each and the Next
         /// <summary>
-        /// 迭代每一个元素和下一个元素。例如对于[1,2,3,4],迭代返回(1,2)、(2,3)、(3,4)。
+        /// 遍历返回每一个元素和下一个元素组成的元组。例如对于集合[a,b,c,d], 则遍历返回(a,b)、(b,c)、(c,d)。
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="collection"></param>
@@ -380,7 +381,49 @@ namespace ijw.Collection {
         }
 
         /// <summary>
-        /// 对每一个元素和下一个元素调用指定函数。例如对于[1,2,3,4]和func,迭代调用func(1,2)、func(2,3)、func(3,4)。
+        /// 对集合中的每一个元素和下一个元素执行指定操作。例如对于集合[a,b,c,d]指定action, 则遍历执行action(a,b)、action(b,c)、action(c,d)。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="action">指定的操作，接受两个参数</param>
+        public static void ForEachAndNext<T>(this IEnumerable<T> collection, Action<T, T> action) {
+            var enumerator = collection.GetEnumerator();
+            if (!enumerator.MoveNext()) {
+                return;
+            }
+            var prev = enumerator.Current;
+            while (enumerator.MoveNext()) {
+                var curr = enumerator.Current;
+                action(prev, curr);
+                prev = curr;
+            }
+        }
+
+        /// <summary>
+        /// 对每一个元素和下一个元素以及前者的索引执行指定操作。例如对于集合[a,b,c,d]指定action, 则遍历执行action(a,b,0)、action(b,c,1)、action(c,d,2)。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="action">指定的操作，接受两个参数</param>
+        /// <returns>最后执行处的元素索引。-1表示没有执行。</returns>
+        public static int ForEachAndNext<T>(this IEnumerable<T> collection, Action<T, T, int> action) {
+            var enumerator = collection.GetEnumerator();
+            int index = -1;
+            if (!enumerator.MoveNext()) {
+                return index;
+            }
+            index++;
+            var prev = enumerator.Current;
+            while (enumerator.MoveNext()) {
+                var curr = enumerator.Current;
+                action(prev, curr, index);
+                prev = curr;
+            }
+            return index;
+        }
+
+        /// <summary>
+        /// 对每一个元素和下一个元素调用指定函数。例如对于集合[a,b,c,d]指定func, 则遍历调用func(a,b)、func(b,c)、func(c,d)。
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <typeparam name="TResult"></typeparam>
@@ -401,22 +444,80 @@ namespace ijw.Collection {
         }
 
         /// <summary>
-        /// 对每一个元素和下一个元素执行指定操作。例如对于[1,2,3,4]和action,迭代执行action(1,2)、action(2,3)、action(3,4)。
+        /// 对每一个元素和下一个元素以及前者的索引调用指定函数。例如对于集合[a,b,c,d]指定func, 则遍历调用func(a,b,0)、func(b,c,1)、func(c,d,2)。
         /// </summary>
         /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
         /// <param name="collection"></param>
-        /// <param name="action">指定的操作，接受两个参数</param>
-        public static void ForEachAndNext<T>(this IEnumerable<T> collection, Action<T, T> action) {
+        /// <param name="func">指定的函数，接受三个参数</param>
+        /// <returns>计算结果组成的序列</returns>
+        public static IEnumerable<TResult> ForEachAndNext<T, TResult>(this IEnumerable<T> collection, Func<T, T, int, TResult> func) {
             var enumerator = collection.GetEnumerator();
+            int index = 0;
             if (!enumerator.MoveNext()) {
-                return;
+                yield break;
             }
             var prev = enumerator.Current;
             while (enumerator.MoveNext()) {
                 var curr = enumerator.Current;
-                action(prev, curr);
+                yield return func(prev, curr, index);
+                prev = curr;
+                index++;
+            }
+        }
+
+        /// <summary>
+        /// 对每一个元素和下一个元素执行指定操作。操作返回值控制是否继续遍历。例如对于集合[a,b,c,d]指定func, 则遍历调用func(a,b,0)、func(b,c,1)、func(c,d,2)。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="doWhile">指定的函数, 接受2个元素类型参数, 返回false则停止迭代</param>
+        /// <returns>最后执行处的元素索引(连续两元素的第一个元素的索引), -1表示没有执行。</returns>
+        public static int ForEachAndNextWhile<T>(this IEnumerable<T> collection, Func<T, T, bool> doWhile) {
+            var enumerator = collection.GetEnumerator();
+            int index = -1;
+            if (!enumerator.MoveNext()) {
+                return index;
+            }
+            index++;
+            var prev = enumerator.Current;
+            while (enumerator.MoveNext()) {
+                var curr = enumerator.Current;
+                if (!doWhile(prev, curr)) {
+                    break;
+                }
+                index++;
                 prev = curr;
             }
+            return index;
+        }
+
+        /// <summary>
+        /// 对每一个元素和下一个元素以及前者的索引调用指定函数。例如对于集合[a,b,c,d]指定func, 则遍历调用func(a,b,0)、func(b,c,1)、func(c,d,2)。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="doWhile">指定的函数, 接受三个参数, 返回false则停止迭代</param>
+        /// <returns>最后执行处的元素索引(连续两元素的第一个元素的索引), -1表示没有执行。</returns>
+        public static int ForEachAndNextWhile<T>(this IEnumerable<T> collection, Func<T, T, int, bool> doWhile) {
+            var enumerator = collection.GetEnumerator();
+            int index = -1;
+            if (!enumerator.MoveNext()) {
+                return index;
+            }
+            index++;
+            var prev = enumerator.Current;
+            while (enumerator.MoveNext()) {
+                var curr = enumerator.Current;
+                if (!doWhile(prev, curr, index)) {
+                    break;
+                }
+                prev = curr;
+                index++;
+            }
+            return index;
         }
         #endregion
 
