@@ -72,7 +72,7 @@ namespace ijw.Collection {
         /// 按指定的比例把集合分拆成两部分
         /// </summary>
         /// <typeparam name="T">元素类型</typeparam>
-        /// <param name="collection">源集合</param>
+        /// <param name="source">源集合</param>
         /// <param name="ratioOfFirstGroup">第一部分的占比</param>
         /// <param name="ratioOfSecondGroup">第二部分的占比</param>
         /// <param name="firstGroup">分拆出的第一部分</param>
@@ -256,6 +256,7 @@ namespace ijw.Collection {
         /// <param name="separator">元素之间的分隔符，默认是", "</param>
         /// <param name="prefix">第一个元素之前的字符串，默认是"["</param>
         /// <param name="postfix">最后一个元素之后的字符串，默认是"]"</param>
+        /// <param name="transform">对于每个元素，输出字符串之前进行一个操作。默认为null，代表调用ToString().</param>
         /// <returns></returns>
         public static string ToAllEnumStrings<T>(this IEnumerable<T> collection, string separator = ", ", string prefix = "[", string postfix = "]", Func<T, string> transform = null) {
             StringBuilder sb = new StringBuilder(prefix);
@@ -277,6 +278,12 @@ namespace ijw.Collection {
         #endregion
 
         #region Each with index
+        /// <summary>
+        /// 返回一个由元素及其相应索引组成的元组集合
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <returns></returns>
         public static IEnumerable<Tuple<T, int>> EachWithIndex<T>(this IEnumerable<T> collection) {
             int index = 0;
             foreach (var element in collection) {
@@ -470,7 +477,6 @@ namespace ijw.Collection {
         /// 对每一个元素和下一个元素执行指定操作。操作返回值控制是否继续遍历。例如对于集合[a,b,c,d]指定func, 则遍历调用func(a,b,0)、func(b,c,1)、func(c,d,2)。
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <typeparam name="TResult"></typeparam>
         /// <param name="collection"></param>
         /// <param name="doWhile">指定的函数, 接受2个元素类型参数, 返回false则停止迭代</param>
         /// <returns>最后执行处的元素索引(连续两元素的第一个元素的索引), -1表示没有执行。</returns>
@@ -497,7 +503,6 @@ namespace ijw.Collection {
         /// 对每一个元素和下一个元素以及前者的索引调用指定函数。例如对于集合[a,b,c,d]指定func, 则遍历调用func(a,b,0)、func(b,c,1)、func(c,d,2)。
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <typeparam name="TResult"></typeparam>
         /// <param name="collection"></param>
         /// <param name="doWhile">指定的函数, 接受三个参数, 返回false则停止迭代</param>
         /// <returns>最后执行处的元素索引(连续两元素的第一个元素的索引), -1表示没有执行。</returns>
@@ -546,6 +551,13 @@ namespace ijw.Collection {
         #endregion
 
         #region First
+        /// <summary>
+        /// 返回第一个满足条件的元素，过滤条件使用元素和索引作为参数。无则返回null。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="pred">过滤条件，为真则返回。</param>
+        /// <returns></returns>
         public static T FirstOrDefault<T>(this IEnumerable<T> collection, Func<T, int, bool> pred) {
             int index = 0;
             foreach (var item in collection) {
@@ -557,6 +569,13 @@ namespace ijw.Collection {
             return default(T);
         }
 
+        /// <summary>
+        /// 返回第一个满足条件的元素，过滤条件使用元素和索引作为参数。无则抛出<see cref="System.InvalidOperationException"/>异常。
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="pred"></param>
+        /// <returns></returns>
         public static T First<T>(this IEnumerable<T> collection, Func<T, int, bool> pred) {
             int index = 0;
             foreach (var item in collection) {
