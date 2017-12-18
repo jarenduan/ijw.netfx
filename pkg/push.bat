@@ -5,3 +5,4 @@ for %%b in (*.nupkg) do nuget push %%b -source http://10.230.41.8/ijwserver/api/
 @echo -start push symbols to symbol server:
 for %%b in (*.symbols.nupkg) do nuget push %%b -source http://10.230.41.8/ijwsymbol/nuget
 @echo -symbols push done!
+pause
