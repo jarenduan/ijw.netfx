@@ -92,6 +92,7 @@ namespace ijw {
             ConsoleKeyInfo key;
 
             string result = defaultResult;
+#pragma warning disable IDE0017 // 简化对象初始化
             var t = new Thread(() => {
                 result = Console.ReadLine();
                 //while (!enterPressed) {
@@ -100,6 +101,7 @@ namespace ijw {
                 //}
                 enterPressed = true;
             });
+#pragma warning restore IDE0017 // 简化对象初始化
 
             t.IsBackground = true;
             t.Start();
