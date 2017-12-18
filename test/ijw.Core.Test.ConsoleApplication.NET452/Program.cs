@@ -22,10 +22,10 @@ namespace ijw.Core.Test.ConsoleApplication.NET452 {
                     case 0:
                         break;
                     case 1:
-                        ReadEnterInSecondsTest();
+                        readEnterInSecondsTest();
                         break;
                     case 2:
-                        ReadKeyInSecondsTest();
+                        readKeyInSecondsTest();
                         break;
                     default:
                         break;
@@ -36,16 +36,16 @@ namespace ijw.Core.Test.ConsoleApplication.NET452 {
             ReadLine("Press enter to exit...");
         }
 
-        private static void ReadKeyInSecondsTest() {
+        private static void readKeyInSecondsTest() {
             WriteLineInColor("ReadKeyInSeconds() test begin:");
 
             CursorTop = WindowTop + WindowHeight - 3;
             WriteLineInColor($"Set CursorTop to {CursorTop.ToString()}.", ConsoleColor.Green);
 
-            WriteLineInfo();
-            WriteCurrentLineInfo();
+            writeLineInfo();
+            writeCurrentLineInfo();
             WriteLineInColor("1st test begin...");
-            WriteCurrentLineInfo();
+            writeCurrentLineInfo();
             try {
                 var key = ReadKeyInSeconds("press enter to continue in "
                                             , 12
@@ -56,12 +56,12 @@ namespace ijw.Core.Test.ConsoleApplication.NET452 {
             catch (TimeoutException te) {
                 WriteLine(te.Message);
             }
-            WriteLineInfo();
+            writeLineInfo();
             WriteLineInColor("1st test done.\n\n");
 
-            WriteCurrentLineInfo();
+            writeCurrentLineInfo();
             WriteLineInColor("2nd test begin...");
-            WriteCurrentLineInfo();
+            writeCurrentLineInfo();
             try {
                 var key = ReadKeyInSeconds("press enter to continue in ", 20, "s...");
                 WriteLine(key.KeyChar);
@@ -70,49 +70,49 @@ namespace ijw.Core.Test.ConsoleApplication.NET452 {
                 WriteLine(te.Message);
             }
 
-            WriteLineInfo();
+            writeLineInfo();
             WriteLineInColor("2nd test done.\n\n");
 
             //WriteLineInColor($"Set BufferHeight back to {bh.ToString()}.", ConsoleColor.Green);
             //BufferHeight = bh;
 
-            ExitTest();
+            exitTest();
         }
 
-        private static void ReadEnterInSecondsTest() {
+        private static void readEnterInSecondsTest() {
             WriteLineInColor("ReadEnterInSeconds() test begin:");
 
             CursorTop = WindowTop + WindowHeight - 3;
             WriteLineInColor($"Set CursorTop to {CursorTop.ToString()}.", ConsoleColor.Green);
 
-            WriteLineInfo();
-            WriteCurrentLineInfo();
+            writeLineInfo();
+            writeCurrentLineInfo();
             WriteLineInColor("1st test begin...");
-            WriteCurrentLineInfo();
+            writeCurrentLineInfo();
             var key = ReadLineInSecondsWithThread("press enter to continue in ", 12, "s, and of course I had to write a lot of string to test it if there's too many characters in one line, and to see if the count down part work still fine.");
-            WriteLineInfo();
+            writeLineInfo();
             WriteLineInColor("1st test done.\n\n");
 
-            WriteCurrentLineInfo();
+            writeCurrentLineInfo();
             WriteLineInColor("2nd test begin...");
-            WriteCurrentLineInfo();
+            writeCurrentLineInfo();
             key = ReadLineInSecondsWithThread("press enter to continue in ", 20, "s...");
-            WriteLineInfo();
+            writeLineInfo();
             WriteLineInColor("2nd test done.\n\n");
 
-            ExitTest();
+            exitTest();
         }
 
-        private static void ExitTest() {
+        private static void exitTest() {
             ReadLine("Press enter to exit test...\n\n");
         }
 
-        private static void WriteCurrentLineInfo() {
+        private static void writeCurrentLineInfo() {
             WriteInColor("[CursorTop " + CursorTop.ToString() + ", Line " + (CursorTop + 1).ToString() + "] ", ConsoleColor.Green);
         }
 
-        private static void WriteLineInfo() {
-            WriteCurrentLineInfo();
+        private static void writeLineInfo() {
+            writeCurrentLineInfo();
             WriteLineInColor("[LastLine " + BufferHeight.ToString() + "]", ConsoleColor.Green);
         }
     }
