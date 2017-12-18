@@ -89,14 +89,14 @@ namespace ijw.Core.Test.ConsoleApplication.NET452 {
             WriteCurrentLineInfo();
             WriteLineInColor("1st test begin...");
             WriteCurrentLineInfo();
-            var key = ReadEnterInSecondsWithThread("press enter to continue in ", 12, "s, and of course I had to write a lot of string to test it if there's too many characters in one line, and to see if the count down part work still fine.");
+            var key = ReadLineInSecondsWithThread("press enter to continue in ", 12, "s, and of course I had to write a lot of string to test it if there's too many characters in one line, and to see if the count down part work still fine.");
             WriteLineInfo();
             WriteLineInColor("1st test done.\n\n");
 
             WriteCurrentLineInfo();
             WriteLineInColor("2nd test begin...");
             WriteCurrentLineInfo();
-            key = ReadEnterInSecondsWithThread("press enter to continue in ", 20, "s...");
+            key = ReadLineInSecondsWithThread("press enter to continue in ", 20, "s...");
             WriteLineInfo();
             WriteLineInColor("2nd test done.\n\n");
 
