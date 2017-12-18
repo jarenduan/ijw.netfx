@@ -2,7 +2,7 @@
 A few nuget packages providing extensions and helpers for .Net Core and .Net Frameworks. 
 
 # Repo structure
-there're 3 folders in the repro:
+there're 3 folders in the repo:
 
   1. `src`: source codes.
 
