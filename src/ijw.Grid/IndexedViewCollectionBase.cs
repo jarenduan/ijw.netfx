@@ -9,7 +9,7 @@ namespace ijw.Grid {
     /// <typeparam name="TElement">元素类型</typeparam>
     /// <typeparam name="TRowOrColumn">行/列类型</typeparam>
     abstract public class IndexedViewCollectionBase<TElement, TRowOrColumn> : EnumerableBase<TRowOrColumn>
-    where TRowOrColumn : IndexedViewBase<TElement> {
+        where TRowOrColumn : IndexedViewBase<TElement> {
         public TRowOrColumn this[int index] => this._data[index];
 
         internal IndexedViewCollectionBase(Grid<TElement> grid, int count) {
@@ -21,7 +21,6 @@ namespace ijw.Grid {
         }
 
         protected abstract TRowOrColumn createIndexedView(Grid<TElement> _grid, int index);
-
         protected Grid<TElement> _grid;
     }
 }

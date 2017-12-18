@@ -1,6 +1,6 @@
 ﻿namespace ijw.Collection {
     /// <summary>
-    /// 可变的二元元祖
+    /// 可变的二元元组
     /// </summary>
     /// <typeparam name="T1">第一个元素的类型</typeparam>
     /// <typeparam name="T2">第二个元素的类型</typeparam>

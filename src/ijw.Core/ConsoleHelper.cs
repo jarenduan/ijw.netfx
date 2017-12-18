@@ -69,9 +69,9 @@ namespace ijw {
         /// <summary>
         /// 指定秒数倒计时读取回车键，如果到时间没有读取到，自动返回指定值。
         /// </summary>
-        /// <param name="msgBeforeSeconds">在倒计时秒数之前显示的信息</param>
-        /// <param name="seconds">指定的倒计时秒数</param>
-        /// <param name="msgAfterSeconds">在倒计时秒数之后显示的信息，默认为空</param>
+        /// <param name="frontMessage">在倒计时秒数之前显示的信息</param>
+        /// <param name="timeout">指定的倒计时秒数</param>
+        /// <param name="behindMessage">在倒计时秒数之后显示的信息，默认为空</param>
         /// <param param name="defaultResult">倒计时结束之后返回的默认值，默认是真</param>
         /// <param name="isShowTimeCountDown">是否显示倒计时</param>
         /// <returns>倒计时内读取到回车键，返回真；读取到非回车键，返回假；没有读取任何按键，返回指定的默认值。</returns>
@@ -79,80 +79,72 @@ namespace ijw {
         /// 当控制台有输入法行时，倒计时信息可能会出现重行的信息，这是因为输入法行占据了一行的console缓冲区，将导致计算行数不同于无输入法的状态；
         /// 由于目前无法实时识别控制台是否存在输入法行，此bug目前无解。
         /// </remarks>
-        public static bool ReadEnterInSecondsWithThread(string msgBeforeSeconds, int seconds, string msgAfterSeconds = "", bool defaultResult = true, bool isShowTimeCountDown = true) {
+        public static string ReadLineInSecondsWithThread(string frontMessage, int timeout, string behindMessage = "", string defaultResult = "", bool isShowTimeCountDown = true) {
             //Text before time count down
-            Write(msgBeforeSeconds);
+            Write(frontMessage);
 
             //Remember the position of cursor
             int posx = CursorLeft;
             int posy = CursorTop;
 
             //Readline in another thread.
-            bool stop = false;
-            bool hasEnter = false;
+            bool enterPressed = false;
             ConsoleKeyInfo key;
 
+            string result = defaultResult;
+#pragma warning disable IDE0017 // 简化对象初始化
             var t = new Thread(() => {
-                key = Console.ReadKey(true);
-                hasEnter = key.Key == ConsoleKey.Enter;
-                stop = true;
+                result = Console.ReadLine();
+                //while (!enterPressed) {
+                //    key = Console.ReadKey(true);
+                //    enterPressed = key.Key == ConsoleKey.Enter;
+                //}
+                enterPressed = true;
             });
+#pragma warning restore IDE0017 // 简化对象初始化
+
             t.IsBackground = true;
             t.Start();
 
-            int countofPostNewLine = NewLineCount(msgAfterSeconds, posx);
-            int extraLine = (posy + countofPostNewLine) - (Console.BufferHeight - 1);
-            if (extraLine > 0) {
-                posy -= extraLine;
-            }
+            //calculateLineNum
+            posy = calculateLineNum(behindMessage, posx, posy);
 
-            //Count down seconds
-            while (!stop && seconds > 0) {
-                WriteSecondAndAfterMsg(seconds, msgAfterSeconds, isShowTimeCountDown);
+            //loop until timeout
+            while (!enterPressed && timeout > 0) {
+                writeTimeoutAndAfterMsg(timeout, behindMessage, isShowTimeCountDown);
 
-
-                //count down 1s within many little loops, so that key pressing could get in
+                //wait 1s within many little loops, so that key pressing could get in
                 int i = 0;
-                while (!stop && i < 10) {
+                while (!enterPressed && i < 10) {
                     i++;
                     Sleep(100);
                 }
 
-                //1s passed, digital shrink
-                int lastTimeLength = seconds.ToString().Length;
-                seconds--;
-                int thisTimeLength = seconds.ToString().Length;
-
-                //offset the digital shrink
-                if (lastTimeLength > thisTimeLength) {
-                    //with a space and a backspace
-                    msgAfterSeconds = " \b" + msgAfterSeconds + " \b";
-                }
-
-                //restore cursor at in front of second string.
-                CursorLeft = posx;
-                CursorTop = posy;
+                //do the count down
+                countDown(ref timeout, ref behindMessage, posx, posy);
             }
 
             t.Abort();
 
-            WriteSecondAndAfterMsg(seconds, msgAfterSeconds, isShowTimeCountDown);
+            writeTimeoutAndAfterMsg(timeout, behindMessage, isShowTimeCountDown);
 
-            if (stop) {
-                WriteLine();
-                return hasEnter;
-            }
-
-            return defaultResult;
+            return result;
+            //if (enterPressed) {
+            //    WriteLine();
+            //    return true;
+            //}
+            //else {
+            //    return defaultResult;
+            //}
         }
 #endif
 
         /// <summary>
         /// 在指定的超时时间内读取回车键
         /// </summary>
-        /// <param name="msgBeforeSeconds">显示在超时时间之前的一段文本信息</param>
+        /// <param name="frontMessage">显示在超时时间之前的一段文本信息</param>
         /// <param name="timeout">超时时间, 单位是秒</param>
-        /// <param name="msgAfterSeconds">显示在超时时间之后的一段文本信息，默认为空</param>
+        /// <param name="behindMessage">显示在超时时间之后的一段文本信息，默认为空</param>
         /// <param param name="defaultResult">超时后返回的默认值，默认是真</param>
         /// <param name="isShowTimeCountDown">是否以倒计时方式显示时间</param>
         /// <returns>倒计时内读取到回车键，返回真；读取到非回车键，返回假；没有读取任何按键，返回指定的默认值。</returns>
@@ -160,35 +152,28 @@ namespace ijw {
         /// 当控制台有输入法行时，倒计时信息可能会出现重行的信息，这是因为输入法行占据了一行的console缓冲区，将导致计算行数不同于无输入法的状态；
         /// 由于目前无法实时识别控制台是否存在输入法行，此bug目前无解。
         /// </remarks>
-        public static bool ReadEnterInSeconds(string msgBeforeSeconds, int timeout, string msgAfterSeconds = "", bool defaultResult = true, bool isShowTimeCountDown = true) {
-            //Setting signals
-            bool shouldStop = false;
-            bool hasEnter = false;
-
-            Write(msgBeforeSeconds);
+        public static bool ReadLineInSeconds(string frontMessage, int timeout, string behindMessage = "", bool defaultResult = true, bool isShowTimeCountDown = true) {
+            Write(frontMessage);
 
             //Remember the position of cursor, where the seconds string shows.
             int posx = CursorLeft;
             int posy = CursorTop;
 
-            //Calculate the line position, in case screen scrolling up
-            int countofPostNewLine = NewLineCount(msgAfterSeconds, posx);
-            int extraLine = (posy + countofPostNewLine) - (Console.BufferHeight - 1);
-            if (extraLine > 0) {
-                posy -= extraLine;
-            }
+            posy = calculateLineNum(behindMessage, posx, posy);
 
-            WriteSecondAndAfterMsg(timeout, msgAfterSeconds, isShowTimeCountDown);
+            writeTimeoutAndAfterMsg(timeout, behindMessage, isShowTimeCountDown);
+
+            //Setting signals
+            bool enterPressed = false;
 
             //Time count down
-            while (!shouldStop && timeout > 0) {
+            while (!enterPressed && timeout > 0) {
                 //1s with 10 little loops, so that key pressing could get in
                 int i = 0;
-                while (!shouldStop && i < 10) {
+                while (!enterPressed && i < 10) {
                     if (Console.KeyAvailable) {
                         var key = Console.ReadKey(true);
-                        hasEnter = key.Key == ConsoleKey.Enter;
-                        shouldStop = true;
+                        enterPressed = key.Key == ConsoleKey.Enter;
                     }
                     else {
                         i++;
@@ -196,83 +181,74 @@ namespace ijw {
                     }
                 }
 
-                //1s passed, time digital shrink
-                int lastTimeLength = timeout.ToString().Length;
-                timeout--;
-                int thisTimeLength = timeout.ToString().Length;
+                countDown(ref timeout, ref behindMessage, posx, posy);
 
-                //offset the digital shrink
-                if (lastTimeLength > thisTimeLength) {
-                    //with a space and a backspace
-                    msgAfterSeconds = " \b" + msgAfterSeconds + " \b";
-                }
-
-                //restore cursor at in front of the second string.
-                CursorLeft = posx;
-                CursorTop = posy;
-
-                WriteSecondAndAfterMsg(timeout, msgAfterSeconds, isShowTimeCountDown);
+                writeTimeoutAndAfterMsg(timeout, behindMessage, isShowTimeCountDown);
             }
 
             WriteLine();
 
-            if (shouldStop) {
-                return hasEnter;
-            }
-            else {
-                return defaultResult;
-            }
-        }
-        private static void WriteSecondAndAfterMsg(int seconds, string msgAfterSeconds, bool isShowTimeCountDown) {
-            //print the second string
-            if (isShowTimeCountDown) {
-                Write(seconds.ToString());
-            }
-            //print message after seconds.
-            Write(msgAfterSeconds);
+            return enterPressed || defaultResult;
         }
 
         /// <summary>
         /// 指定时间内读取按键，超时没有读取到任何按键将引发异常。
         /// </summary>
-        /// <param name="msgBeforeSeconds">在倒计时秒数之前显示的信息</param>
+        /// <param name="frontMessage">在倒计时秒数之前显示的信息</param>
         /// <param name="timeout">指定的倒计时秒数</param>
-        /// <param name="msgAfterSeconds">在倒计时秒数之后显示的信息，默认为空</param>
+        /// <param name="behindMessage">在倒计时秒数之后显示的信息，默认为空</param>
         /// <param name="isShowTimeCountDown">是否显示倒计时</param>
         /// <returns>读取到的键</returns>
         /// <remarks>
         /// 当控制台有输入法行时，倒计时信息可能会出现重行的信息，这是因为输入法行占据了一行的console缓冲区，将导致计算行数不同于无输入法的状态；
         /// 由于目前无法实时识别控制台是否存在输入法行，此bug目前无解。
         /// </remarks>
-        public static ConsoleKeyInfo ReadKeyInSeconds(string msgBeforeSeconds, int timeout, string msgAfterSeconds = "", bool isShowTimeCountDown = true) {
-            //Setting signals
-            bool shouldStop = false;
-            ConsoleKeyInfo key = new ConsoleKeyInfo();
+        public static ConsoleKeyInfo ReadKeyInSeconds(string frontMessage, int timeout, string behindMessage = "", bool isShowTimeCountDown = true) {
+            return readKeyInSeconds(frontMessage, timeout, behindMessage, true, ConsoleKey.Enter, isShowTimeCountDown);
+        }
 
+        /// <summary>
+        /// 指定时间内读取指定按键，超时没有读取到任何按键将引发异常。
+        /// </summary>
+        /// <param name="frontMessage">在倒计时秒数之前显示的信息</param>
+        /// <param name="timeout">指定的倒计时秒数</param>
+        /// <param name="behindMessage">在倒计时秒数之后显示的信息，默认为空</param>
+        /// <param name="expectedKey">期待的指定按键</param>
+        /// <param name="isShowTimeCountDown">是否显示倒计时</param>/// <param name="frontMessage"></param>
+        /// <returns></returns>
+        public static ConsoleKeyInfo ReadKeyInSeconds(ConsoleKey expectedKey, string frontMessage, int timeout, string behindMessage = "", bool isShowTimeCountDown = true) {
+            return readKeyInSeconds(frontMessage, timeout, behindMessage, false, expectedKey, isShowTimeCountDown);
+        }
+
+        private static ConsoleKeyInfo readKeyInSeconds(string frontMessage, int timeout, string behindMessage, bool anykey, ConsoleKey expectedKey, bool isShowTimeCountDown) {
             //Text before time count down
-            Write(msgBeforeSeconds);
+            Write(frontMessage);
 
             //Remember the current cursor position, where the seconds shows.
             int posx = CursorLeft;
             int posy = CursorTop;
 
-            //Calculate the line position, in case screen scrolling up
-            int countofPostNewLine = NewLineCount(msgAfterSeconds, posx);
-            int extraLine = (posy + countofPostNewLine) - (Console.BufferHeight - 1);
-            if (extraLine > 0) {
-                posy -= extraLine;
-            }
+            posy = calculateLineNum(behindMessage, posx, posy);
 
-            WriteSecondAndAfterMsg(timeout, msgAfterSeconds, isShowTimeCountDown);
+            writeTimeoutAndAfterMsg(timeout, behindMessage, isShowTimeCountDown);
+
+            //Setting signals
+            bool keyPressed = false;
+            ConsoleKeyInfo key = new ConsoleKeyInfo();
 
             //Count down seconds
-            while (!shouldStop && timeout > 0) {
+            while (!keyPressed && timeout > 0) {
                 //Count down 1s with 10 little loops, so that key pressing could get in
                 int i = 0;
-                while (!shouldStop && i < 10) {
+                while (!keyPressed && i < 10) {
                     if (Console.KeyAvailable) {
                         key = Console.ReadKey(true);
-                        shouldStop = true;
+                        if (anykey) {
+                            keyPressed = true;
+                        }
+                        else {
+                            keyPressed = key.Key == expectedKey;
+                        }
                     }
                     else {
                         i++;
@@ -280,26 +256,13 @@ namespace ijw {
                     }
                 }
 
-                //1s passed, digital shrink
-                int lastTimeLength = timeout.ToString().Length;
-                timeout--;
-                int thisTimeLength = timeout.ToString().Length;
+                countDown(ref timeout, ref behindMessage, posx, posy);
 
-                //offset the digital shrink
-                if (lastTimeLength > thisTimeLength) {
-                    //with a space and a backspace
-                    msgAfterSeconds = " \b" + msgAfterSeconds + " \b";
-                }
-
-                //restore cursor at in front of second string.
-                CursorLeft = posx;
-                CursorTop = posy;
-
-                WriteSecondAndAfterMsg(timeout, msgAfterSeconds, isShowTimeCountDown);
+                writeTimeoutAndAfterMsg(timeout, behindMessage, isShowTimeCountDown);
             }
 
             WriteLine();
-            if (shouldStop) {
+            if (keyPressed) {
                 return key;
             }
             else {
@@ -308,7 +271,7 @@ namespace ijw {
         }
 
         /// <summary>
-        /// 
+        /// 计算字符串将会占据几行
         /// </summary>
         /// <param name="msg"></param>
         /// <param name="startCursorX"></param>
@@ -329,6 +292,48 @@ namespace ijw {
             }
 
             return line;
+        }
+
+        private static void countDown(ref int timeout, ref string behindMessage, int posx, int posy) {
+            //1s passed, time digital shrink
+            int lastTimeLength = timeout.ToString().Length;
+            timeout--;
+            int thisTimeLength = timeout.ToString().Length;
+
+            //offset the digital shrink
+            if (lastTimeLength > thisTimeLength) {
+                //with a space and a backspace
+                behindMessage = $" \b{behindMessage} \b";
+            }
+
+            CursorVisible = false;
+
+            //restore cursor at in front of the second string.
+            CursorLeft = posx;
+            CursorTop = posy;
+        }
+
+        private static void writeTimeoutAndAfterMsg(int seconds, string behindMessage, bool isShowTimeCountDown) {
+            //print the second string
+            if (isShowTimeCountDown) {
+                Write(seconds.ToString());
+            }
+
+            //print message after seconds.
+            Write(behindMessage);
+
+            CursorVisible = true;
+        }
+
+        private static int calculateLineNum(string behindMessage, int posx, int posy) {
+            //Calculate the line position, in case screen scrolling up
+            int countofPostNewLine = NewLineCount(behindMessage, posx);
+            int extraLine = (posy + countofPostNewLine) - (Console.BufferHeight - 1);
+            if (extraLine > 0) {
+                posy -= extraLine;
+            }
+
+            return posy;
         }
     }
 }

@@ -11,6 +11,10 @@
     <AutoUnifyAssemblyReferences Condition="'$(TargetFramework)' == 'net40'">false</AutoUnifyAssemblyReferences>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="MessageTransceiver\MemoryMessageProcessing.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <ProjectReference Include="..\ijw.Core\ijw.Core.csproj" />

@@ -5,19 +5,32 @@ using ijw.Contract;
 
 namespace ijw.Collection {
     /// <summary>
-    /// 通过在内部使用数组T[], 提供了一个最小的IEnumerable!<![CDATA[<T>]]>实现. 无法实例化.
-    /// 可以从此类继承, 从而方便地利用定长数组实现IEnumerable!<![CDATA[<T>]]>.
+    /// 可枚举对象基类, 不可以实例化该类。可以从此类继承, 从而方便地利用定长数组实现IEnumerable!<![CDATA[<T>]]>.
+    /// 通过在内部使用数组T[], 提供了一个最小的IEnumerable!<![CDATA[<T>]]>实现.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public abstract class EnumerableBase<T> : IEnumerable<T>, IEnumerable {
+        /// <summary>
+        /// 构造一个可枚举对象。
+        /// </summary>
         public EnumerableBase() { }
+
+        /// <summary>
+        /// 构造一个可枚举对象，使用指定的数组初始化。
+        /// </summary>
+        /// <param name="data"></param>
         public EnumerableBase(T[] data) {
             data.ShouldBeNotNullArgument();
             this._data = data;
         }
 
+        /// <summary>
+        /// 构造一个可枚举对象，使用一个IEnumerable!<![CDATA[<T>]]>初始化。
+        /// </summary>
+        /// <param name="data"></param>
         public EnumerableBase(IEnumerable<T> data) : this(data?.ToArray()) {
         }
+
         /// <summary>
         /// 内部数组
         /// </summary>
