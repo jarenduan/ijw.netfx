@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>1.0.0-rc1</VersionPrefix>
+    <VersionPrefix>1.0.0-rc1-build20170704</VersionPrefix>
     <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
     <AssemblyName>ijw.Net.Socket.BinaryObject</AssemblyName>
     <PackageId>ijw.Net.Socket.BinaryObject</PackageId>

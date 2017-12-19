@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>1.0.0-rc1</VersionPrefix>
+    <VersionPrefix>1.0.0-rc1-build20170704</VersionPrefix>
     <TargetFrameworks>net35;net40;net45;netstandard1.4</TargetFrameworks>
     <AssemblyName>ijw.Log</AssemblyName>
     <PackageId>ijw.Log</PackageId>

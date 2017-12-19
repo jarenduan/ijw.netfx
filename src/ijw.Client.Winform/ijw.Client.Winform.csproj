@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <VersionPrefix>1.0.0-rc1-build20170704</VersionPrefix>
     <TargetFramework>net45</TargetFramework>
     <AssemblyName>ijw.Client.Winform</AssemblyName>
     <PackageId>ijw.Client.Winform</PackageId>

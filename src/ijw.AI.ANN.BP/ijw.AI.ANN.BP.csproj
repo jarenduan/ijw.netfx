@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <VersionPrefix>1.0.0-rc1</VersionPrefix>
+    <VersionPrefix>1.0.0-rc1-build20170704</VersionPrefix>
     <TargetFrameworks>net45;netstandard1.4</TargetFrameworks>
     <AssemblyName>ijw.AI.ANN.BP</AssemblyName>
     <PackageId>ijw.AI.ANN.BP</PackageId>
