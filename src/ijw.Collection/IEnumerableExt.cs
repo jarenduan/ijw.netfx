@@ -6,11 +6,14 @@ using System.Linq;
 using System.Text;
 
 namespace ijw.Collection {
+
     /// <summary>
     /// 提供了IEnumerable的一系列扩展方法
     /// </summary>
     public static class IEnumerableExt {
+
         #region Take
+
         /// <summary>
         /// 给定起止索引，提取范围内的元素，包括起止处的元素。
         /// </summary>
@@ -64,7 +67,8 @@ namespace ijw.Collection {
             }
             return collection.Take(startAtPython, endAtPython);
         }
-        #endregion
+
+        #endregion Take
 
         #region Divide
 
@@ -146,9 +150,10 @@ namespace ijw.Collection {
         }
 #endif
 
-        #endregion
+        #endregion Divide
 
         #region Elements At
+
         /// <summary>
         /// 从集合中按指定索引处, 提取相应的元素们形成新的集合. （输出按照元素在集合中的顺序，而非指定索引的顺序）
         /// </summary>
@@ -165,12 +170,13 @@ namespace ijw.Collection {
                 i++;
             }
         }
-        #endregion
+
+        #endregion Elements At
 
         #region Random
 
         /// <summary>
-        /// 返回随机打乱顺序的序列. 
+        /// 返回随机打乱顺序的序列.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="collection"></param>
@@ -199,9 +205,10 @@ namespace ijw.Collection {
             }
         }
 
-        #endregion
+        #endregion Random
 
         #region ToStrings
+
         /// <summary>
         /// 输出形如[a1, a2 ... an]的带省略号的字符串
         /// </summary>
@@ -274,9 +281,10 @@ namespace ijw.Collection {
             return sb.ToString();
         }
 
-        #endregion
+        #endregion ToStrings
 
         #region Each pair with index
+
         public static IEnumerable<Tuple<T, int>> EachWithIndex<T>(this IEnumerable<T> collection) {
             int index = 0;
             foreach (var element in collection) {
@@ -284,11 +292,13 @@ namespace ijw.Collection {
                 index++;
             }
         }
-        #endregion
+
+        #endregion Each pair with index
 
         #region For Each
+
         /// <summary>
-        /// 在集合上遍历调用某个函数. 
+        /// 在集合上遍历调用某个函数.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="collection"></param>
@@ -310,7 +320,7 @@ namespace ijw.Collection {
         /// <typeparam name="T"></typeparam>
         /// <param name="collection"></param>
         /// <param name="doWhile">调用的函数，返回false则不继续迭代</param>
-        /// 
+        ///
         public static int ForEachWhile<T>(this IEnumerable<T> collection, Func<T, bool> doWhile) {
             int index = 0;
 
@@ -325,7 +335,7 @@ namespace ijw.Collection {
         }
 
         /// <summary>
-        /// 在集合上遍历调用某个函数, 提供元素和索引同时作为参数, 索引从0开始. 
+        /// 在集合上遍历调用某个函数, 提供元素和索引同时作为参数, 索引从0开始.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="collection"></param>
@@ -357,9 +367,11 @@ namespace ijw.Collection {
             }
             return index;
         }
-        #endregion
+
+        #endregion For Each
 
         #region For Each and the Next
+
         /// <summary>
         /// 迭代每一个元素和下一个元素。例如对于[1,2,3,4],迭代返回(1,2)、(2,3)、(3,4)。
         /// </summary>
@@ -418,9 +430,11 @@ namespace ijw.Collection {
                 prev = curr;
             }
         }
-        #endregion
+
+        #endregion For Each and the Next
 
         #region Doubles' Normalizer
+
         /// <summary>
         /// 对浮点集合中的值逐一进行归一化
         /// </summary>
@@ -442,9 +456,11 @@ namespace ijw.Collection {
         public static List<double> Denormalize(this IEnumerable<double> collection, IEnumerable<double> maxValues, IEnumerable<double> minValues) {
             return CollectionHelper.ForEachThree(collection, maxValues, minValues, (x, max, min) => x.DenormalizeMaxMin(min, max)).ToList();
         }
-        #endregion
+
+        #endregion Doubles' Normalizer
 
         #region First
+
         public static T FirstOrDefault<T>(this IEnumerable<T> collection, Func<T, int, bool> pred) {
             int index = 0;
             foreach (var item in collection) {
@@ -466,9 +482,11 @@ namespace ijw.Collection {
             }
             throw new InvalidOperationException();
         }
-        #endregion
+
+        #endregion First
 
         #region IndexOf
+
         /// <summary>
         /// 查找指定元素在集合第一次出现位置的索引
         /// </summary>
@@ -529,6 +547,7 @@ namespace ijw.Collection {
             }
             return collection.Reverse().IndexOf(item);
         }
-        #endregion
+
+        #endregion IndexOf
     }
 }
