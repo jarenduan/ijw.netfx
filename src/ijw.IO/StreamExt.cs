@@ -111,8 +111,8 @@ namespace ijw.IO {
         /// <param name="stream"></param>
         /// <param name="filename">文件名</param>
         /// <param name="append">是否追加. 默认是false</param>
-        public static void WriteToTextFileAndDispose(this Stream stream, string filename, bool append = false) {
-            stream.WriteToTextFileAndDispose(filename, System.Text.Encoding.GetEncoding("utf-8"), System.Text.Encoding.GetEncoding("utf-8"), append);
+        public static int WriteToTextFileAndDispose(this Stream stream, string filename, bool append = false) {
+            return stream.WriteToTextFileAndDispose(filename, System.Text.Encoding.GetEncoding("utf-8"), System.Text.Encoding.GetEncoding("utf-8"), append);
         }
         /// <summary>
         /// 使用指定的编码方式调用ReadStringByStreamReader方法读取流中的全部字符串, 然后使用指定编码覆盖或者追加到指定文件.
@@ -122,11 +122,12 @@ namespace ijw.IO {
         /// <param name="readEncoding">读取流用的编码</param>
         /// <param name="writeEncoding">写入文件的编码方式</param>
         /// <param name="append">是否追加. 默认是false</param>
-        public static void WriteToTextFileAndDispose(this Stream stream, string filename, Encoding readEncoding, Encoding writeEncoding, bool append = false) {
+        public static int WriteToTextFileAndDispose(this Stream stream, string filename, Encoding readEncoding, Encoding writeEncoding, bool append = false) {
             using (StreamWriter writer = StreamWriterHelper.NewStreamWriterByFilepath(filename, writeEncoding, append)) {
                 var s = stream.ReadStringAndDispose(readEncoding);
                 writer.Write(s);
                 writer.Flush();
+                return s.Length;
             }
         }
 
@@ -153,7 +154,6 @@ namespace ijw.IO {
         /// <param name="append">是否追加. 默认是false</param>
         /// <returns>读取到的二进制数组</returns>
 #if NETSTANDARD1_4
-        /// 
         public static byte[] WriteToBinaryFile(this Stream stream, string filename, int length, Encoding readEncoding, Encoding writeEncoding, bool append = false) {
 #else
         public static byte[] WriteToBinaryFileAndDispose(this Stream stream, string filename, long length, Encoding readEncoding, Encoding writeEncoding, bool append = false) {
