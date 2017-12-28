@@ -6,7 +6,7 @@ namespace ijw.Threading.Tasks {
     public enum LooperState { NotRunning, Awaken, Sleeping, Suspending};
 
     /// <summary>
-    /// 封装异步执行循环任务的通用基类, 提供启动, 暂停和退出的功能. 
+    /// 封装异步执行循环任务的通用基类, 提供启动, 暂停和退出的TryRunUntilNotNull功能. 
     /// 可以执行指定的循环体, 循环中每次迭代会检查指定的停止条件和暂停条件.
     /// 循环体由子类实现, 一般情况不需要直接使用此类. 可以实例化BackgroundLooper子类方便地封装指定循环任务.
     /// 如果需要进度报告,可以使用BackgroundLooperWithReport&lt;TReport&gt;子类
