@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.0
+VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{B3A189DD-051D-4F8E-97A4-531F5C5BAC74}"
 EndProject
@@ -85,7 +85,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ijw.LinqExpression", "src\i
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ijw.Log.File", "src\ijw.Log.File\ijw.Log.File.csproj", "{920D6F1F-E7CC-4ACE-BEF0-BF7C0A135B0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ijw.Core.Test.ConsoleApplication.DotNetCore", "test\ijw.Core.Test.ConsoleApplication.DotNetCore\ijw.Core.Test.ConsoleApplication.DotNetCore.csproj", "{832E656C-4EB9-4691-9D8D-54B347C43299}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ijw.Core.Test.ConsoleApplication.DotNetCore", "test\ijw.Core.Test.ConsoleApplication.DotNetCore\ijw.Core.Test.ConsoleApplication.DotNetCore.csproj", "{832E656C-4EB9-4691-9D8D-54B347C43299}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ijw.Net.Http.Test", "test\ijw.Net.Http.Test\ijw.Net.Http.Test.csproj", "{35FA3644-083C-489B-83CB-71B5111D1C77}"
 EndProject
@@ -401,6 +401,14 @@ Global
 		{832E656C-4EB9-4691-9D8D-54B347C43299}.Release|Any CPU.Build.0 = Release|Any CPU
 		{832E656C-4EB9-4691-9D8D-54B347C43299}.Release|x86.ActiveCfg = Release|Any CPU
 		{832E656C-4EB9-4691-9D8D-54B347C43299}.Release|x86.Build.0 = Release|Any CPU
+		{35FA3644-083C-489B-83CB-71B5111D1C77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35FA3644-083C-489B-83CB-71B5111D1C77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35FA3644-083C-489B-83CB-71B5111D1C77}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{35FA3644-083C-489B-83CB-71B5111D1C77}.Debug|x86.Build.0 = Debug|Any CPU
+		{35FA3644-083C-489B-83CB-71B5111D1C77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35FA3644-083C-489B-83CB-71B5111D1C77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35FA3644-083C-489B-83CB-71B5111D1C77}.Release|x86.ActiveCfg = Release|Any CPU
+		{35FA3644-083C-489B-83CB-71B5111D1C77}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
