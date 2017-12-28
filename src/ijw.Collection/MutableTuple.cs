@@ -5,9 +5,13 @@
     /// <typeparam name="T1">第一个元素的类型</typeparam>
     /// <typeparam name="T2">第二个元素的类型</typeparam>
     public class MutableTuple<T1, T2> {
+        /// <summary>
+        /// 构造函数
+        /// </summary>
         public MutableTuple() {
 
         }
+
         /// <summary>
         /// 第一个元素
         /// </summary>

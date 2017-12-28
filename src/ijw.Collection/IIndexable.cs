@@ -13,13 +13,16 @@ namespace ijw.Collection {
         /// <summary>
         /// 索引器
         /// </summary>
-        /// <param name="index"></param>
+        /// <param name="index">索引</param>
         /// <returns></returns>
         T this[int index] {
             get;
             set;
         }
 
+        /// <summary>
+        /// 集合元素数量
+        /// </summary>
         int Count { get; }
     }
 }

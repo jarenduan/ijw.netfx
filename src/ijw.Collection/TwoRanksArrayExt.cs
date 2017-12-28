@@ -73,7 +73,7 @@ namespace ijw.Collection {
         }
 
         /// <summary>
-        /// 把二维数组中每个单元格设为指定值
+        /// 把每个单元格设为指定值
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="array"></param>
@@ -108,23 +108,35 @@ namespace ijw.Collection {
         }
 
         /// <summary>
-        /// 
+        /// 对每一行使用指定的函数进行变换
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="array"></param>
-        /// <param name="function"></param>
+        /// <param name="function">变换函数，接受一行，返回一组新值</param>
         public static void SetEachRow<T>(this T[,] array, Func<T[], T[]> function)
         {
            for (int i = 0; i < array.GetLength(0); i++) {
                array.SetRowAt(i, function(array.GetRowCopyOf(i)));
             }
         }
+
+        /// <summary>
+        /// 对每一列使用指定的函数进行变换
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="array"></param>
+        /// <param name="function">变换函数，接受一列，返回一组新值</param>
         public static void SetEachColumn<T>(this T[,] array, Func<T[], T[]> function) {
             for (int i = 0; i < array.GetLength(1); i++) {
                 array.SetColumnAt(i, function(array.GetColumnCopyOf(i)));
             }
         }
 
+        /// <summary>
+        /// 清空数组
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="array"></param>
         public static void Clear<T>(this T[,] array) {
             array.ForEachRef(delegate(ref T item) {
                 item = default(T);
@@ -134,10 +146,18 @@ namespace ijw.Collection {
         internal static T[] GetRowCopyOf<T>(this T[,] array, int index) {
             return array.GetRowAt(index).ToArray();
         }
+
         internal static T[] GetColumnCopyOf<T>(this T[,] array, int index) {
             return array.GetColumnAt(index).ToArray();
         }
-
+        
+        /// <summary>
+        /// 获取二维数组的某一行
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="array"></param>
+        /// <param name="index">行号</param>
+        /// <returns></returns>
         public static IEnumerable<T> GetRowAt<T>(this T[,] array, int index) {
             if (index >= array.GetLength(0)) {
                 throw new ArgumentOutOfRangeException();
@@ -147,6 +167,14 @@ namespace ijw.Collection {
                 yield return array[index, i];
             }
         }
+
+        /// <summary>
+        /// 获取二维数组的某一列
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="array"></param>
+        /// <param name="index">列号</param>
+        /// <returns></returns>
         public static IEnumerable<T> GetColumnAt<T>(this T[,] array, int index) {
             if (index >= array.GetLength(1)) {
                 throw new ArgumentOutOfRangeException();
@@ -157,7 +185,15 @@ namespace ijw.Collection {
             }
         }
 
+        /// <summary>
+        /// 用指定数组的值替换掉数组中某一行
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="array"></param>
+        /// <param name="index">行索引</param>
+        /// <param name="value">给定的数组</param>
         public static void SetRowAt<T>(this T[,] array, int index, T[] value) {
+            //TODO: use ijw.contract
             if (index >= array.GetLength(0)) {
                 throw new ArgumentOutOfRangeException();
             }
@@ -172,6 +208,14 @@ namespace ijw.Collection {
                 array[index, i] = value[i];
             }
         }
+
+        /// <summary>
+        /// 用指定数组的值替换掉数组中某一列
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="array"></param>
+        /// <param name="index">列索引</param>
+        /// <param name="value">给定的数组</param>
         public static void SetColumnAt<T>(this T[,] array, int index, T[] value) {
             if (index >= array.GetLength(1)) {
                 throw new ArgumentOutOfRangeException();

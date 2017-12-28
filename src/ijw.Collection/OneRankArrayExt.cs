@@ -7,14 +7,28 @@ namespace ijw.Collection {
     /// 提供对一维数组的扩展方法
     /// </summary>
     public static class OneRankArrayExt {
+        /// <summary>
+        /// 使用一个初始化函数进行数组的初始化
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="initializer"></param>
         public static void Initialize<T>(this T[] collection, Func<int, T> initializer) {
             for (int i = 0; i < collection.Length; i++) {
                 collection[i] = initializer(i);
             }
         }
+
+        /// <summary>
+        /// 获得强类型的枚举器
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <returns></returns>
         public static IEnumerator<T> GetEnumeratorGenerics<T>(this T[] collection) {
             return collection.AsEnumerable().GetEnumerator();
         }
+
         /// <summary>
         /// 返回随机打乱顺序的序列迭代器。
         /// </summary>
@@ -160,7 +174,20 @@ namespace ijw.Collection {
             return numbers;
         }
 
-        //Return IList is bad design, so this is deprecated in net40+, use tuple-returning instead.
+
+        /// <summary>
+        /// 将一个集合分割为两个集合
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="ratioOfFirstGroup">一个整数，第一个集合占的比例</param>
+        /// <param name="ratioOfSecondGroup">一个整数，第二个集合占的比例</param>
+        /// <param name="method">分割方法</param>
+        /// <param name="firstGroup">第一个集合</param>
+        /// <param name="secondGroup">第二个集合</param>
+        /// <remarks>
+        /// Returning IList is bad design, so this is not recommended in net40+, use tuple-returning instead.
+        /// </remarks>
         public static void DivideByRatioAndMethod<T>(this T[] collection, int ratioOfFirstGroup, int ratioOfSecondGroup, CollectionDividingMethod method, out IList<T> firstGroup, out IList<T> secondGroup) {
             List<T> first = new List<T>(), second = new List<T>();
             divide(collection, method, ratioOfFirstGroup, ratioOfSecondGroup, first, second);
@@ -169,6 +196,15 @@ namespace ijw.Collection {
         }
 
 #if !NET35
+        /// <summary>
+        /// 将一个集合分割为两个集合
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <param name="method">分割方法</param>
+        /// <param name="ratioOfFirstGroup">一个整数，第一个集合占的比例</param>
+        /// <param name="ratioOfSecondGroup">一个整数，第二个集合占的比例</param>
+        /// <returns></returns>
         public static (List<T> firstGroup, List<T> secondGroup) DivideByRatioAndMethod<T>(this T[] collection, CollectionDividingMethod method, int ratioOfFirstGroup, int ratioOfSecondGroup) {
             List<T> first = new List<T>(), second = new List<T>();
             divide(collection, method, ratioOfFirstGroup, ratioOfSecondGroup, first, second);

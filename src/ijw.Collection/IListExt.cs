@@ -6,6 +6,12 @@ namespace ijw.Collection {
     /// 提供了IList接口的一系列扩展方法
     /// </summary>
     public static class IListExt {
+        /// <summary>
+        /// 随机化打乱
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="collection"></param>
+        /// <returns>返回一个随机化打乱后的集合</returns>
         public static IEnumerable<T> Random<T>(this IList<T> collection) {
             int[] order = 0.ToTotal(collection.Count).Shuffle();
             for (int i = 0; i < order.Length; i++) {
