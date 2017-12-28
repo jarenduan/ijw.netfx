@@ -149,6 +149,7 @@ namespace ijw.Collection {
         #endregion
 
         #region Elements At
+
         /// <summary>
         /// 从集合中按指定索引处, 提取相应的元素们形成新的集合. （输出按照元素在集合中的顺序，而非指定索引的顺序）
         /// </summary>
@@ -294,6 +295,7 @@ namespace ijw.Collection {
         #endregion
 
         #region For Each
+
         /// <summary>
         /// 在集合上遍历执行指定操作。 
         /// </summary>
@@ -368,6 +370,7 @@ namespace ijw.Collection {
         #endregion
 
         #region For Each and the Next
+
         /// <summary>
         /// 遍历返回每一个元素和下一个元素组成的元组。例如对于集合[a,b,c,d], 则遍历返回(a,b)、(b,c)、(c,d)。
         /// </summary>
@@ -527,6 +530,7 @@ namespace ijw.Collection {
         #endregion
 
         #region Doubles' Normalizer
+
         /// <summary>
         /// 对浮点集合中的值逐一进行归一化
         /// </summary>
