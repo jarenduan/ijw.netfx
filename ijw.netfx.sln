@@ -87,6 +87,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ijw.Log.File", "src\ijw.Log
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ijw.Core.Test.ConsoleApplication.DotNetCore", "test\ijw.Core.Test.ConsoleApplication.DotNetCore\ijw.Core.Test.ConsoleApplication.DotNetCore.csproj", "{832E656C-4EB9-4691-9D8D-54B347C43299}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ijw.Net.Http.Test", "test\ijw.Net.Http.Test\ijw.Net.Http.Test.csproj", "{35FA3644-083C-489B-83CB-71B5111D1C77}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

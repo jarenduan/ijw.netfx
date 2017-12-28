@@ -1,7 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <VersionPrefix>1.0.0-rc1-build20170704</VersionPrefix>
     <TargetFrameworks>net35;net40;net45;netstandard1.4</TargetFrameworks>
+    <AssemblyName>ijw.Log.File</AssemblyName>
+    <PackageId>ijw.Log.File</PackageId>
     <NetStandardImplicitPackageVersion Condition=" '$(TargetFramework)' == 'netstandard1.4' ">1.6.0</NetStandardImplicitPackageVersion>
   </PropertyGroup>
 
