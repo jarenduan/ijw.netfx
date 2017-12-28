@@ -25,7 +25,14 @@ namespace ijw.IO {
                 writer.Write(content);
             }
         }
-               
+
+        //TODO: add write bytes to file
+        //public static void WriteBytesToFile(string filepath, byte[] content, Encoding encoding, bool append = false) {
+        //    using (BinaryWriter writer = ) {
+
+        //    }
+
+        //}
        
         /// <summary>
         /// 按通配符拷贝多个文件.
@@ -37,13 +44,18 @@ namespace ijw.IO {
         /// <param name="overwrite">是否覆盖, 设为false后遇到同名文件会抛出异常</param>
         /// <returns>字符串数组, 包含拷贝文件的源路径全名称</returns>
         public static string[] CopyFiles(string sourceDir, string destDir, string pattern = "*.*", SearchOption copyOption = SearchOption.TopDirectoryOnly, bool overwrite = true) {
-            var files = Directory.GetFiles(sourceDir, pattern, copyOption);
-            foreach (var f in files) {
-                FileInfo fi = new FileInfo(f);
-                File.Copy(f, Path.Combine(destDir, fi.Name), overwrite);
-                //Console.WriteLine("  copy from " + fi.DirectoryName);
+            try {
+                var files = Directory.GetFiles(sourceDir, pattern, copyOption);
+                foreach (var f in files) {
+                    FileInfo fi = new FileInfo(f);
+                    File.Copy(f, Path.Combine(destDir, fi.Name), overwrite);
+                    //Console.WriteLine("  copy from " + fi.DirectoryName);
+                }
+                return files;
             }
-            return files;
+            catch {
+                return null;
+            }
         }
 
         /// <summary>
