@@ -94,11 +94,10 @@ namespace ijw {
             string result = defaultResult;
 #pragma warning disable IDE0017 // 简化对象初始化
             var t = new Thread(() => {
-                result = Console.ReadLine();
-                //while (!enterPressed) {
-                //    key = Console.ReadKey(true);
-                //    enterPressed = key.Key == ConsoleKey.Enter;
-                //}
+                while (!enterPressed) {
+                    key = Console.ReadKey(true);
+                    enterPressed = key.Key == ConsoleKey.Enter;
+                }
                 enterPressed = true;
             });
 #pragma warning restore IDE0017 // 简化对象初始化
@@ -152,7 +151,7 @@ namespace ijw {
         /// 当控制台有输入法行时，倒计时信息可能会出现重行的信息，这是因为输入法行占据了一行的console缓冲区，将导致计算行数不同于无输入法的状态；
         /// 由于目前无法实时识别控制台是否存在输入法行，此bug目前无解。
         /// </remarks>
-        public static bool ReadLineInSeconds(string frontMessage, int timeout, string behindMessage = "", bool defaultResult = true, bool isShowTimeCountDown = true) {
+        public static bool ReadEnterInSeconds(string frontMessage, int timeout, string behindMessage = "", bool defaultResult = true, bool isShowTimeCountDown = true) {
             Write(frontMessage);
 
             //Remember the position of cursor, where the seconds string shows.
