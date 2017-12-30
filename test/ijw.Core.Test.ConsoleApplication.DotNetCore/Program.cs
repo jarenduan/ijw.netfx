@@ -100,21 +100,21 @@ namespace ijw.Core.Test.ConsoleApplication.DotNetCore {
             writeCurrentLineInfo();
             WriteLineInColor("1st test begin...");
             writeCurrentLineInfo();
-            var key = ReadLineInSeconds("Press Enter to continue in ", 12, "s, and of course I had to write a lot of string to test it if there's too many characters in one line, and to see if the count down part work still fine.");
+            var key = ReadEnterInSeconds("Press Enter to continue in ", 12, "s, and of course I had to write a lot of string to test it if there's too many characters in one line, and to see if the count down part work still fine.");
             writeLineInfo();
             WriteLineInColor("1st test done.\n\n");
 
             writeCurrentLineInfo();
             WriteLineInColor("2nd test begin...");
             writeCurrentLineInfo();
-            key = ReadLineInSeconds("Press Enter to continue in ", 20, "s...");
+            key = ReadEnterInSeconds("Press Enter to continue in ", 20, "s...");
             writeLineInfo();
             WriteLineInColor("2nd test done.\n\n");
 
             writeCurrentLineInfo();
             WriteLineInColor("3rd test begin...");
             writeCurrentLineInfo();
-            key = ReadLineInSeconds("(Assuming there's a lot of string in one line, this will test if the counting down works correctly.) Press Enter to continue in ", 12
+            key = ReadEnterInSeconds("(Assuming there's a lot of string in one line, this will test if the counting down works correctly.) Press Enter to continue in ", 12
                                         , "s... And of course I had to write a lot of string to test it when there's too many characters in one line, and to see if the count down part work still fine."
                         );
             writeLineInfo();

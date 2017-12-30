@@ -36,49 +36,6 @@ namespace ijw.Core.Test.ConsoleApplication.NET452 {
             ReadLine("Press enter to exit...");
         }
 
-        private static void readKeyInSecondsTest() {
-            WriteLineInColor("ReadKeyInSeconds() test begin:");
-
-            CursorTop = WindowTop + WindowHeight - 3;
-            WriteLineInColor($"Set CursorTop to {CursorTop.ToString()}.", ConsoleColor.Green);
-
-            writeLineInfo();
-            writeCurrentLineInfo();
-            WriteLineInColor("1st test begin...");
-            writeCurrentLineInfo();
-            try {
-                var key = ReadKeyInSeconds("press enter to continue in "
-                                            , 12
-                                            , "s, and of course I had to write a lot of string to test it if there's too many characters in one line, and to see if the count down part work still fine."
-                          );
-                WriteLine(key.KeyChar);
-            }
-            catch (TimeoutException te) {
-                WriteLine(te.Message);
-            }
-            writeLineInfo();
-            WriteLineInColor("1st test done.\n\n");
-
-            writeCurrentLineInfo();
-            WriteLineInColor("2nd test begin...");
-            writeCurrentLineInfo();
-            try {
-                var key = ReadKeyInSeconds("press enter to continue in ", 20, "s...");
-                WriteLine(key.KeyChar);
-            }
-            catch (TimeoutException te) {
-                WriteLine(te.Message);
-            }
-
-            writeLineInfo();
-            WriteLineInColor("2nd test done.\n\n");
-
-            //WriteLineInColor($"Set BufferHeight back to {bh.ToString()}.", ConsoleColor.Green);
-            //BufferHeight = bh;
-
-            exitTest();
-        }
-
         private static void readEnterInSecondsTest() {
             WriteLineInColor("ReadEnterInSeconds() test begin:");
 
@@ -99,6 +56,49 @@ namespace ijw.Core.Test.ConsoleApplication.NET452 {
             key = ReadLineInSecondsWithThread("press enter to continue in ", 20, "s...");
             writeLineInfo();
             WriteLineInColor("2nd test done.\n\n");
+
+            exitTest();
+        }
+
+        private static void readKeyInSecondsTest() {
+            WriteLineInColor("ReadKeyInSeconds() test begin:");
+
+            CursorTop = WindowTop + WindowHeight - 3;
+            WriteLineInColor($"Set CursorTop to {CursorTop.ToString()}.", ConsoleColor.Green);
+
+            writeLineInfo();
+            writeCurrentLineInfo();
+            WriteLineInColor("1st test begin...");
+            writeCurrentLineInfo();
+            try {
+                var key = ReadKeyInSeconds("press any key to continue in "
+                                            , 12
+                                            , "s, and of course I had to write a lot of string to test it if there's too many characters in one line, and to see if the count down part work still fine."
+                          );
+                WriteLine(key.KeyChar);
+            }
+            catch (TimeoutException te) {
+                WriteLine(te.Message);
+            }
+            writeLineInfo();
+            WriteLineInColor("1st test done.\n\n");
+
+            writeCurrentLineInfo();
+            WriteLineInColor("2nd test begin...");
+            writeCurrentLineInfo();
+            try {
+                var key = ReadKeyInSeconds("press any key to continue in ", 20, "s...");
+                WriteLine(key.KeyChar);
+            }
+            catch (TimeoutException te) {
+                WriteLine(te.Message);
+            }
+
+            writeLineInfo();
+            WriteLineInColor("2nd test done.\n\n");
+
+            //WriteLineInColor($"Set BufferHeight back to {bh.ToString()}.", ConsoleColor.Green);
+            //BufferHeight = bh;
 
             exitTest();
         }
