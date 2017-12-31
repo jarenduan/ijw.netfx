@@ -154,7 +154,6 @@ namespace ijw {
             return result;
         }
 #endif
-
         /// <summary>
         /// 指定时间内读取按键，超时没有读取到任何按键将引发异常。
         /// </summary>
